@@ -11,7 +11,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   return (
     <ChakraProvider>
-
     </ChakraProvider>
   )
 }
