@@ -1,1 +1,1 @@
-export * from './MyRaffles'
+export * from './PublicRaffles'
