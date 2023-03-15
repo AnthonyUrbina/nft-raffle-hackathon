@@ -34,16 +34,16 @@ export const NavigationBar = () => {
 
     return (
         <Flex justifyContent="space-between" alignItems="center" borderBottom="1px">
-            <Box paddingX={['.5rem', null, '1.5rem']} paddingY='.5rem'>
+            <Box paddingLeft={['.5rem', null, '1.5rem']} paddingY='.5rem'>
                 <Image boxSize='3rem' src='/static/rofl-logo.png' alt='rofl-logo.png'/>
             </Box>
-            <Box paddingLeft={['.5rem', null, '1.5rem']} paddingY='.5rem'>
-                <WagmiConfig client={client}>
-                    <ConnectKitProvider theme='rounded'>
-                        <ConnectKitButton />
-                    </ConnectKitProvider>
-                </WagmiConfig>
-            </Box>
+            <Box paddingRight={['.5rem', null, '1.5rem']} paddingY='.5rem'>
+                    <WagmiConfig client={client}>
+                        <ConnectKitProvider theme='rounded'>
+                            <ConnectKitButton />
+                        </ConnectKitProvider>
+                    </WagmiConfig>
+             </Box>
         </Flex>
     )
 
