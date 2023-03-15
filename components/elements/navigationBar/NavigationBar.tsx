@@ -46,9 +46,10 @@ export const NavigationBar = () => {
                     </Box>
                 </Flex>
             </Link>
-
             <Flex>
-                <IconButton bgColor='white' aria-label='create raffle' p='1.25rem' m='.5rem' boxSize={5} icon={<AddIcon />} boxShadow="inset 0 0 0 2px #DFE4EC,0 2px 0 0 #DFE4EC,0px 2px 4px rgba(0,0,0,0.02);" />
+                <Button bgColor='white' aria-label='create raffle' p='1.25rem' m='.5rem' boxSize={5} leftIcon={<AddIcon />} boxShadow="inset 0 0 0 2px #DFE4EC,0 2px 0 0 #DFE4EC,0px 2px 4px rgba(0,0,0,0.02);">
+                    Create Raffle
+                </Button>
                 <Box paddingRight={['.5rem', null, '1.5rem']} paddingY='.5rem'>
                     <WagmiConfig client={client}>
                         <ConnectKitProvider theme='rounded'>
@@ -61,3 +62,4 @@ export const NavigationBar = () => {
     )
 
 }
+                {/* <IconButton bgColor='white' aria-label='create raffle' p='1.25rem' m='.5rem' boxSize={5} icon={<AddIcon />} boxShadow="inset 0 0 0 2px #DFE4EC,0 2px 0 0 #DFE4EC,0px 2px 4px rgba(0,0,0,0.02);" /> */}
