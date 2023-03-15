@@ -1,6 +1,6 @@
 import { memo } from 'react'
 // import { ErrorBoundary, Meta } from '../components/elements'
-import { PublicRaffles } from '../components/pages'
+import { CreateRaffle } from '../components/pages'
 // import {
 //     ERROR_FALLBACK,
 //     BUBBLE_BOAT_MIAMI_TITLE,
@@ -9,7 +9,7 @@ import { PublicRaffles } from '../components/pages'
 //     BUBBLE_BOAT_MIAMI_IMAGE,
 // } from '../constants'
 
-const PublicRafflesContainer = () => {
+const CreateRaffleContainer = () => {
     return (
         // <ErrorBoundary fallback={ERROR_FALLBACK}>
         // {/* <Meta
@@ -17,11 +17,11 @@ const PublicRafflesContainer = () => {
         //         url={`${BASE_URL}${CREATE_RAFFLE}`}
         //         image={CREATE_RAFFLE_IMAGE}
         //     /> */}
-        < PublicRaffles />
+        < CreateRaffle />
         // {/* </ErrorBoundary> */ }
     )
 }
 
-PublicRafflesContainer.displayName = 'Create Raffle Container'
+CreateRaffleContainer.displayName = 'Create Raffle Container'
 
-export default memo(PublicRafflesContainer)
+export default memo(CreateRaffleContainer)
