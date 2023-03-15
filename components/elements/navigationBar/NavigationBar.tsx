@@ -14,7 +14,7 @@ import {
     MenuItem,
     Icon
 } from '@chakra-ui/react'
-import {AddIcon} from '@chakra-ui/icons'
+import { AddIcon } from '@chakra-ui/icons'
 // import { GiHamburgerMenu } from 'react-icons/gi'
 import { useRouter } from 'next/router';
 import { WagmiConfig, createClient } from "wagmi";
@@ -39,8 +39,8 @@ export const NavigationBar = () => {
             <Box paddingLeft={['.5rem', null, '1.5rem']} paddingY='.5rem'>
                 <Image boxSize='3rem' src='/static/rofl-logo.png' alt='rofl-logo.png'/>
             </Box>
-            <Flex borderRadius='.25rem' border='1px' >
-                <AddIcon p='.25rem' boxSize={10} />
+            <Flex borderRadius='.25rem' boxShadow='shadows.grey'>
+                <AddIcon m='.5rem' boxSize={5}/>
             </Flex>
             <Box paddingRight={['.5rem', null, '1.5rem']} paddingY='.5rem'>
                     <WagmiConfig client={client}>
