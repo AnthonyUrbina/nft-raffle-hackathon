@@ -35,10 +35,11 @@ const client = createClient(
 
 export const NavigationBar = () => {
     const router = useRouter()
-
+    console.log(routes.CREATE_RAFFLE)
+    const { CREATE_RAFFLE } = routes
     return (
         <Flex justify="space-between" align="center" borderBottom="1px">
-            <Link as={NextLink} href='' _activeLink={{ textDecor: 'none' }} _hover={{ textDecor: 'none' }}>
+            <Link as={NextLink} href='/home' _activeLink={{ textDecor: 'none' }} _hover={{ textDecor: 'none' }}>
                 <Flex alignItems="center" paddingX={['.5rem', null, '1.5rem']} paddingY='.5rem'>
                     <Box>
                         <Image boxSize='3rem' src='/static/rofl-logo.png' alt='rofl-logo.png' />
@@ -50,14 +51,14 @@ export const NavigationBar = () => {
             </Link>
             <Flex>
                 <Hide below='md'>
-                    <Link as={NextLink} href='/create-raffle'>
+                    <Link as={NextLink} href={CREATE_RAFFLE}>
                         <Button rounded='.75rem' bgColor='white' aria-label='create raffle' p='.75rem' m='.5rem' leftIcon={<AddIcon />} boxShadow="inset 0 0 0 2px #DFE4EC,0 2px 0 0 #DFE4EC,0px 2px 4px rgba(0,0,0,0.02);">
                             Create Raffle
                         </Button>
                     </Link>
                 </Hide>
                 <Show below='md'>
-                    <Link as={NextLink} href='/create-raffle'>
+                    <Link as={NextLink} href={CREATE_RAFFLE}>
                         <IconButton bgColor='white' aria-label='create raffle' p='1.25rem' m='.5rem' boxSize={5} icon={<AddIcon />} boxShadow="inset 0 0 0 2px #DFE4EC,0 2px 0 0 #DFE4EC,0px 2px 4px rgba(0,0,0,0.02);" />
                     </Link>
                 </Show>
