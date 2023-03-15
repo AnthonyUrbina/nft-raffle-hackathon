@@ -1,5 +1,3 @@
-
-
 export interface CreateRaffleFormProps {
     title: string
     description: string
