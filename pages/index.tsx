@@ -13,7 +13,7 @@ const HomeContainer = () => {
         <title>Raffle 3.0</title>
         <meta name="description" content="NFT Raffle app" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/static/rofl-logo.png" />
       </Head>
     </>
   )

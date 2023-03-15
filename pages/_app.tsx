@@ -15,8 +15,16 @@ import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   return (
-    <ChakraProvider>
-      <NavigationBar />
-    </ChakraProvider>
+    <>
+      <Head>
+        <title>ROFL</title>
+        <meta name="description" content="NFT Raffle app" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/static/rofl-logo.png" />
+      </Head>
+      <ChakraProvider>
+        <NavigationBar />
+      </ChakraProvider>
+    </>
   )
 }
