@@ -79,9 +79,9 @@ export const CreateRaffleForm = () => {
             </Flex>
             <FormControl>
                 <Flex p='1rem' flexWrap='wrap' justify='space-between' rounded='1rem' border='1px' m='.75rem'>
-                    <Flex direction='column' align='center'>
+                    <Flex direction='column'>
                         <FormControl>
-                            <FormLabel htmlFor='currency' marginEnd='none' mb='none'>Currency</FormLabel>
+                            <FormLabel htmlFor='currency' marginEnd='none' mb='none' textAlign='center'>Currency</FormLabel>
                             <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>The token used for buying tickets</FormHelperText>
                             <Select
                                 id='currency'
@@ -94,7 +94,7 @@ export const CreateRaffleForm = () => {
                             </Select>
                         </FormControl>
                     </Flex>
-                    <Flex direction='column' align='center'>
+                    <Flex direction='column'>
                         <FormControl isInvalid={!!errors.ticketPrice}>
                             <FormLabel htmlFor='ticket-price' marginEnd='none' mb='none' textAlign='center'>Ticket Price</FormLabel>
                             {
@@ -114,9 +114,9 @@ export const CreateRaffleForm = () => {
                                 onChange={handleChange}/>
                         </FormControl>
                     </Flex>
-                    <Flex direction='column' align='center' pt='1rem'>
+                    <Flex direction='column' pt='1rem'>
                         <FormControl>
-                            <FormLabel marginEnd='none' mb='none'>Reserve Price</FormLabel>
+                            <FormLabel marginEnd='none' mb='none' textAlign='center'>Reserve Price</FormLabel>
                             <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>Choose your price per ticket</FormHelperText>
                             <Input
                                 id="reserve-price"
@@ -128,7 +128,7 @@ export const CreateRaffleForm = () => {
                                 onChange={handleChange}/>
                         </FormControl>
                     </Flex>
-                    <Flex direction='column' align='center' pt='1rem'>
+                    <Flex direction='column' pt='1rem'>
                         <FormControl>
                             <FormLabel htmlFor='calendar' marginEnd='none' mb='none'>Raffle End Date</FormLabel>
                             <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>Raffle minimum</FormHelperText>
