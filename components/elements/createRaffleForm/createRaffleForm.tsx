@@ -22,12 +22,18 @@ import {
     FormHelperText,
     Input,
     Select,
-    VStack
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalCloseButton
 } from '@chakra-ui/react'
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon} from '@chakra-ui/icons'
+import { useDisclosure } from '@chakra-ui/react'
 import { useFormik } from "formik";
 import * as yup from "yup"
-import { ChangeEvent, useState } from 'react'
+import { useState, useRef } from 'react'
 
 // export interface CreateRaffleFormProps {
 //     title: string
@@ -39,8 +45,24 @@ import { ChangeEvent, useState } from 'react'
 //     past: boolean
 // }
 
+
+
 export const CreateRaffleForm = () => {
-    const CURRENT_DATE_AND_TIME = new Date().toISOString().split(".")[0]
+    const [selectedNFT, setSelectedNFT] = useState(null);
+    const [showNFTModal, setShowNFTModal] = useState(false);
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const finalRef = useRef(null)
+
+    const ALCHEMY_GOERELI_API_KEY = 'NqZC2xpmcgq_3E7l6QInk5oda1UXVQB4'
+
+    const options = { method: 'GET', headers: { accept: 'application/json' } };
+
+    const fetchNFTs = () => {
+        fetch(`https://eth-mainnet.g.alchemy.com/nft/v2/${ALCHEMY_GOERELI_API_KEY}/getNFTs?owner=vitalik.eth&withMetadata=true&orderBy=transferTime&excludeFilters[]=SPAM&excludeFilters[]=AIRDROPS&spamConfidenceLevel=HIGH&pageSize=100`, options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err));
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -79,15 +101,27 @@ export const CreateRaffleForm = () => {
     const { ticketPrice, reservePrice } = formik.values
     const { handleChange, getFieldProps, errors } = formik
 
+    const CURRENT_DATE_AND_TIME = new Date().toISOString().split(".")[0]
+
     return (
         <>
             <Flex border='1px' rounded='1rem' align='center' justify='center' boxSize={353} m='0 auto' bgColor='#D9D9D9'>
                 <Box>
-                    <Button leftIcon={<AddIcon mb='.5rem' boxSize={9}/>} display='flex' flexDir='column' bgColor='#D9D9D9'>
+                    <Button leftIcon={<AddIcon mb='.5rem' boxSize={9}/>} display='flex' flexDir='column' bgColor='#D9D9D9' onClick={onOpen}>
                         Select NFT
                     </Button>
                 </Box>
             </Flex>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Select NFT</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Text>nftssss</Text>
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
             <FormControl>
                 <Flex p='1rem' flexWrap='wrap' justify='space-between' rounded='1rem' border='1px' m='.75rem'>
                     <Flex direction='column'>
