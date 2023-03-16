@@ -50,11 +50,13 @@ export const CreateRaffleForm = () => {
         validationSchema: yup.object({
             ticketPrice: yup
                 .string()
+                .required()
                 .matches(/^[0-9]+(?:\.[0-9]*)?$/gm, 'Please enter a valid amount')
                 .matches(/^(\d{1,18}(\.\d{0,18})?)?$/, '18 decimal places max')
                 .matches(/^(?!0\d)(?:\d{1,14}(?:\.\d{0,18})?|100000000000000(?:\.0{1,18})?)$/, 'The amount cannot exceed 100,000,000,000,000'),
             reservePrice: yup
                 .string()
+                .required()
                 .matches(/^[0-9]+(?:\.[0-9]*)?$/gm, 'Please enter a valid amount')
                 .matches(/^(?!0\d)(?:\d{1,14}(?:\.\d{0,18})?|100000000000000(?:\.0{1,18})?)$/, 'The amount cannot exceed 100,000,000,000,000')
                 .matches(/^(\d{1,18}(\.\d{0,18})?)?$/, '18 decimal places max'),
@@ -64,9 +66,14 @@ export const CreateRaffleForm = () => {
         },
     });
 
+    const handleErrMessages = (fieldId: string) => {
+        const fieldErrs = fieldId === 'ticketPrice' ? errors.ticketPrice : errors.reservePrice
+       return fieldErrs ? <FormErrorMessage mt='none' mb='.25rem' fontSize='9px' textAlign='center'>{fieldErrs}</FormErrorMessage>
+            : <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>Choose your price per ticket</FormHelperText>
+    }
 
     const { ticketPrice, reservePrice } = formik.values
-    const { handleChange, errors } = formik
+    const { handleChange, getFieldProps, errors } = formik
 
     return (
         <>
@@ -96,36 +103,28 @@ export const CreateRaffleForm = () => {
                     </Flex>
                     <Flex direction='column'>
                         <FormControl isInvalid={!!errors.ticketPrice}>
-                            <FormLabel htmlFor='ticket-price' marginEnd='none' mb='none' textAlign='center'>Ticket Price</FormLabel>
-                            {
-                                errors.ticketPrice ? <FormErrorMessage mt='none' mb='.25rem' fontSize='9px' textAlign='center'>{errors.ticketPrice}</FormErrorMessage>
-                                    : <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>Choose your price per ticket</FormHelperText>
-
-                            }
+                            <FormLabel htmlFor='ticketPrice' marginEnd='none' mb='none' textAlign='center'>Ticket Price</FormLabel>
+                            {handleErrMessages('ticketPrice')}
                             <Input
-                                id='ticket-price'
-                                name='ticketPrice'
+                                id='ticketPrice'
                                 type='text'
                                 w='150px'
                                 h='25px'
                                 rounded='1rem'
                                 borderColor='black'
-                                value={ticketPrice}
-                                onChange={handleChange}/>
+                                {...getFieldProps('ticketPrice')}/>
                         </FormControl>
                     </Flex>
                     <Flex direction='column' pt='1rem'>
-                        <FormControl>
-                            <FormLabel marginEnd='none' mb='none' textAlign='center'>Reserve Price</FormLabel>
-                            <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>Choose your price per ticket</FormHelperText>
+                        <FormControl isInvalid={!!errors.reservePrice}>
+                            <FormLabel htmlFor="reservePrice" marginEnd='none' mb='none' textAlign='center'>Reserve Price</FormLabel>
+                            {handleErrMessages('reservePrice')}
                             <Input
-                                id="reserve-price"
-                                name='reservePrice'
+                                id="reservePrice"
                                 w='150px' h='25px'
                                 rounded='1rem'
                                 borderColor='black'
-                                value={reservePrice}
-                                onChange={handleChange}/>
+                                {...getFieldProps('reservePrice')} />
                         </FormControl>
                     </Flex>
                     <Flex direction='column' pt='1rem'>
