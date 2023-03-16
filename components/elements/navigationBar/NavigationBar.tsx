@@ -17,7 +17,6 @@ import {
     Hide
 } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
-// import { GiHamburgerMenu } from 'react-icons/gi'
 import { useRouter } from 'next/router';
 import { WagmiConfig, createClient } from "wagmi";
 import { ConnectKitProvider, ConnectKitButton, getDefaultClient } from "connectkit";
