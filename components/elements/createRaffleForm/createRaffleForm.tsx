@@ -60,6 +60,10 @@ export const CreateRaffleForm = () => {
                 .matches(/^[0-9]+(?:\.[0-9]*)?$/gm, 'Please enter a valid amount')
                 .matches(/^(?!0\d)(?:\d{1,14}(?:\.\d{0,18})?|100000000000000(?:\.0{1,18})?)$/, 'The amount cannot exceed 100,000,000,000,000')
                 .matches(/^(\d{1,18}(\.\d{0,18})?)?$/, '18 decimal places max'),
+            calendar: yup
+                .string()
+                .required()
+                .matches(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, 'Invalid timestamp')
         }),
         onSubmit: (values) => {
             console.log(values);
@@ -92,12 +96,13 @@ export const CreateRaffleForm = () => {
                             <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>The token used for buying tickets</FormHelperText>
                             <Select
                                 id='currency'
-                                placeholder='MATIC'
+                                name='currency'
+                                placeholder='ETH'
                                 w='150px' h='25px'
                                 textAlign='center'
                                 rounded='1rem'
                                 borderColor='black'>
-                                <option value="APE COIN">APE COIN</option>
+                                <option value="APE">APE</option>
                             </Select>
                         </FormControl>
                     </Flex>
@@ -140,7 +145,8 @@ export const CreateRaffleForm = () => {
                                 placeholder="Select Date and Time"
                                 size="md"
                                 type="datetime-local"
-                                min={CURRENT_DATE_AND_TIME}/>
+                                min={CURRENT_DATE_AND_TIME}
+                                {...getFieldProps('calendar')}/>
                         </FormControl>
                     </Flex>
                 </Flex>
