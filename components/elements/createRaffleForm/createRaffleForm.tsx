@@ -27,11 +27,19 @@ import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
 import { NftData } from '../../../pages/create-raffle';
 
 interface NftDataContractReady extends Omit<NftData, 'image'> {}
+interface CreatedRaffle {
+    reservePrice: string
+    ticketPrice: string
+    endDate: string
+    nft: NftDataContractReady
+}
 
 export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [selectedNftData, setSelectedNftData] = useState<NftDataContractReady | null>(null);
-    const CURRENT_DATE_AND_TIME = new Date().toISOString().slice(0, 16);
+
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const currentDate = new Date().toLocaleString('en-US', { timeZone: userTimeZone });
 
     let count = -1;
     const createSelectNftCardLi = () => {
@@ -49,7 +57,7 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
         initialValues: {
             reservePrice: '0.01',
             ticketPrice: '0.01',
-            calendar: CURRENT_DATE_AND_TIME
+            endDate: currentDate
 
         },
         validationSchema: yup.object({
@@ -67,8 +75,18 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
                 .matches(/^(\d{1,18}(\.\d{0,18})?)?$/, '18 decimal places max')
         }),
         onSubmit: (values) => {
-            console.log('hellooo')
-            alert(JSON.stringify(values, null, 2));
+            if (!selectedNftData) {
+                console.log('no no no')
+                return
+            }
+            const {reservePrice, ticketPrice, endDate} = values
+            const createdRaffle: CreatedRaffle = {
+                reservePrice,
+                ticketPrice,
+                endDate,
+                nft: selectedNftData
+            }
+            console.log('createdRaffle', createdRaffle)
         },
     });
 
@@ -167,19 +185,19 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
                             </Flex>
                             <Flex direction='column'>
                                 <FormControl>
-                                    <FormLabel htmlFor='calendar' marginEnd='none' mb='none' textAlign={['center', null, null, 'initial']}>Raffle End Date</FormLabel>
+                                    <FormLabel htmlFor='endDate' marginEnd='none' mb='none' textAlign={['center', null, null, 'initial']}>Raffle End Date</FormLabel>
                                     <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign={['center', null, null, 'initial']}>Raffle minimum</FormHelperText>
                                     <Input
-                                        id="calendar"
+                                        id="endDate"
                                         w='150px'
                                         h='25px'
                                         rounded='1rem'
                                         borderColor='black'
                                         size="md"
                                         type="datetime-local"
-                                        min={CURRENT_DATE_AND_TIME}
+                                        min={currentDate}
                                         textAlign='center'
-                                        {...getFieldProps('calendar')} />
+                                        {...getFieldProps('endDate')}/>
                                 </FormControl>
                             </Flex>
                         </Flex>
