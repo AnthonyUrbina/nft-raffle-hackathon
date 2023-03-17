@@ -24,6 +24,9 @@ import * as yup from "yup"
 import { ReactNode } from 'react'
 import { SelectNftCard } from '../selectNftCard';
 import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
+import { NftData } from '../../../pages/create-raffle';
+
+interface NftDataContractReady extends Omit<NftData, 'image'> {}
 
 export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -79,6 +82,11 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
     const handleSelectedNft = (event: React.MouseEvent<HTMLButtonElement>, selectedNft: number) => {
         const { target } = event
         const { title, tokenId, collectionAddress} = nfts[selectedNft]
+        const nftData: NftDataContractReady = {
+            title,
+            tokenId,
+            collectionAddress
+        }
     }
 
     const { getFieldProps, errors } = formik

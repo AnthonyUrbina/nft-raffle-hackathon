@@ -3,7 +3,7 @@ import { CreateRaffle } from '../components/pages'
 import { Alchemy, Network } from "alchemy-sdk";
 
 
-interface nftData {
+export interface NftData {
     title: string,
     tokenId: string,
     image: string,
@@ -11,7 +11,7 @@ interface nftData {
 }
 
 export interface CreateRaffleContainerProps {
-    nfts: nftData[]
+    nfts: NftData[]
 }
 
 const CreateRaffleContainer = ({nfts}: CreateRaffleContainerProps) => {
@@ -30,7 +30,7 @@ export async function getServerSideProps(){
     const address = "0x07c233C36ac7103bDDD8fdebE9935fE871BF5474";
 
     const nftsRes = await alchemy.nft.getNftsForOwner(address);
-    const nfts: nftData[] = nftsRes.ownedNfts.map(nft => {
+    const nfts: NftData[] = nftsRes.ownedNfts.map(nft => {
         console.log(nft)
         const { title, tokenId, media, contract } = nft
         const image = media[0].gateway
