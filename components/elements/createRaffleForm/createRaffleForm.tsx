@@ -28,11 +28,15 @@ import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
 export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
+    let count = -1;
     const createSelectNftCardLi = () => {
         const nftCardComponents: ReactNode[] = nfts.map(nft => {
             const {title, tokenId, image} = nft
+            count++
             return(
-                <SelectNftCard key={tokenId} title={title} image={image} />
+                <Button key={count} onClick={(event) => { handleSelectedNft(event, count)}}>
+                    <SelectNftCard title={title} image={image} />
+                </Button>
             )
         })
         return nftCardComponents
@@ -72,8 +76,12 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
             : <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>Choose your price per ticket</FormHelperText>
     }
 
-    const { ticketPrice, reservePrice } = formik.values
-    const { handleChange, getFieldProps, errors } = formik
+    const handleSelectedNft = (event: React.MouseEvent<HTMLButtonElement>, selectedNft: number) => {
+        const { target } = event
+        const { title, tokenId, collectionAddress} = nfts[selectedNft]
+    }
+
+    const { getFieldProps, errors } = formik
 
     const CURRENT_DATE_AND_TIME = new Date().toISOString().split(".")[0]
 

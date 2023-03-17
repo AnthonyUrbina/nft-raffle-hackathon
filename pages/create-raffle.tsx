@@ -6,7 +6,8 @@ import { Alchemy, Network } from "alchemy-sdk";
 interface nftData {
     title: string,
     tokenId: string,
-    image: string
+    image: string,
+    collectionAddress: string
 }
 
 export interface CreateRaffleContainerProps {
@@ -20,8 +21,6 @@ const CreateRaffleContainer = ({nfts}: CreateRaffleContainerProps) => {
 }
 
 export async function getServerSideProps(){
-    const ALCHEMY_GOERELI_API_KEY = 'NqZC2xpmcgq_3E7l6QInk5oda1UXVQB4'
-
     const config = {
         apiKey: process.env.ALCHEMY_GOERELI_API_KEY,
         network: Network.ETH_MAINNET,
@@ -32,12 +31,15 @@ export async function getServerSideProps(){
 
     const nftsRes = await alchemy.nft.getNftsForOwner(address);
     const nfts: nftData[] = nftsRes.ownedNfts.map(nft => {
-        const { title, tokenId, media } = nft
+        console.log(nft)
+        const { title, tokenId, media, contract } = nft
         const image = media[0].gateway
+        const collectionAddress = contract.address
         const nftData = {
             title,
             tokenId,
-            image
+            image,
+            collectionAddress
         }
         return nftData;
     })
