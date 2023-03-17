@@ -34,50 +34,24 @@ import { AddIcon} from '@chakra-ui/icons'
 import { useDisclosure } from '@chakra-ui/react'
 import { useFormik } from "formik";
 import * as yup from "yup"
-import { useState, useRef, ReactElement } from 'react'
-import { Alchemy, Network } from "alchemy-sdk";
+import { useState, useEffect, ReactNode } from 'react'
 import { SelectNftCard } from '../selectNftCard';
+import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
 
-export const CreateRaffleForm = () => {
+export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    // const [fetchedNftData, setFetchedNftData] = useState<nftData[]>([]);
+    console.log('createSelectNftCardLi nfts', nfts)
 
-    const ALCHEMY_GOERELI_API_KEY = 'NqZC2xpmcgq_3E7l6QInk5oda1UXVQB4'
-
-    const config = {
-        apiKey: ALCHEMY_GOERELI_API_KEY,
-        network: Network.ETH_MAINNET,
-    };
-    const alchemy = new Alchemy(config);
-
-    const options = { method: 'GET', headers: { accept: 'application/json' } };
-
-    const fetchNFTs = async () => {
-        const address = "0x07c233C36ac7103bDDD8fdebE9935fE871BF5474";
-
-        // Get all NFTs
-        const nfts = await alchemy.nft.getNftsForOwner(address);
-
-        // Parse output
-        const numNfts = nfts.totalCount;
-        const nftList = nfts.ownedNfts;
-        const nftImages = nfts
-        console.log(nfts)
-
-        // map through nfts
-        // create obj w nftCollectionAddress, tokenID, nftName, nftImage
-        // cA and tID are for sham (save in state???)
-        // name and image are for me save in obj
-        // use obj to create li elements for nftCard
-
-        const nftCardComponents: ReactElement[] = nfts.ownedNfts.map(nft => {
-            const {title, tokenId, media} = nft
-            const image = media[0].gateway
-
+    const createSelectNftCardLi = () => {
+        const nftCardComponents: ReactNode[] = nfts.map(nft => {
+            console.log(nft)
+            const {title, tokenId, image} = nft
             return(
                 <SelectNftCard key={tokenId} title={title} image={image} />
             )
         })
-
+        console.log('nftCardComponents',nftCardComponents)
         return nftCardComponents
     }
 
@@ -124,7 +98,7 @@ export const CreateRaffleForm = () => {
         <>
             <Flex border='1px' rounded='1rem' align='center' justify='center' boxSize={353} m='0 auto' bgColor='#D9D9D9'>
                 <Box>
-                    <Button leftIcon={<AddIcon mb='.5rem' boxSize={9} />} display='flex' flexDir='column' bgColor='#D9D9D9' onClick={fetchNFTs}>
+                    <Button leftIcon={<AddIcon mb='.5rem' boxSize={9} />} display='flex' flexDir='column' bgColor='#D9D9D9' onClick={onOpen}>
                         Select NFT
                     </Button>
                 </Box>
@@ -136,7 +110,7 @@ export const CreateRaffleForm = () => {
                     <ModalCloseButton />
                     <ModalBody>
                         <UnorderedList>
-                            {fetchNFTs()}
+                            {createSelectNftCardLi()}
                         </UnorderedList>
                     </ModalBody>
                 </ModalContent>
