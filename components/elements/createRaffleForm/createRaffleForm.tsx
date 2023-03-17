@@ -25,6 +25,7 @@ import { ReactNode, useState } from 'react'
 import { SelectNftCard } from '../selectNftCard';
 import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
 import { NftData } from '../../../pages/create-raffle';
+import DatePicker from 'react-datepicker'
 
 interface NftDataContractReady extends Omit<NftData, 'image'> {}
 
@@ -86,7 +87,7 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
         setSelectedNftData(nftData)
     }
 
-    const { getFieldProps, handleSubmit, errors } = formik
+    const { getFieldProps, handleSubmit, handleBlur, errors } = formik
 
     const CURRENT_DATE_AND_TIME = new Date().toISOString().split(".")[0]
 
@@ -164,23 +165,22 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
                             <FormControl>
                                 <FormLabel htmlFor='calendar' marginEnd='none' mb='none' textAlign='center'>Raffle End Date</FormLabel>
                                 <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>Raffle minimum</FormHelperText>
-                                <Input
+                                <DatePicker
                                     id="calendar"
                                     w='150px'
                                     h='25px'
                                     rounded='1rem'
                                     borderColor='black'
-                                    placeholder="Select Date and Time"
                                     size="md"
                                     type="datetime-local"
                                     min={CURRENT_DATE_AND_TIME}
                                     textAlign='center'
-                                    {...getFieldProps('calendar')}/>
-                            </FormControl>
+                                    onBlur={handleBlur}/>
+                        </FormControl>
                         </Flex>
                     </Flex>
                     <Flex justify='center' pb='.5rem'>
-                        <Button bgColor='black' color='white' rounded='1.5rem' fontFamily='Inter' fontWeight='normal' paddingX='8rem'>
+                        <Button type='submit' bgColor='black' color='white' rounded='1.5rem' fontFamily='Inter' fontWeight='normal' paddingX='8rem'>
                         Create Raffle
                         </Button>
                     </Flex>
