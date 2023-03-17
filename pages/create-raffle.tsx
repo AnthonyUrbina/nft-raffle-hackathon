@@ -31,7 +31,6 @@ export async function getServerSideProps(){
 
     const nftsRes = await alchemy.nft.getNftsForOwner(address);
     const nfts: NftData[] = nftsRes.ownedNfts.map(nft => {
-        console.log(nft)
         const { title, tokenId, media, contract } = nft
         const image = media[0].gateway
         const collectionAddress = contract.address

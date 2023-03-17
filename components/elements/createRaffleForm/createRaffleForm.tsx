@@ -21,7 +21,7 @@ import { AddIcon} from '@chakra-ui/icons'
 import { useDisclosure } from '@chakra-ui/react'
 import { useFormik } from "formik";
 import * as yup from "yup"
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { SelectNftCard } from '../selectNftCard';
 import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
 import { NftData } from '../../../pages/create-raffle';
@@ -30,6 +30,7 @@ interface NftDataContractReady extends Omit<NftData, 'image'> {}
 
 export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [selectedNftData, setSelectedNftData] = useState<NftDataContractReady | null>(null);
 
     let count = -1;
     const createSelectNftCardLi = () => {
@@ -37,9 +38,7 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
             const {title, tokenId, image} = nft
             count++
             return(
-                <Button key={count} onClick={(event) => { handleSelectedNft(event, count)}}>
-                    <SelectNftCard title={title} image={image} />
-                </Button>
+                <SelectNftCard key={count} title={title} image={image} handleSelectedNft={handleSelectedNft} count={count} />
             )
         })
         return nftCardComponents
@@ -87,6 +86,8 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
             tokenId,
             collectionAddress
         }
+        setSelectedNftData(nftData)
+        console.log('nftData', nftData)
     }
 
     const { getFieldProps, errors } = formik
