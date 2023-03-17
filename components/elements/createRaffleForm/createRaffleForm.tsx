@@ -28,7 +28,8 @@ import {
     ModalHeader,
     ModalBody,
     ModalCloseButton,
-    UnorderedList
+    UnorderedList,
+    SimpleGrid
 } from '@chakra-ui/react'
 import { AddIcon} from '@chakra-ui/icons'
 import { useDisclosure } from '@chakra-ui/react'
@@ -40,18 +41,14 @@ import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
 
 export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    // const [fetchedNftData, setFetchedNftData] = useState<nftData[]>([]);
-    console.log('createSelectNftCardLi nfts', nfts)
 
     const createSelectNftCardLi = () => {
         const nftCardComponents: ReactNode[] = nfts.map(nft => {
-            console.log(nft)
             const {title, tokenId, image} = nft
             return(
                 <SelectNftCard key={tokenId} title={title} image={image} />
             )
         })
-        console.log('nftCardComponents',nftCardComponents)
         return nftCardComponents
     }
 
@@ -96,21 +93,23 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
 
     return (
         <>
-            <Flex border='1px' rounded='1rem' align='center' justify='center' boxSize={353} m='0 auto' bgColor='#D9D9D9'>
+            <Flex border='1px' rounded='1rem' align='center' justify='center' boxSize={353} m='0 auto' bgColor='#D9D9D9' onClick={onOpen}>
                 <Box>
-                    <Button leftIcon={<AddIcon mb='.5rem' boxSize={9} />} display='flex' flexDir='column' bgColor='#D9D9D9' onClick={onOpen}>
+                    <Button leftIcon={<AddIcon mb='.5rem' boxSize={9}/>} display='flex' flexDir='column' bgColor='#D9D9D9'>
                         Select NFT
                     </Button>
                 </Box>
             </Flex>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} size={{ base: "90vw", md: "90vh" }} motionPreset='slideInBottom' scrollBehavior='inside'>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Select NFT</ModalHeader>
+                    <ModalHeader textAlign={'center'} fontSize={'3xl'} pb={'.5rem'}>Select NFT</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody>
-                        <UnorderedList>
-                            {createSelectNftCardLi()}
+                    <ModalBody pb='2rem' px={'1.25rem'}>
+                        <UnorderedList styleType='none' m='0'>
+                            <SimpleGrid spacing='1.25rem' minChildWidth='157px'>
+                                {createSelectNftCardLi()}
+                            </SimpleGrid>
                         </UnorderedList>
                     </ModalBody>
                 </ModalContent>

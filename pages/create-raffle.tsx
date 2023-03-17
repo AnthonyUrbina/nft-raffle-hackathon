@@ -14,7 +14,6 @@ export interface CreateRaffleContainerProps {
 }
 
 const CreateRaffleContainer = ({nfts}: CreateRaffleContainerProps) => {
-    console.log('CreateRaffleContainer nfts', nfts)
     return (
         <CreateRaffle nfts={nfts} />
     )
@@ -29,13 +28,10 @@ export async function getServerSideProps(){
     };
     const alchemy = new Alchemy(config);
 
-    console.log('process.env.ALCHEMY_GOERELI_API_KEY', process.env.ALCHEMY_GOERELI_API_KEY)
     const address = "0x07c233C36ac7103bDDD8fdebE9935fE871BF5474";
 
     const nftsRes = await alchemy.nft.getNftsForOwner(address);
-    console.log('nftsRes', nftsRes)
     const nfts: nftData[] = nftsRes.ownedNfts.map(nft => {
-        console.log('nft is running', nft)
         const { title, tokenId, media } = nft
         const image = media[0].gateway
         const nftData = {
@@ -43,7 +39,6 @@ export async function getServerSideProps(){
             tokenId,
             image
         }
-        console.log('nftData', nftData)
         return nftData;
     })
 
