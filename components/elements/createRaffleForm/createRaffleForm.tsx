@@ -61,14 +61,11 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
                 .required()
                 .matches(/^[0-9]+(?:\.[0-9]*)?$/gm, 'Please enter a valid amount')
                 .matches(/^(?!0\d)(?:\d{1,14}(?:\.\d{0,18})?|100000000000000(?:\.0{1,18})?)$/, 'The amount cannot exceed 100,000,000,000,000')
-                .matches(/^(\d{1,18}(\.\d{0,18})?)?$/, '18 decimal places max'),
-            calendar: yup
-                .string()
-                .required()
-                .matches(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/, 'Invalid timestamp')
+                .matches(/^(\d{1,18}(\.\d{0,18})?)?$/, '18 decimal places max')
         }),
         onSubmit: (values) => {
-            console.log(values);
+            console.log('hellooo')
+            alert(JSON.stringify(values, null, 2));
         },
     });
 
@@ -87,10 +84,9 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
             collectionAddress
         }
         setSelectedNftData(nftData)
-        console.log('nftData', nftData)
     }
 
-    const { getFieldProps, errors } = formik
+    const { getFieldProps, handleSubmit, errors } = formik
 
     const CURRENT_DATE_AND_TIME = new Date().toISOString().split(".")[0]
 
@@ -117,74 +113,79 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
                     </ModalBody>
                 </ModalContent>
             </Modal>
-            <FormControl>
-                <Flex p='1rem' flexWrap='wrap' justify='space-between' rounded='1rem' border='1px' m='.75rem'>
-                    <Flex direction='column'>
-                        <FormControl>
-                            <FormLabel htmlFor='currency' marginEnd='none' mb='none' textAlign='center'>Currency</FormLabel>
-                            <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>The token used for buying tickets</FormHelperText>
-                            <Select
-                                id='currency'
-                                name='currency'
-                                placeholder='ETH'
-                                w='150px' h='25px'
-                                textAlign='center'
-                                rounded='1rem'
-                                borderColor='black'>
-                                <option value="APE">APE</option>
-                            </Select>
-                        </FormControl>
+            <form onSubmit={handleSubmit}>
+                <FormControl>
+                    <Flex p='1rem' flexWrap='wrap' justify='space-between' rounded='1rem' border='1px' m='.75rem'>
+                        <Flex direction='column'>
+                            <FormControl>
+                                <FormLabel htmlFor='currency' marginEnd='none' mb='none' textAlign='center'>Currency</FormLabel>
+                                <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>The token used for buying tickets</FormHelperText>
+                                <Select
+                                    id='currency'
+                                    name='currency'
+                                    placeholder='ETH'
+                                    w='150px' h='25px'
+                                    textAlign='center'
+                                    rounded='1rem'
+                                    borderColor='black'>
+                                    <option value="APE">APE</option>
+                                </Select>
+                            </FormControl>
+                        </Flex>
+                        <Flex direction='column'>
+                            <FormControl isInvalid={!!errors.ticketPrice}>
+                                <FormLabel htmlFor='ticketPrice' marginEnd='none' mb='none' textAlign='center'>Ticket Price</FormLabel>
+                                {handleErrMessages('ticketPrice')}
+                                <Input
+                                    id='ticketPrice'
+                                    type='text'
+                                    w='150px'
+                                    h='25px'
+                                    rounded='1rem'
+                                    borderColor='black'
+                                    textAlign='center'
+                                    {...getFieldProps('ticketPrice')}/>
+                            </FormControl>
+                        </Flex>
+                        <Flex direction='column' pt='1rem'>
+                            <FormControl isInvalid={!!errors.reservePrice}>
+                                <FormLabel htmlFor="reservePrice" marginEnd='none' mb='none' textAlign='center'>Reserve Price</FormLabel>
+                                {handleErrMessages('reservePrice')}
+                                <Input
+                                    id="reservePrice"
+                                    w='150px' h='25px'
+                                    rounded='1rem'
+                                    borderColor='black'
+                                    textAlign='center'
+                                    {...getFieldProps('reservePrice')} />
+                            </FormControl>
+                        </Flex>
+                        <Flex direction='column' pt='1rem'>
+                            <FormControl>
+                                <FormLabel htmlFor='calendar' marginEnd='none' mb='none' textAlign='center'>Raffle End Date</FormLabel>
+                                <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>Raffle minimum</FormHelperText>
+                                <Input
+                                    id="calendar"
+                                    w='150px'
+                                    h='25px'
+                                    rounded='1rem'
+                                    borderColor='black'
+                                    placeholder="Select Date and Time"
+                                    size="md"
+                                    type="datetime-local"
+                                    min={CURRENT_DATE_AND_TIME}
+                                    textAlign='center'
+                                    {...getFieldProps('calendar')}/>
+                            </FormControl>
+                        </Flex>
                     </Flex>
-                    <Flex direction='column'>
-                        <FormControl isInvalid={!!errors.ticketPrice}>
-                            <FormLabel htmlFor='ticketPrice' marginEnd='none' mb='none' textAlign='center'>Ticket Price</FormLabel>
-                            {handleErrMessages('ticketPrice')}
-                            <Input
-                                id='ticketPrice'
-                                type='text'
-                                w='150px'
-                                h='25px'
-                                rounded='1rem'
-                                borderColor='black'
-                                {...getFieldProps('ticketPrice')}/>
-                        </FormControl>
+                    <Flex justify='center' pb='.5rem'>
+                        <Button bgColor='black' color='white' rounded='1.5rem' fontFamily='Inter' fontWeight='normal' paddingX='8rem'>
+                        Create Raffle
+                        </Button>
                     </Flex>
-                    <Flex direction='column' pt='1rem'>
-                        <FormControl isInvalid={!!errors.reservePrice}>
-                            <FormLabel htmlFor="reservePrice" marginEnd='none' mb='none' textAlign='center'>Reserve Price</FormLabel>
-                            {handleErrMessages('reservePrice')}
-                            <Input
-                                id="reservePrice"
-                                w='150px' h='25px'
-                                rounded='1rem'
-                                borderColor='black'
-                                {...getFieldProps('reservePrice')} />
-                        </FormControl>
-                    </Flex>
-                    <Flex direction='column' pt='1rem'>
-                        <FormControl>
-                            <FormLabel htmlFor='calendar' marginEnd='none' mb='none'>Raffle End Date</FormLabel>
-                            <FormHelperText mt='none' mb='.25rem' fontSize='9px' textAlign='center'>Raffle minimum</FormHelperText>
-                            <Input
-                                id="calendar"
-                                w='150px'
-                                h='25px'
-                                rounded='1rem'
-                                borderColor='black'
-                                placeholder="Select Date and Time"
-                                size="md"
-                                type="datetime-local"
-                                min={CURRENT_DATE_AND_TIME}
-                                {...getFieldProps('calendar')}/>
-                        </FormControl>
-                    </Flex>
-                </Flex>
-                <Flex justify='center' pb='.5rem'>
-                    <Button bgColor='black' color='white' rounded='1.5rem' fontFamily='Inter' fontWeight='normal' paddingX='8rem'>
-                    Create Raffle
-                    </Button>
-                </Flex>
-        </FormControl>
+                </FormControl>
+            </form>
     </>
     )
 }
