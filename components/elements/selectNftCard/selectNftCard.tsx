@@ -1,18 +1,11 @@
 import { useState } from 'react'
 import {
-    Box,
     Flex,
     Text,
-    Link,
-    LinkBox,
     Image,
-    LinkOverlay,
     ListItem,
     Button
 } from '@chakra-ui/react'
-import { useRouter } from 'next/router';
-import NextLink from 'next/link';
-import * as routes from '../../../constants/routes';
 
 export interface SelectNftCardProps {
     title: string
