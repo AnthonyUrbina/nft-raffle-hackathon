@@ -12,15 +12,17 @@ export interface NftData {
 
 export interface CreateRaffleContainerProps {
     nfts: NftData[]
+    handleConnectWallet: (address: string) => void
 }
 
-const CreateRaffleContainer = ({nfts}: CreateRaffleContainerProps) => {
+const CreateRaffleContainer = ({ nfts, handleConnectWallet}: CreateRaffleContainerProps) => {
     return (
         <CreateRaffle nfts={nfts} />
     )
 }
 
-export async function getServerSideProps(){
+export async function getServerSideProps(context){
+    console.log('context.query', context)
     const config = {
         apiKey: process.env.ALCHEMY_GOERELI_API_KEY,
         network: Network.ETH_MAINNET,

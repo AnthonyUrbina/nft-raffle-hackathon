@@ -23,7 +23,7 @@ import { useFormik } from "formik";
 import * as yup from "yup"
 import { ReactNode, useState } from 'react'
 import { SelectNftCard } from '../selectNftCard';
-import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
+import { CreateRaffleProps } from '../../pages';
 import { NftData } from '../../../pages/create-raffle';
 
 interface NftDataContractReady extends Omit<NftData, 'image'> {}
@@ -34,7 +34,7 @@ interface CreatedRaffle {
     nft: NftDataContractReady
 }
 
-export const CreateRaffleForm = ({ nfts }: CreateRaffleContainerProps) => {
+export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [selectedNftData, setSelectedNftData] = useState<NftDataContractReady | null>(null);
 

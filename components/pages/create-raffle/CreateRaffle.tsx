@@ -4,7 +4,10 @@ import {
 import { CreateRaffleForm } from '../../elements'
 import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
 
-export const CreateRaffle = ({ nfts }: CreateRaffleContainerProps) => {
+export interface CreateRaffleProps extends Omit<CreateRaffleContainerProps, 'handleConnectWallet'> {
+}
+
+export const CreateRaffle = ({ nfts }: CreateRaffleProps) => {
     return (
         <>
         <Heading fontFamily='Inter' as='h3' fontWeight='semibold' p='.5rem'>
