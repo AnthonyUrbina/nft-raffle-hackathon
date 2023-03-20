@@ -72,7 +72,7 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
             <Flex>
                 <Hide below='md'>
                     <Link as={NextLink} href={CREATE_RAFFLE}>
-                        <Button rounded='.75rem' bgColor='white' aria-label='create raffle' p='.75rem' m='.5rem' leftIcon={<AddIcon />} boxShadow="inset 0 0 0 2px #DFE4EC,0 2px 0 0 #DFE4EC,0px 2px 4px rgba(0,0,0,0.02);">
+                        <Button rounded='.75rem' aria-label='create raffle' p='.75rem' m='.5rem' leftIcon={<AddIcon />} boxShadow="inset 0 0 0 2px #DFE4EC,0 2px 0 0 #DFE4EC,0px 2px 4px rgba(0,0,0,0.02);">
                             Create Raffle
                         </Button>
                     </Link>

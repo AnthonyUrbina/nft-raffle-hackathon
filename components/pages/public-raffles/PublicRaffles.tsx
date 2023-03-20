@@ -8,6 +8,8 @@ interface RafflePageProps {
   pageHeading: string
 }
 export const PublicRaffles = ({ pageHeading }: RafflePageProps) => {
+  //replace w real data
+  const raffleEndTime =  Date.now()
 return (
   <Box px={[4, null, null, 8]}>
     <Heading py={1}>{pageHeading}</Heading>
@@ -15,10 +17,11 @@ return (
       image='/static/supduck.png'
       collection="SupDucks"
       ticketsSold={14}
-      raffleEndTime={'10/02/2052 9PM'}
+      raffleEndTime={raffleEndTime}
       pricePerTicket={.02}
       totalTickets={24}
       edition={'SupDuck #7292'}
+      currency={'ETH'}
       altText="sup-duck"/>
   </Box>
 )
