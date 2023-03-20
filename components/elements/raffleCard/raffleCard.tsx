@@ -7,6 +7,7 @@ import {
     LinkBox,
     Image,
     LinkOverlay,
+    Button
 } from '@chakra-ui/react'
 // import Image from 'next/image'
 import { useRouter } from 'next/router';
@@ -102,6 +103,7 @@ export const RaffleCard = ({
 
     return (
         <NextLink href={routes.RAFFLE_DETAILS} passHref>
+            <Box rounded={20} border='1px'>
             <Flex
                 position={'relative'}
                 flexDir={'column'}
@@ -126,18 +128,23 @@ export const RaffleCard = ({
                     </Flex>
                 </Flex >
                 <Image
+                    roundedTop={20}
                     src={image}
                     alt={altText}
                     h={['80 %']}
                 />
-                <Flex pl={'12px'} h={['10%']}>
-                    <Text size={'16px'} fontWeight={'500'}>{collection}{' '}#{edition}</Text>
+                <Flex px={[3]} py={[2]} h={['10%']} borderBottom={'1px'}>
+                    <Text fontSize={['lg']} fontWeight={'500'}>{edition}</Text>
                 </Flex>
-                <Flex pl={'12px'} h={['10%']}>
+                <Flex px={[3]} py={[2]} h={['10%']} justify={['space-between']}>
                     <Text size={'12px'} fontWeight={'500'}>Tickets Sold:{' '}{ticketsSold}/{totalTickets}</Text>
                     <Text size={'12px'} fontWeight={'500'}>Ticket Price:{' '}{pricePerTicket}</Text>
                 </Flex>
+                <Flex justify={['center']} pb={[4]}>
+                    <Button w={['93%']} rounded={20}>Buy 3 Tickets Now</Button>
+                </Flex>
             </Flex >
+            </Box>
         </NextLink>
     )
 }

@@ -9,8 +9,8 @@ interface RafflePageProps {
 }
 export const PublicRaffles = ({ pageHeading }: RafflePageProps) => {
 return (
-  <Box>
-    <Heading>{pageHeading}</Heading>
+  <Box px={[4, null, null, 8]}>
+    <Heading py={1}>{pageHeading}</Heading>
     <RaffleCard
       image='/static/supduck.png'
       collection="SupDucks"
@@ -18,7 +18,7 @@ return (
       raffleEndTime={'10/02/2052 9PM'}
       pricePerTicket={.02}
       totalTickets={24}
-      edition={'SupDuck #2474'}
+      edition={'SupDuck #7292'}
       altText="sup-duck"/>
   </Box>
 )
