@@ -11,14 +11,7 @@ import { RaffleDetails } from '../components/pages'
 
 const RaffleDetailsContainer = () => {
     return (
-        // <ErrorBoundary fallback={ERROR_FALLBACK}>
-        // {/* <Meta
-        //         title={CREATE_RAFFLE}
-        //         url={`${BASE_URL}${CREATE_RAFFLE}`}
-        //         image={CREATE_RAFFLE_IMAGE}
-        //     /> */}
         < RaffleDetails />
-        // {/* </ErrorBoundary> */ }
     )
 }
 
