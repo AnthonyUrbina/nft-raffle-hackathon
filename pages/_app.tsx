@@ -14,7 +14,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const [walletAddress, setWalletAddress] = useState<string | null>(null)
 
-  const handleConnectWallet = (address: string) => {
+  const handleConnectWallet = (address: `0x${string}`) => {
+    console.log('address', address)
     setWalletAddress(address)
   }
 

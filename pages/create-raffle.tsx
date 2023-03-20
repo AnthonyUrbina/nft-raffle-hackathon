@@ -21,8 +21,7 @@ const CreateRaffleContainer = ({ nfts, handleConnectWallet}: CreateRaffleContain
     )
 }
 
-export async function getServerSideProps(context){
-    console.log('context.query', context)
+export async function getServerSideProps(){
     const config = {
         apiKey: process.env.ALCHEMY_GOERELI_API_KEY,
         network: Network.ETH_MAINNET,

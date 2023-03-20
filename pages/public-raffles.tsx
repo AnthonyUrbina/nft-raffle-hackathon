@@ -3,7 +3,7 @@ import { PublicRaffles } from '../components/pages'
 
 const PublicRafflesContainer = () => {
     return (
-        < PublicRaffles />
+        <PublicRaffles pageHeading='Public Raffles'/>
     )
 }
 
