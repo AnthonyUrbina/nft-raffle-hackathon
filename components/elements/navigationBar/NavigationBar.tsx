@@ -17,6 +17,7 @@ import {
     Hide
 } from '@chakra-ui/react'
 import { AddIcon, HamburgerIcon, ExternalLinkIcon, EditIcon, RepeatIcon } from '@chakra-ui/icons'
+
 import { useRouter } from 'next/router';
 import { WagmiConfig, createClient } from "wagmi";
 import { ConnectKitProvider, ConnectKitButton, getDefaultClient } from "connectkit";
@@ -104,12 +105,16 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                             variant='outline'
                         />
                         <MenuList>
-                            <MenuItem icon={<AddIcon />}>
-                                Create Raffle
-                            </MenuItem>
-                            <MenuItem icon={<ExternalLinkIcon />}>
-                                My Raffles
-                            </MenuItem>
+                                <Link href='/create-raffle'>
+                                    <MenuItem icon={<AddIcon />}>
+                                        Create Raffle
+                                    </MenuItem>
+                                </Link>
+                                <Link href='/my-raffles'>
+                                    <MenuItem icon={<ExternalLinkIcon />}>
+                                        My Raffles
+                                    </MenuItem>
+                                </Link>
                         </MenuList>
                     </Menu>
                     </Flex>
