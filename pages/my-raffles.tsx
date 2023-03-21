@@ -1,10 +1,9 @@
 import { memo } from 'react'
 import { PublicRaffles } from '../components/pages'
-<PublicRaffles filters={['Live', 'Expired']} pageHeading='Public Raffles' />
 
 const PublicRafflesContainer = () => {
     return (
-        <PublicRaffles filters={['Live', 'Expired']} pageHeading='Public Raffles'/>
+        <PublicRaffles filters={['Live', 'Expired', 'Created', 'Unclaimed']} pageHeading='My Raffles'/>
     )
 }
 
