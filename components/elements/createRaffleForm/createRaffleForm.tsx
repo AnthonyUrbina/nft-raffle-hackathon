@@ -199,7 +199,7 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
                             </Flex>
                         </Flex>
                     </Flex>
-                        <Flex justify='center'>
+                        <Flex justify='center' pb={3}>
                         <Button type='submit' border='1px' rounded='1.5rem' fontFamily='Inter' fontWeight='normal' w='100%'>
                             Create Raffle
                         </Button>

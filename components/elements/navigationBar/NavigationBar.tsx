@@ -16,7 +16,7 @@ import {
     Show,
     Hide
 } from '@chakra-ui/react'
-import { AddIcon, HamburgerIcon, ExternalLinkIcon, EditIcon, RepeatIcon } from '@chakra-ui/icons'
+import { AddIcon, HamburgerIcon, ExternalLinkIcon, BellIcon } from '@chakra-ui/icons'
 
 import { useRouter } from 'next/router';
 import { WagmiConfig, createClient } from "wagmi";
@@ -70,8 +70,28 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                     </Box>
                 </Flex>
             </Link>
-            <Flex>
+            <Flex align="center">
+                <Menu>
+                    <MenuList>
+                        <MenuItem>Empty for now</MenuItem>
+                    </MenuList>
+                </Menu>
                 <Hide below='md'>
+                    <Box boxShadow="inset 0 0 0 2px #DFE4EC,0 2px 0 0 #DFE4EC,0px 2px 4px rgba(0,0,0,0.02);" rounded='.75rem'>
+                        <Menu>
+                            <MenuButton
+                                as={IconButton}
+                                aria-label='Options'
+                                icon={<BellIcon />}
+                            />
+                            <MenuList>
+                                <MenuItem>
+                                    You have no new notifications at this moment!
+                                </MenuItem>
+                            </MenuList>
+                        </Menu>
+                    </Box>
+
                     <Link as={NextLink} href={CREATE_RAFFLE}>
                         <Button rounded='.75rem' aria-label='create raffle' p='.75rem' m='.5rem' leftIcon={<AddIcon />} boxShadow="inset 0 0 0 2px #DFE4EC,0 2px 0 0 #DFE4EC,0px 2px 4px rgba(0,0,0,0.02);">
                             Create Raffle
@@ -79,8 +99,8 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                     </Link>
                     <Box paddingRight={['.5rem', null, '1.5rem']} paddingY='.5rem'>
                         <WagmiConfig client={client}>
-                            <ConnectKitProvider theme='auto' mode='dark'>
-                                <ConnectKitButton />
+                            <ConnectKitProvider theme='rounded' mode='dark'>
+                                <ConnectKitButton/>
                             </ConnectKitProvider>
                         </WagmiConfig>
                     </Box>
@@ -93,7 +113,7 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                         <Box pr={2}>
                         <WagmiConfig client={client}>
                             <ConnectKitProvider >
-                                <ConnectKitButton />
+                                <ConnectKitButton theme='rounded' mode='dark' />
                             </ConnectKitProvider>
                         </WagmiConfig>
                     </Box>
@@ -113,6 +133,11 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                                 <Link href='/my-raffles'>
                                     <MenuItem icon={<ExternalLinkIcon />}>
                                         My Raffles
+                                    </MenuItem>
+                                </Link>
+                                <Link href='/notifications'>
+                                    <MenuItem icon={<BellIcon />}>
+                                        Notifications
                                     </MenuItem>
                                 </Link>
                         </MenuList>
