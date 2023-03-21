@@ -16,7 +16,7 @@ import {
     Show,
     Hide
 } from '@chakra-ui/react'
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon, HamburgerIcon, ExternalLinkIcon, EditIcon, RepeatIcon } from '@chakra-ui/icons'
 import { useRouter } from 'next/router';
 import { WagmiConfig, createClient } from "wagmi";
 import { ConnectKitProvider, ConnectKitButton, getDefaultClient } from "connectkit";
@@ -76,19 +76,44 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                             Create Raffle
                         </Button>
                     </Link>
+                    <Box paddingRight={['.5rem', null, '1.5rem']} paddingY='.5rem'>
+                        <WagmiConfig client={client}>
+                            <ConnectKitProvider theme='auto' mode='dark'>
+                                <ConnectKitButton />
+                            </ConnectKitProvider>
+                        </WagmiConfig>
+                    </Box>
                 </Hide>
                 <Show below='md'>
-                    <Link as={NextLink} href={CREATE_RAFFLE}>
+                    {/* <Link as={NextLink} href={CREATE_RAFFLE}>
                         <IconButton aria-label='create raffle' p='1.25rem' m='.5rem' boxSize={5} icon={<AddIcon />} boxShadow="inset 0 0 0 2px #DFE4EC,0 2px 0 0 #DFE4EC,0px 2px 4px rgba(0,0,0,0.02);" />
-                    </Link>
+                    </Link> */}
+                    <Flex align='center' paddingRight={['.5rem', null, '1.5rem']} paddingY='.5rem'>
+                        <Box pr={2}>
+                        <WagmiConfig client={client}>
+                            <ConnectKitProvider >
+                                <ConnectKitButton />
+                            </ConnectKitProvider>
+                        </WagmiConfig>
+                    </Box>
+                    <Menu>
+                        <MenuButton
+                            as={IconButton}
+                            aria-label='Options'
+                            icon={<HamburgerIcon />}
+                            variant='outline'
+                        />
+                        <MenuList>
+                            <MenuItem icon={<AddIcon />}>
+                                Create Raffle
+                            </MenuItem>
+                            <MenuItem icon={<ExternalLinkIcon />}>
+                                My Raffles
+                            </MenuItem>
+                        </MenuList>
+                    </Menu>
+                    </Flex>
                 </Show>
-                <Box paddingRight={['.5rem', null, '1.5rem']} paddingY='.5rem'>
-                    <WagmiConfig client={client}>
-                        <ConnectKitProvider theme='rounded'>
-                            <ConnectKitButton />
-                        </ConnectKitProvider>
-                    </WagmiConfig>
-                </Box>
             </Flex>
         </Flex>
     )
