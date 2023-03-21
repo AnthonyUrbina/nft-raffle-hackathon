@@ -105,7 +105,7 @@ export const RaffleCard = ({
 
     return (
         <NextLink href={routes.RAFFLE_DETAILS} passHref>
-            <Box rounded={20} border='1px'>
+            <Box rounded={20} border='1px' mb={[4]}>
             <Flex
                 position={'relative'}
                 flexDir={'column'}

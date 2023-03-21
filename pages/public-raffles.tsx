@@ -3,7 +3,7 @@ import { PublicRaffles } from '../components/pages'
 
 const PublicRafflesContainer = () => {
     return (
-        <PublicRaffles pageHeading='Public Raffles'/>
+        <PublicRaffles filters={['Live', 'Expired']} pageHeading='Public Raffles'/>
     )
 }
 
