@@ -1,1 +1,1 @@
-export * from './raffleCard'
+export * from './RaffleCard'

@@ -7,6 +7,7 @@ import {
     LinkBox,
     Image,
     LinkOverlay,
+    Button
 } from '@chakra-ui/react'
 // import Image from 'next/image'
 import { useRouter } from 'next/router';
@@ -24,7 +25,8 @@ export interface RaffleCardProps {
     edition: string
     image: string
     altText: string
-    raffleEndTime: string
+    raffleEndTime: number
+    currency: string
     ticketsSold: number
     totalTickets: number
     pricePerTicket: number
@@ -39,6 +41,7 @@ export const RaffleCard = ({
     ticketsSold,
     totalTickets,
     pricePerTicket,
+    currency
 }: RaffleCardProps) => {
     const expirationDate = dayjs(raffleEndTime)
     // total seconds until launch
@@ -102,42 +105,51 @@ export const RaffleCard = ({
 
     return (
         <NextLink href={routes.RAFFLE_DETAILS} passHref>
+            <Box rounded={20} border='1px' mb={[4]}>
             <Flex
                 position={'relative'}
                 flexDir={'column'}
                 h={['94%', null, null, '30%']}
             >
                 <Flex
+                    border='1px'
                     position={'absolute'}
-                    flexDir={'row'}
                     width={'98px'}
                     height={'28px'}
                     right={'12px'}
                     top={'12px'}
+                    justify='center'
+                    rounded={15}
+                    px={1.5}
                 >
-                    <Flex w={'33%'}>
+                    <Flex flexBasis={'calc(100%/3)'} justify='center'>
                         <Text size={'12px'} fontWeight={'500'}>{hours}H</Text>
                     </Flex>
-                    <Flex w={'34%'}>
+                    <Flex flexBasis={'calc(100%/3)'} justify='center' borderX={'1px'} px={'2px'}>
                         <Text size={'12px'} fontWeight={'500'}>{minutes}M</Text>
                     </Flex>
-                    <Flex w={'33%'}>
+                    <Flex flexBasis={'calc(100%/3)'} justify='center'>
                         <Text size={'12px'} fontWeight={'500'}>{seconds}S</Text>
                     </Flex>
                 </Flex >
                 <Image
+                    roundedTop={19}
                     src={image}
                     alt={altText}
                     h={['80 %']}
                 />
-                <Flex pl={'12px'} h={['10%']}>
-                    <Text size={'16px'} fontWeight={'500'}>{collection}{' '}#{edition}</Text>
+                <Flex px={[3]} py={[2]} h={['10%']} borderBottom={'1px'}>
+                    <Text fontSize={['lg']} fontWeight={'500'}>{edition}</Text>
                 </Flex>
-                <Flex pl={'12px'} h={['10%']}>
-                    <Text size={'12px'} fontWeight={'500'}>Tickets Sold:{' '}{ticketsSold}/{totalTickets}</Text>
-                    <Text size={'12px'} fontWeight={'500'}>Ticket Price:{' '}{pricePerTicket}</Text>
+                <Flex px={[3]} py={[2]} h={['10%']} justify={['space-between']}>
+                    <Text fontSize={['sm']} fontWeight={'500'}>{`Tickets Sold ${ticketsSold}/${totalTickets}`}</Text>
+                        <Text fontSize={['sm']} fontWeight={'500'}>{`Ticket Price ${pricePerTicket} ${currency}`}</Text>
+                </Flex>
+                <Flex px={[3]} justify={['center']} pb={[4]}>
+                    <Button w={['100%']} rounded={20}>Buy 3 Tickets Now</Button>
                 </Flex>
             </Flex >
+            </Box>
         </NextLink>
     )
 }

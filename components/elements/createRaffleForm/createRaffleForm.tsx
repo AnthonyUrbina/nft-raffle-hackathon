@@ -113,9 +113,9 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
     return (
         <>
         <Flex flexDir={['column', null, null, 'row']} ml={[null, null, null, '.5rem']}>
-            <Flex border='1px' rounded='1rem' align='center' justify='center' boxSize={353} m={['0 auto', null, null, 'initial']} bgColor='#D9D9D9' onClick={onOpen}>
+            <Flex border='1px' rounded='1rem' align='center' justify='center' boxSize={353} m={['0 auto', null, null, 'initial']} onClick={onOpen}>
                 <Box>
-                    <Button leftIcon={<AddIcon mb='.5rem' boxSize={9}/>} display='flex' flexDir='column' bgColor='#D9D9D9'>
+                    <Button background={'transparent'} leftIcon={<AddIcon mb='.5rem' boxSize={9}/>} display='flex' flexDir='column'>
                         Select NFT
                     </Button>
                 </Box>
@@ -148,8 +148,7 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
                                         placeholder='ETH'
                                         w='150px' h='25px'
                                         textAlign='center'
-                                        rounded='1rem'
-                                        borderColor='black'>
+                                        rounded='1rem'>
                                         <option value="APE">APE</option>
                                     </Select>
                                 </FormControl>
@@ -164,7 +163,6 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
                                         w='150px'
                                         h='25px'
                                         rounded='1rem'
-                                        borderColor='black'
                                         textAlign='center'
                                         {...getFieldProps('ticketPrice')}/>
                                 </FormControl>
@@ -179,7 +177,6 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
                                         id="reservePrice"
                                         w='150px' h='25px'
                                         rounded='1rem'
-                                        borderColor='black'
                                         textAlign='center'
                                         {...getFieldProps('reservePrice')} />
                                 </FormControl>
@@ -193,7 +190,6 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
                                         w='150px'
                                         h='25px'
                                         rounded='1rem'
-                                        borderColor='black'
                                         size="md"
                                         type="datetime-local"
                                         min={currentDate}
@@ -203,8 +199,8 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
                             </Flex>
                         </Flex>
                     </Flex>
-                        <Flex justify='center'>
-                        <Button type='submit' bgColor='black' color='white' rounded='1.5rem' fontFamily='Inter' fontWeight='normal' w='100%'>
+                        <Flex justify='center' pb={3}>
+                        <Button type='submit' border='1px' rounded='1.5rem' fontFamily='Inter' fontWeight='normal' w='100%'>
                             Create Raffle
                         </Button>
                     </Flex>

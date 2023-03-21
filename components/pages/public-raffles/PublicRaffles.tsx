@@ -2,24 +2,20 @@ import {
   Box,
   Heading
 } from '@chakra-ui/react'
-import { RaffleCard } from "../../elements"
+import { FilteredViews } from "../../elements"
 
-interface RafflePageProps {
-  pageHeading: string
+export interface RafflePagesProps {
+  pageHeading: string,
+  filters: string[]
 }
-export const PublicRaffles = ({ pageHeading }: RafflePageProps) => {
+export const PublicRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
+  //replace w real data
+  const raffleEndTime =  Date.now()
+
 return (
-  <Box>
-    <Heading>{pageHeading}</Heading>
-    <RaffleCard
-      image='/static/supduck.png'
-      collection="SupDucks"
-      ticketsSold={14}
-      raffleEndTime={'10/02/2052 9PM'}
-      pricePerTicket={.02}
-      totalTickets={24}
-      edition={'SupDuck #2474'}
-      altText="sup-duck"/>
+  <Box px={[4, null, null, 8]}>
+    <Heading py={1}>{pageHeading}</Heading>
+    <FilteredViews filters={filters} />
   </Box>
 )
 }
