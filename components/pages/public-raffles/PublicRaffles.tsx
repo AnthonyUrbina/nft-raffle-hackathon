@@ -13,7 +13,7 @@ export const PublicRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
   const raffleEndTime =  Date.now()
 
 return (
-  <Box px={[4, null, null, 8]}>
+  <Box>
     <Heading py={1}>{pageHeading}</Heading>
     <FilteredViews filters={filters} />
   </Box>

@@ -61,7 +61,7 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
     return (
         <Flex justify="space-between" align="center" borderBottom="1px">
             <Link as={NextLink} href='/' _activeLink={{ textDecor: 'none' }} _hover={{ textDecor: 'none' }}>
-                <Flex alignItems="center" paddingX={['.5rem', null, '1.5rem']} paddingY='.5rem'>
+                <Flex alignItems="center" px={[4, null, null, 8]} paddingY='.5rem'>
                     <Box>
                         <Image boxSize='3rem' src='/static/rofl-logo.png' alt='rofl-logo.png' />
                     </Box>
