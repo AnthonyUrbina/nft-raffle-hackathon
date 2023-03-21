@@ -34,8 +34,12 @@ export interface FilteredViewsProps {
     filters: string[]
 }
 
+interface RaffleByFilters  {
+    [key: string]: RaffleCardProps[]
+}
+
 export const FilteredViews = ({filters}: FilteredViewsProps) => {
-    const [raffles, setRaffles] = useState<RaffleCardProps[]>([])
+    const [raffles, setRaffles] = useState<RaffleByFilters>({})
     const [selectedFilter, setSelectedFilter] = useState('')
 
 
@@ -66,15 +70,16 @@ export const FilteredViews = ({filters}: FilteredViewsProps) => {
             }
         ]
 
-        setRaffles(dummyRaffleData)
+        setRaffles({live: dummyRaffleData})
         setSelectedFilter(filters[0])
     },[filters])
 
     const handleClick = (filter: string) => {
         // simulate call and response
+        // must return an object
+        // ex const raffles = { live: [obj1, obj2], expired: {obj1, obj2}}
         console.log(filter)
         setSelectedFilter(filter)
-        setRaffles([])
     }
 
     const tabFactory = () => {
@@ -87,10 +92,12 @@ export const FilteredViews = ({filters}: FilteredViewsProps) => {
 
     const tabPanelFactory = () => {
         const panels = filters.map(filter => {
+            const _filter = filter.toLocaleLowerCase()
+            const _selectedFilter = selectedFilter.toLocaleLowerCase()
             return (
                 <TabPanel key={`${filter}-panel`}>
                     {
-                        raffles && raffles.length && filter === selectedFilter ? raffles.map(raffle => { console.log('ra', raffle); return raffleCardFactory(raffle)})
+                        raffles[`${_filter}`] && raffles[`${_filter}`].length && _filter === _selectedFilter ? raffles[`${_filter}`].map(raffle => { console.log('ra', raffle); return raffleCardFactory(raffle)})
                             : <Text>Nothing to see here!</Text>
 
                     }
