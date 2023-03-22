@@ -1,4 +1,6 @@
-
+import {
+  Image
+} from '@chakra-ui/react'
 import { useEffect, useState } from "react"
 import { Details } from "../../elements/"
 import { RaffleCardProps } from '../../elements'
@@ -39,16 +41,19 @@ export const RaffleDetails = ({raffleId}: RaffleDetailsProps) => {
   const { image, collection, ticketsSold, raffleEndTime, pricePerTicket, totalTickets, edition, currency, altText } = raffle
 
   return (
-    <Details
-      image={image}
-      collection={collection}
-      ticketsSold={ticketsSold}
-      raffleEndTime={raffleEndTime}
-      pricePerTicket={pricePerTicket}
-      totalTickets={totalTickets}
-      edition={edition}
-      currency={currency}
-      altText={altText}
-    />
+    <>
+      <Image w={['100%']} height={['50vh']} objectFit='cover' alt={'meebit'} src={'/static/meebit-.jpeg'} rounded={10} mb={[4]}/>
+      <Details
+        image={image}
+        collection={collection}
+        ticketsSold={ticketsSold}
+        raffleEndTime={raffleEndTime}
+        pricePerTicket={pricePerTicket}
+        totalTickets={totalTickets}
+        edition={edition}
+        currency={currency}
+        altText={altText}
+      />
+    </>
   )
 }

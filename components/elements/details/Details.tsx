@@ -40,23 +40,23 @@ export const Details = ({
     const displayOptionalFields = () => {
         return (
             <>
-                { totalRecieved && <Text>{`Total Recieved ${totalRecieved}`}</Text>}
-                {yourTickets && <Text>{`Your Tickets ${yourTickets}`}</Text>}
-                {youSpent && <Text>{`You Spent ${youSpent}`}</Text>}
-                { raffler && <Text>{`Raffler ${raffler}`}</Text> }
-                { winner && <Text>{`Winner ${winner}`}</Text> }
+                { totalRecieved && <Text fontSize={'lg'} fontWeight={'medium'}>{`Total Recieved ${totalRecieved}`}</Text>}
+                {yourTickets && <Text fontSize={'lg'} fontWeight={'medium'}>{`Your Tickets ${yourTickets}`}</Text>}
+                {youSpent && <Text fontSize={'lg'} fontWeight={'medium'}>{`You Spent ${youSpent}`}</Text>}
+                { raffler && <Text fontSize={'lg'} fontWeight={'medium'}>{`Raffler ${raffler}`}</Text> }
+                { winner && <Text fontSize={'lg'} fontWeight={'medium'}>{`Winner ${winner}`}</Text> }
             </>
         )
 
     }
 
     return (
-        <Box>
-            <Text>{edition}</Text>
-            <Text>{`Collection: ${collection}`}</Text>
-            <Text>{`Tickets Sold: ${ticketsSold}/${totalTickets}`}</Text>
-            <Text>{`Collection: ${pricePerTicket} ${currency}`}</Text>
-            <Text>{`Ends in: ${raffleEndTime}`}</Text>
+        <Box border={'1px solid'} rounded={10} p={3}>
+            <Text fontSize={'lg'} fontWeight={'medium'}>{edition}</Text>
+            <Text fontSize={'lg'} fontWeight={'medium'}>{`Collection: ${collection}`}</Text>
+            <Text fontSize={'lg'} fontWeight={'medium'}>{`Tickets Sold: ${ticketsSold}/${totalTickets}`}</Text>
+            <Text fontSize={'lg'} fontWeight={'medium'}>{`Collection: ${pricePerTicket} ${currency}`}</Text>
+            <Text fontSize={'lg'} fontWeight={'medium'}>{`Ends in: ${raffleEndTime}`}</Text>
             {displayOptionalFields()}
         </Box>
     )
