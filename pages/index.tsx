@@ -12,7 +12,7 @@ const HomeContainer = () => {
   return (
     <Box>
       <Head>
-        <title>Raffle 3.0</title>
+        <title>ROFL</title>
         <meta name="description" content="NFT Raffle app" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/static/rofl-logo.png" />

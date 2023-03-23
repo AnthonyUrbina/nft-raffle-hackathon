@@ -1,15 +1,18 @@
 import {
-  Image
+  Image,
+  Flex,
+  Heading
 } from '@chakra-ui/react'
 import { useEffect, useState } from "react"
 import { Details } from "../../elements/"
-import { RaffleCardProps } from '../../elements'
+import { RaffleCardProps, ParticipantInfo, Participants, BuyButton } from '../../elements'
 
 interface RaffleDetailsProps {
   raffleId: string
 }
 
 export const RaffleDetails = ({raffleId}: RaffleDetailsProps) => {
+  const [participantsList, setParticipantsList] = useState<ParticipantInfo[]>([])
   const [raffle, setRaffle] = useState<RaffleCardProps>({
     image: '',
     collection: '',
@@ -21,6 +24,7 @@ export const RaffleDetails = ({raffleId}: RaffleDetailsProps) => {
     currency: '',
     altText: ''
   })
+
 
   useEffect(() => {
     const dummyRaffleData = {
@@ -34,14 +38,19 @@ export const RaffleDetails = ({raffleId}: RaffleDetailsProps) => {
       currency: 'ETH',
       altText: "wow"
     }
-
+    setParticipantsList([{ address: '0xa0a513689935Be152F97E8e2FF93E79E7A98EF2B', ticketsPurchased: 10 }, { address: '0xa0a513689935Be152F97E8e2FF93E79E7A98EF2B', ticketsPurchased: 10 }])
     setRaffle(dummyRaffleData)
   },[])
+
+ const renderParticipants = () => {
+
+ }
 
   const { image, collection, ticketsSold, raffleEndTime, pricePerTicket, totalTickets, edition, currency, altText } = raffle
 
   return (
-    <>
+    <Flex flexDir={['column', null, 'row']}>
+      <Heading my={[1]}>Raffle Details</Heading>
       <Image w={['100%']} height={['50vh']} objectFit='cover' alt={'meebit'} src={'/static/meebit-.jpeg'} rounded={10} mb={[4]}/>
       <Details
         image={image}
@@ -54,6 +63,7 @@ export const RaffleDetails = ({raffleId}: RaffleDetailsProps) => {
         currency={currency}
         altText={altText}
       />
-    </>
+      <Participants participantsList={participantsList} />
+    </Flex>
   )
 }

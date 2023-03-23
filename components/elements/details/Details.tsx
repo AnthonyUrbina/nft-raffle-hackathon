@@ -8,6 +8,7 @@ import {
 
 } from '@chakra-ui/react'
 import { RaffleCardProps } from '../raffleCard'
+import { BuyButton } from '../../elements'
 
 interface Details extends RaffleCardProps {
     yourTickets?: number
@@ -37,27 +38,21 @@ export const Details = ({
     totalRecieved
 }: Details) => {
 
-    const displayOptionalFields = () => {
-        return (
-            <>
-                { totalRecieved && <Text fontSize={'lg'} fontWeight={'medium'}>{`Total Recieved ${totalRecieved}`}</Text>}
-                {yourTickets && <Text fontSize={'lg'} fontWeight={'medium'}>{`Your Tickets ${yourTickets}`}</Text>}
-                {youSpent && <Text fontSize={'lg'} fontWeight={'medium'}>{`You Spent ${youSpent}`}</Text>}
-                { raffler && <Text fontSize={'lg'} fontWeight={'medium'}>{`Raffler ${raffler}`}</Text> }
-                { winner && <Text fontSize={'lg'} fontWeight={'medium'}>{`Winner ${winner}`}</Text> }
-            </>
-        )
-
-    }
-
     return (
         <Box border={'1px solid'} rounded={10} p={3}>
-            <Text fontSize={'lg'} fontWeight={'medium'}>{edition}</Text>
+            <Text fontSize={'xl'} fontWeight={'medium'}>{edition}</Text>
             <Text fontSize={'lg'} fontWeight={'medium'}>{`Collection: ${collection}`}</Text>
             <Text fontSize={'lg'} fontWeight={'medium'}>{`Tickets Sold: ${ticketsSold}/${totalTickets}`}</Text>
             <Text fontSize={'lg'} fontWeight={'medium'}>{`Collection: ${pricePerTicket} ${currency}`}</Text>
             <Text fontSize={'lg'} fontWeight={'medium'}>{`Ends in: ${raffleEndTime}`}</Text>
-            {displayOptionalFields()}
+            {totalRecieved && <Text fontSize={'lg'} fontWeight={'medium'}>{`Total Recieved ${totalRecieved}`}</Text>}
+            {yourTickets && <Text fontSize={'lg'} fontWeight={'medium'}>{`Your Tickets ${yourTickets}`}</Text>}
+            {youSpent && <Text fontSize={'lg'} fontWeight={'medium'}>{`You Spent ${youSpent}`}</Text>}
+            {raffler && <Text fontSize={'lg'} fontWeight={'medium'}>{`Raffler ${raffler}`}</Text>}
+            {winner && <Text fontSize={'lg'} fontWeight={'medium'}>{`Winner ${winner}`}</Text>}
+            <Box textAlign={'center'} my={1}>
+                { !winner && <BuyButton /> }
+            </Box>
         </Box>
     )
 }
