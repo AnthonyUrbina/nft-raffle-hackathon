@@ -57,7 +57,7 @@ export const BuyForm = () => {
                             <HStack maxW='170px'>
                                 <Button  background={'transparent'} onClick={() => handleClick('increment')}>+</Button>
                                 <Input
-                                minW={'3rem'}
+                                minW={'3.25rem'}
                                 textAlign={'center'}
                                 rounded={20}
                                 onChange={handleChange}
