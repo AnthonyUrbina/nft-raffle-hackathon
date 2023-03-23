@@ -8,7 +8,7 @@ import {
 
 } from '@chakra-ui/react'
 import { RaffleCardProps } from '../raffleCard'
-import { BuyButton } from '../../elements'
+import { BuyButton, QuantityButton, BuyForm } from '../../elements'
 
 interface Details extends RaffleCardProps {
     yourTickets?: number
@@ -51,7 +51,7 @@ export const Details = ({
             {raffler && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Raffler ${raffler}`}</Text>}
             {winner && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Winner ${winner}`}</Text>}
             <Box textAlign={'center'} my={1}>
-                { !winner && <BuyButton /> }
+                {!winner && <> <BuyForm /> </> }
             </Box>
         </Box>
     )
