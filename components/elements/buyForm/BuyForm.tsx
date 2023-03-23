@@ -28,6 +28,7 @@ export const BuyForm = () => {
                 .required()
                 .integer('Must be a whole number')
                 .min(1, 'Must be greater than zero')
+                .max(99, 'Must be less than 100')
         })
 
     const handleClick = (action: string) => {
@@ -57,6 +58,8 @@ export const BuyForm = () => {
                             <HStack>
                                 <Button flexBasis={'20%'} background={'transparent'} onClick={() => handleClick('increment')}>+</Button>
                                 <Input
+                                type='number'
+                                name='ticketQuantity'
                                 minW={'3rem'}
                                 textAlign={'center'}
                                 rounded={20}
@@ -71,7 +74,7 @@ export const BuyForm = () => {
                             maxW={['160px']}
                             rounded={20}
                             type='submit'>
-                                { `Buy ${ticketQuantity} Tickets Now ` }
+                                { `Buy ${ticketQuantity} Tickets Now` }
                             </Button>
                         </Flex>
                     </Flex>

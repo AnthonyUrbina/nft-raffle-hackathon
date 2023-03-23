@@ -104,8 +104,20 @@ export const RaffleCard = ({
         setSeconds(seconds - 1)
     }, 1000)
 
+    let router = useRouter()
+
+    const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const target = event.target as Element
+        if (target.tagName !== 'button') {
+            router.push('/raffles/2')
+        }
+    }
+
     return (
-        <Flex basis={['100%', '50%', '25%']} rounded={20} border='1px' mb={[4]} mx={[2]}>
+        <Flex basis={['100%', '50%', '25%']} rounded={20} border='1px' mb={[4]} mx={[2]} transition="transform 0.2s ease-in-out"
+            _hover={{ transform: "scale(1.02)" }}
+            onClick={handleClick}
+            >
             <Flex
                 position={'relative'}
                 flexDir={'column'}
