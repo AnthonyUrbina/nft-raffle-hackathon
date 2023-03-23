@@ -55,13 +55,14 @@ export const BuyForm = () => {
                     <Flex rounded={10} py={2} justifyContent={['space-between']}>
                         <Flex basis={['40%']}>
                             <HStack maxW='170px'>
-                                <Button background={'transparent'} onClick={() => handleClick('increment')}>+</Button>
+                                <Button  background={'transparent'} onClick={() => handleClick('increment')}>+</Button>
                                 <Input
+                                minW={'3rem'}
                                 textAlign={'center'}
                                 rounded={20}
                                 onChange={handleChange}
                                 value={ticketQuantity} />
-                                    <Button background={'transparent'} onClick={() => handleClick('decrement')}>-</Button>
+                                <Button background={'transparent'} onClick={() => handleClick('decrement')}>-</Button>
                             </HStack>
                         </Flex>
                         <Flex basis={['60%']}>

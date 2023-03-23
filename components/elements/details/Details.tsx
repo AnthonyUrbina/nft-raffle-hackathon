@@ -50,7 +50,7 @@ export const Details = ({
             {youSpent && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`You Spent ${youSpent}`}</Text>}
             {raffler && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Raffler ${raffler}`}</Text>}
             {winner && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Winner ${winner}`}</Text>}
-            <Box textAlign={'center'} my={1}>
+            <Box my={1}>
                 {!winner && <> <BuyForm /> </> }
             </Box>
         </Box>
