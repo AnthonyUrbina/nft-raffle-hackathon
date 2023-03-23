@@ -108,13 +108,15 @@ export const RaffleCard = ({
 
     const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         const target = event.target as Element
-        if (target.tagName !== 'button') {
+        console.log('tagName', target.tagName)
+        if (target.tagName !== 'BUTTON') {
             router.push('/raffles/2')
         }
     }
 
     return (
         <Flex basis={['100%', '50%', '25%']} rounded={20} border='1px' mb={[4]} mx={[2]} transition="transform 0.2s ease-in-out"
+            cursor={'pointer'}
             _hover={{ transform: "scale(1.02)" }}
             onClick={handleClick}
             >
