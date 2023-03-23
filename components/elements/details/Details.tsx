@@ -40,16 +40,16 @@ export const Details = ({
 
     return (
         <Box border={'1px solid'} rounded={10} p={3}>
-            <Text fontSize={'xl'} fontWeight={'medium'}>{edition}</Text>
-            <Text fontSize={'lg'} fontWeight={'medium'}>{`Collection: ${collection}`}</Text>
-            <Text fontSize={'lg'} fontWeight={'medium'}>{`Tickets Sold: ${ticketsSold}/${totalTickets}`}</Text>
-            <Text fontSize={'lg'} fontWeight={'medium'}>{`Collection: ${pricePerTicket} ${currency}`}</Text>
-            <Text fontSize={'lg'} fontWeight={'medium'}>{`Ends in: ${raffleEndTime}`}</Text>
-            {totalRecieved && <Text fontSize={'lg'} fontWeight={'medium'}>{`Total Recieved ${totalRecieved}`}</Text>}
-            {yourTickets && <Text fontSize={'lg'} fontWeight={'medium'}>{`Your Tickets ${yourTickets}`}</Text>}
-            {youSpent && <Text fontSize={'lg'} fontWeight={'medium'}>{`You Spent ${youSpent}`}</Text>}
-            {raffler && <Text fontSize={'lg'} fontWeight={'medium'}>{`Raffler ${raffler}`}</Text>}
-            {winner && <Text fontSize={'lg'} fontWeight={'medium'}>{`Winner ${winner}`}</Text>}
+            <Text fontSize={['xl', null, '2xl']} fontWeight={'medium'}>{edition}</Text>
+            <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Collection: ${collection}`}</Text>
+            <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Tickets Sold: ${ticketsSold}/${totalTickets}`}</Text>
+            <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Collection: ${pricePerTicket} ${currency}`}</Text>
+            <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Ends in: ${raffleEndTime}`}</Text>
+            {totalRecieved && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Total Recieved ${totalRecieved}`}</Text>}
+            {yourTickets && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Your Tickets ${yourTickets}`}</Text>}
+            {youSpent && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`You Spent ${youSpent}`}</Text>}
+            {raffler && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Raffler ${raffler}`}</Text>}
+            {winner && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Winner ${winner}`}</Text>}
             <Box textAlign={'center'} my={1}>
                 { !winner && <BuyButton /> }
             </Box>

@@ -49,21 +49,27 @@ export const RaffleDetails = ({raffleId}: RaffleDetailsProps) => {
   const { image, collection, ticketsSold, raffleEndTime, pricePerTicket, totalTickets, edition, currency, altText } = raffle
 
   return (
-    <Flex flexDir={['column', null, 'row']}>
+    <>
       <Heading my={[1]}>Raffle Details</Heading>
-      <Image w={['100%']} height={['50vh']} objectFit='cover' alt={'meebit'} src={'/static/meebit-.jpeg'} rounded={10} mb={[4]}/>
-      <Details
-        image={image}
-        collection={collection}
-        ticketsSold={ticketsSold}
-        raffleEndTime={raffleEndTime}
-        pricePerTicket={pricePerTicket}
-        totalTickets={totalTickets}
-        edition={edition}
-        currency={currency}
-        altText={altText}
-      />
-      <Participants participantsList={participantsList} />
-    </Flex>
+      <Flex flexDir={['column', null, 'row']}>
+        <Flex basis={['100%', null, '42.5%']}>
+          <Image w={['100%']} height={['50vh', null, '55vh']} objectFit='cover' alt={'meebit'} src={'/static/meebit-.jpeg'} rounded={10} mb={[4]}/>
+        </Flex>
+        <Flex flexDir={['column']} grow={1} pl={4}>
+          <Details
+            image={image}
+            collection={collection}
+            ticketsSold={ticketsSold}
+            raffleEndTime={raffleEndTime}
+            pricePerTicket={pricePerTicket}
+            totalTickets={totalTickets}
+            edition={edition}
+            currency={currency}
+            altText={altText}
+          />
+          <Participants participantsList={participantsList} />
+        </Flex>
+      </Flex>
+    </>
   )
 }
