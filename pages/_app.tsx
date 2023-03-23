@@ -8,7 +8,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { NavigationBar } from '../components/elements'
 
-import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
+import { ChakraProvider, ColorModeScript, Box } from '@chakra-ui/react'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -23,7 +23,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <ChakraProvider>
         <NavigationBar handleConnectWallet={handleConnectWallet} />
-        <Component {...pageProps} />
+        <Box px={[4, null, null, 8]}>
+          <Component {...pageProps} />
+        </Box>
       </ChakraProvider>
     </>
   )

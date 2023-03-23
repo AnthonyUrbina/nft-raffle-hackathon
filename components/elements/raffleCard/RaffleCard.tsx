@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import dayjs from 'dayjs'
 import NextLink from 'next/link';
 import * as routes from '../../../constants/routes';
+import { BuyForm } from '../buyForm';
 import {
     SECONDS_IN_DAY,
     SECONDS_IN_HOUR,
@@ -145,9 +146,9 @@ export const RaffleCard = ({
                     <Text fontSize={['sm']} fontWeight={'500'}>{`Tickets Sold ${ticketsSold}/${totalTickets}`}</Text>
                         <Text fontSize={['sm']} fontWeight={'500'}>{`Ticket Price ${pricePerTicket} ${currency}`}</Text>
                 </Flex>
-                <Flex px={[3]} justify={['center']} pb={[4]}>
-                    <Button w={['100%']} rounded={20}>Buy 3 Tickets Now</Button>
-                </Flex>
+                <Box px={[3]} my={1}>
+                    <BuyForm />
+                </Box>
             </Flex >
             </Box>
         </NextLink>
