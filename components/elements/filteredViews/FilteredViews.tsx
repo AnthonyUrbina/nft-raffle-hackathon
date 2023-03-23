@@ -95,11 +95,10 @@ export const FilteredViews = ({filters}: FilteredViewsProps) => {
             const _filter = filter.toLocaleLowerCase()
             const _selectedFilter = selectedFilter.toLocaleLowerCase()
             return (
-                <TabPanel key={`${filter}-panel`}>
+                <TabPanel key={`${filter}-panel`} display='flex' flexWrap={['wrap']} justifyContent={['center', 'flex-start']}>
                     {
                         raffles[`${_filter}`] && raffles[`${_filter}`].length && _filter === _selectedFilter ? raffles[`${_filter}`].map(raffle => { console.log('ra', raffle); return raffleCardFactory(raffle)})
                             : <Text>Nothing to see here!</Text>
-
                     }
                 </TabPanel>
             )

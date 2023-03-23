@@ -105,8 +105,7 @@ export const RaffleCard = ({
     }, 1000)
 
     return (
-        <NextLink href={routes.RAFFLE_DETAILS} passHref>
-            <Box rounded={20} border='1px' mb={[4]}>
+        <Flex basis={['100%', '50%', '25%']} rounded={20} border='1px' mb={[4]} mx={[2]}>
             <Flex
                 position={'relative'}
                 flexDir={'column'}
@@ -137,20 +136,18 @@ export const RaffleCard = ({
                     roundedTop={19}
                     src={image}
                     alt={altText}
-                    h={['80 %']}
                 />
-                <Flex px={[3]} py={[2]} h={['10%']} borderBottom={'1px'}>
+                <Flex px={[3]} py={[2]} h={['10%', '33%']} borderBottom={'1px'}>
                     <Text fontSize={['lg']} fontWeight={'500'}>{edition}</Text>
                 </Flex>
-                <Flex px={[3]} py={[2]} h={['10%']} justify={['space-between']}>
+                <Flex px={[3]} py={[2]} h={['10%', '33%']} justify={['space-between']}>
                     <Text fontSize={['sm']} fontWeight={'500'}>{`Tickets Sold ${ticketsSold}/${totalTickets}`}</Text>
                         <Text fontSize={['sm']} fontWeight={'500'}>{`Ticket Price ${pricePerTicket} ${currency}`}</Text>
                 </Flex>
-                <Box px={[3]} my={1}>
+                    <Box px={[3]} my={1}>
                     <BuyForm />
                 </Box>
             </Flex >
-            </Box>
-        </NextLink>
+        </Flex>
     )
 }
