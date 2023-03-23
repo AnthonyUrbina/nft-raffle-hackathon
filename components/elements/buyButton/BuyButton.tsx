@@ -10,12 +10,17 @@ import {
     UnorderedList
 
 } from '@chakra-ui/react'
+import FormEvent from 'react'
 
 // figure out if you can pull all data in RaffleCard component
 // then when user clicks, pass props to here
 // instead of having to pass raffle id then make another fetch
 
-export const BuyButton = () => {
+interface BuyButtonProps {
+    handleSubmit: (e?: Event) => void;
+};
+
+export const BuyButton = ({handleSubmit}: BuyButtonProps) => {
 
     return (
         <Button w={['100%']} rounded={20}>

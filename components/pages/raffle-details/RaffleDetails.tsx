@@ -55,7 +55,7 @@ export const RaffleDetails = ({raffleId}: RaffleDetailsProps) => {
         <Flex basis={['100%', null, '42.5%']}>
           <Image w={['100%']} height={['50vh', null, '55vh']} objectFit='cover' alt={'meebit'} src={'/static/meebit-.jpeg'} rounded={10} mb={[4]}/>
         </Flex>
-        <Flex flexDir={['column']} grow={1} pl={4}>
+        <Flex flexDir={['column']} grow={1} pl={[null, null, 4]}>
           <Details
             image={image}
             collection={collection}
