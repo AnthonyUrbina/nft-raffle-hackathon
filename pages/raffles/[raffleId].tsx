@@ -1,17 +1,17 @@
 import { memo } from 'react'
 import { RaffleDetails } from '../../components/pages'
 import { useRouter } from 'next/router'
+import { getServerSideProps } from '../create-raffle'
 
 
 
 const RaffleDetailsContainer = () => {
-    // const router = useRouter()
-    // const { raffleId } = router.query
-
-    const dummyRaffleId = '1'
+    const router = useRouter()
+    let { id } = router.query
+    id = id!.toString()
 
     return (
-        < RaffleDetails raffleId={dummyRaffleId} />
+        < RaffleDetails raffleId={id} />
     )
 }
 

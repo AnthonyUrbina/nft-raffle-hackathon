@@ -94,10 +94,13 @@ export const RaffleCard = ({
     let router = useRouter()
 
     const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        const target = event.target as Element
-        console.log('tagName', target.tagName)
+        const target = event.target as HTMLElement
+        const container = target.closest('[data-id]') as HTMLElement;
         if (target.tagName !== 'BUTTON' && target.tagName !== 'INPUT') {
-            router.push('/raffles/2')
+            if (container) {
+                const { id } = container.dataset
+                router.push(`/raffles/${id}`)
+            }
         }
     }
 
@@ -133,26 +136,13 @@ export const RaffleCard = ({
 
     return (
         <Flex basis={['100%', '50%', '25%']} rounded={20} border='1px' mb={[4]} mx={[2]} transition="transform 0.2s ease-in-out"
+            data-id={raffleId}
             cursor={'pointer'}
             _hover={{ transform: "scale(1.02)" }}
             onClick={handleClick}
             >
-            <Flex
-                position={'relative'}
-                flexDir={'column'}
-                h={['94%', null, null, '30%']}
-            >
-                <Flex
-                border='1px'
-                position={'absolute'}
-                w={130}
-                height={'28px'}
-                right={'12px'}
-                top={'12px'}
-                justify='center'
-                rounded={15}
-                px={1.5}
-                >
+            <Flex position={'relative'} flexDir={'column'} h={['94%', null, null, '30%']}>
+                <Flex border='1px' position={'absolute'} w={130} height={'28px'} right={'12px'} top={'12px'} justify='center' rounded={15} px={1.5}>
                     {timeCountdown()}
                 </Flex >
                 <Image

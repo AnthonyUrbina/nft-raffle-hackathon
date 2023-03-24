@@ -28,14 +28,16 @@ import {
 import { SelectNftCard } from '../selectNftCard';
 import { RaffleCard } from '../../elements';
 import { RaffleCardProps } from '../raffleCard';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState , useContext} from 'react';
 import { FirebaseRaffle } from '../../pages';
 import { FilteredRaffles } from '../../pages';
+
 
 export interface FilteredViewsProps {
     filteredRaffles: FilteredRaffles
     filters: string[]
 }
+
 
 // should be able to remove filters and just loop through the properties of filteredRaffles to get them
 
@@ -52,13 +54,10 @@ export const FilteredViews = ({filteredRaffles, filters}: FilteredViewsProps) =>
     const tabPanelFactory = () => {
         const panels = filters.map(filter => {
             const _filter = filter.toLocaleLowerCase()
-            // const _selectedFilter = selectedFilter.toLocaleLowerCase()
             return (
                 <TabPanel key={`${filter}-panel`} display='flex' flexWrap={['wrap']} justifyContent={['center', 'flex-start']}>
                     {
                         filteredRaffles[_filter] && filteredRaffles[_filter].length ? filteredRaffles[_filter].map(raffle => {
-                            console.log(filteredRaffles[_filter])
-                            console.log('rafff', raffle)
                             return raffleCardFactory(raffle)
                         })
                             : <Text>Nothing to see here!</Text>
@@ -74,6 +73,7 @@ export const FilteredViews = ({filteredRaffles, filters}: FilteredViewsProps) =>
         const { image, collection, raffleId, ticketsSold, raffleEndTime, pricePerTicket, reservePrice, edition, currency, altText } = raffle
 
         return <RaffleCard
+                    key={raffleId}
                     image={image}
                     collection={collection}
                     ticketsSold={ticketsSold}
