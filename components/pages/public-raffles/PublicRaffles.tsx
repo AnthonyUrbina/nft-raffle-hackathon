@@ -20,13 +20,7 @@ export const PublicRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
   useEffect(() => {
     async function fetchCollection() {
       const querySnapshot = await getDocs(collection(db, "raffles"));
-      const documents = querySnapshot.docs.map(doc => {
-        return {
-          id: doc.id,
-          ...doc.data()
-        };
-      });
-      
+      const documents = querySnapshot.docs.map(doc => doc.data());
       setRaffles(documents)
     }
 
