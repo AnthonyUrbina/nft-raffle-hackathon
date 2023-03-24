@@ -29,8 +29,9 @@ export interface RaffleCardProps {
     raffleEndTime: number
     currency: string
     ticketsSold: number
-    totalTickets: number
+    reservePrice: number
     pricePerTicket: number
+    raffleId: number
 }
 
 export const RaffleCard = ({
@@ -40,9 +41,10 @@ export const RaffleCard = ({
     altText,
     raffleEndTime,
     ticketsSold,
-    totalTickets,
+    reservePrice,
     pricePerTicket,
-    currency
+    currency,
+    raffleId
 }: RaffleCardProps) => {
     const expirationDate = dayjs(raffleEndTime)
     // total seconds until launch
@@ -162,7 +164,7 @@ export const RaffleCard = ({
                     <Text fontSize={['lg']} fontWeight={'500'}>{edition}</Text>
                 </Flex>
                 <Flex px={[3]} py={[2]} h={['10%', '33%']} justify={['space-between']}>
-                    <Text fontSize={['sm']} fontWeight={'500'}>{`Tickets Sold ${ticketsSold}/${totalTickets}`}</Text>
+                    <Text fontSize={['sm']} fontWeight={'500'}>{`Tickets Sold ${ticketsSold}`}</Text>
                         <Text fontSize={['sm']} fontWeight={'500'}>{`Ticket Price ${pricePerTicket} ${currency}`}</Text>
                 </Flex>
                     <Box px={[3]} my={1}>

@@ -29,66 +29,21 @@ import { SelectNftCard } from '../selectNftCard';
 import { RaffleCard } from '../../elements';
 import { RaffleCardProps } from '../raffleCard';
 import { useEffect, useMemo, useState } from 'react';
+import { FirebaseRaffle } from '../../pages';
+import { FilteredRaffles } from '../../pages';
 
 export interface FilteredViewsProps {
+    filteredRaffles: FilteredRaffles
     filters: string[]
 }
 
-interface RaffleByFilters  {
-    [key: string]: RaffleCardProps[]
-}
+// should be able to remove filters and just loop through the properties of filteredRaffles to get them
 
-export const FilteredViews = ({filters}: FilteredViewsProps) => {
-    const [raffles, setRaffles] = useState<RaffleByFilters>({})
-    const [selectedFilter, setSelectedFilter] = useState('')
-
-
-    useEffect(() => {
-
-        const dummyRaffleData = [
-            {
-                image: '/static/wow.png',
-                collection: "World of Women",
-                ticketsSold: 0,
-                raffleEndTime: 1679458038,
-                pricePerTicket: .02,
-                totalTickets: 24,
-                edition: 'WoW #8604',
-                currency: 'ETH',
-                altText: "wow"
-            },
-            {
-                image: '/static/supduck.png',
-                collection: "SupDucks",
-                ticketsSold: 14,
-                raffleEndTime: 1679630838,
-                pricePerTicket: .03,
-                totalTickets: 24,
-                edition: 'SupDuck #7292',
-                currency: 'ETH',
-                altText: "sup-duck"
-            }
-        ]
-
-        setRaffles({live: dummyRaffleData})
-        setSelectedFilter(filters[0])
-    },[filters])
-
-    const handleClick = (filter: string) => {
-        // simulate call and response
-        // must return an object
-        // ex const raffles = { live: [obj1, obj2], expired: {obj1, obj2}}
-
-        if (filter === 'Live') {
-
-        }
-        console.log(filter)
-        setSelectedFilter(filter)
-    }
+export const FilteredViews = ({filteredRaffles, filters}: FilteredViewsProps) => {
 
     const tabFactory = () => {
        const tabs = filters.map(filter => {
-            return <Tab key={filter} onClick={() => {handleClick(filter)}}>{filter}</Tab>
+            return <Tab key={filter}>{filter}</Tab>
         })
 
         return tabs
@@ -97,11 +52,15 @@ export const FilteredViews = ({filters}: FilteredViewsProps) => {
     const tabPanelFactory = () => {
         const panels = filters.map(filter => {
             const _filter = filter.toLocaleLowerCase()
-            const _selectedFilter = selectedFilter.toLocaleLowerCase()
+            // const _selectedFilter = selectedFilter.toLocaleLowerCase()
             return (
                 <TabPanel key={`${filter}-panel`} display='flex' flexWrap={['wrap']} justifyContent={['center', 'flex-start']}>
                     {
-                        raffles[`${_filter}`] && raffles[`${_filter}`].length && _filter === _selectedFilter ? raffles[`${_filter}`].map(raffle => { console.log('ra', raffle); return raffleCardFactory(raffle)})
+                        filteredRaffles[_filter] && filteredRaffles[_filter].length ? filteredRaffles[_filter].map(raffle => {
+                            console.log(filteredRaffles[_filter])
+                            console.log('rafff', raffle)
+                            return raffleCardFactory(raffle)
+                        })
                             : <Text>Nothing to see here!</Text>
                     }
                 </TabPanel>
@@ -112,7 +71,7 @@ export const FilteredViews = ({filters}: FilteredViewsProps) => {
     }
 
     const raffleCardFactory = (raffle: RaffleCardProps) => {
-        const { image, collection, ticketsSold, raffleEndTime, pricePerTicket, totalTickets, edition, currency, altText } = raffle
+        const { image, collection, raffleId, ticketsSold, raffleEndTime, pricePerTicket, reservePrice, edition, currency, altText } = raffle
 
         return <RaffleCard
                     image={image}
@@ -120,10 +79,11 @@ export const FilteredViews = ({filters}: FilteredViewsProps) => {
                     ticketsSold={ticketsSold}
                     raffleEndTime={raffleEndTime}
                     pricePerTicket={pricePerTicket}
-                    totalTickets={totalTickets}
+                    reservePrice={reservePrice}
                     edition={edition}
                     currency={currency}
                     altText={altText}
+                    raffleId={raffleId}
                 />
     }
 
