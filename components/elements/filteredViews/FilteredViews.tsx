@@ -78,6 +78,10 @@ export const FilteredViews = ({filters}: FilteredViewsProps) => {
         // simulate call and response
         // must return an object
         // ex const raffles = { live: [obj1, obj2], expired: {obj1, obj2}}
+
+        if (filter === 'Live') {
+
+        }
         console.log(filter)
         setSelectedFilter(filter)
     }

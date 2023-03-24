@@ -15,13 +15,15 @@ export const PublicRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
   //replace w real data
   const raffleEndTime =  Date.now()
 
-  const [raffles, setRaffles] = useState([])
+  const [liveRaffles, setLiveRaffles] = useState([])
 
   useEffect(() => {
     async function fetchCollection() {
       const querySnapshot = await getDocs(collection(db, "raffles"));
       const documents = querySnapshot.docs.map(doc => doc.data());
-      setRaffles(documents)
+      const liveRaffles = documents.filter(raffle => !raffle.rafflEnded && raffle.raffleEnded !== 'true')
+      console.log('liveRaffles', liveRaffles)
+      setLiveRaffles(liveRaffles)
     }
 
     fetchCollection();
@@ -30,7 +32,7 @@ export const PublicRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
 return (
   <Box>
     <Heading py={1}>{pageHeading}</Heading>
-    <FilteredViews filters={filters} />
+    <FilteredViews filters={filters} live={liveRaffles} />
   </Box>
 )
 }
