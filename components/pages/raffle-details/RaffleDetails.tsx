@@ -18,36 +18,38 @@ export const RaffleDetails = ({ raffle }: RaffleDetailsContainerProps) => {
   const { nftTokenId, nftCollectionAddress } = raffle
 
   useEffect(() => {
-console.log('useEffect', nftTokenId)
-console.log('nftCollectionAddress', nftCollectionAddress)
-    const options = {
-      method: 'GET',
-      url: `https://eth-goerli.g.alchemy.com/nft/v2/YMYVZZmF7YdOUtdXKVP-OoKjlxhWa7nJ/getNFTMetadata`,
-      params: {
-        contractAddress: nftCollectionAddress,
-        tokenId: nftTokenId,
-        refreshCache: 'false'
-      },
-      headers: { accept: 'application/json' }
-    };
+    try {
+      const options = {
+        method: 'GET',
+        url: `https://eth-goerli.g.alchemy.com/nft/v2/YMYVZZmF7YdOUtdXKVP-OoKjlxhWa7nJ/getNFTMetadata`,
+        params: {
+          contractAddress: nftCollectionAddress,
+          tokenId: nftTokenId,
+          refreshCache: 'false'
+        },
+        headers: { accept: 'application/json' }
+      };
 
-    const fetchMetaData = async () => {
+      const fetchMetaData = async () => {
 
-      const res = await axios.request(options)
-      console.log('res', res)
-      const { title, media, contractMetadata } = res.data
-      const { gateway } = media[0]
-      const { name } = contractMetadata
+        const res = await axios.request(options)
+        console.log('res', res)
+        const { title, media, contractMetadata } = res.data
+        const { gateway } = media[0]
+        const { name } = contractMetadata
 
-      raffle.edition = title
-      raffle.image = gateway
-      raffle.altText = title
-      raffle.collectionName = name
-      console.log('new image', raffle.image)
-      console.log('new raffle', raffle)
-      setRaffleFinal(raffle)
+        raffle.edition = title
+        raffle.image = gateway
+        raffle.altText = title
+        raffle.collectionName = name
+        console.log('new image', raffle.image)
+        console.log('new raffle', raffle)
+        setRaffleFinal(raffle)
+      }
+      fetchMetaData()
+    } catch (err) {
+      console.error(err)
     }
-    fetchMetaData()
   }, [ raffle, nftCollectionAddress, nftTokenId])
 
 if (!raffleFinal) return
