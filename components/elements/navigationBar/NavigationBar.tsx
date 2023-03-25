@@ -17,7 +17,7 @@ import {
     Hide
 } from '@chakra-ui/react'
 import { AddIcon, HamburgerIcon, ExternalLinkIcon, BellIcon } from '@chakra-ui/icons'
-
+import { mainnet, goerli, optimism, polygon, polygonMumbai } from "wagmi/chains";
 import { useRouter } from 'next/router';
 import { WagmiConfig, createClient } from "wagmi";
 import { ConnectKitProvider, ConnectKitButton, getDefaultClient } from "connectkit";
@@ -30,7 +30,7 @@ interface NavigationBarProps {
     handleConnectWallet: (address: `0x${string}`) => void
 }
 
-const alchemyId = 'EoOTjHvOIujYqlStV6ppG71Y7Cf94wRj';
+const alchemyId = 'VperEHcYqgNn_9j67hC0SlorxAtJr3aL';
 
 const client = createClient(
     getDefaultClient({
