@@ -10,7 +10,7 @@ import {
 import { RaffleCardProps } from '../raffleCard'
 import { BuyButton, QuantityButton, BuyForm } from '../../elements'
 
-interface Details extends RaffleCardProps {
+interface Details extends Omit<RaffleCardProps, 'raffleId'> {
     yourTickets?: number
     youSpent?: number
     raffler?: `Ox${string}`
@@ -28,7 +28,6 @@ export const Details = ({
     altText,
     raffleEndTime,
     ticketsSold,
-    totalTickets,
     pricePerTicket,
     currency,
     yourTickets,
@@ -42,7 +41,7 @@ export const Details = ({
         <Box border={'1px solid'} rounded={10} p={3}>
             <Text fontSize={['xl', null, '2xl']} fontWeight={'medium'}>{edition}</Text>
             <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Collection: ${collection}`}</Text>
-            <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Tickets Sold: ${ticketsSold}/${totalTickets}`}</Text>
+            <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Tickets Sold: ${ticketsSold}`}</Text>
             <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Collection: ${pricePerTicket} ${currency}`}</Text>
             <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Ends in: ${raffleEndTime}`}</Text>
             {totalRecieved && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Total Recieved ${totalRecieved}`}</Text>}
@@ -51,7 +50,7 @@ export const Details = ({
             {raffler && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Raffler ${raffler}`}</Text>}
             {winner && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Winner ${winner}`}</Text>}
             <Box my={1}>
-                {!winner && <> <BuyForm /> </> }
+                {!winner && <> <BuyForm /> </>}
             </Box>
         </Box>
     )
