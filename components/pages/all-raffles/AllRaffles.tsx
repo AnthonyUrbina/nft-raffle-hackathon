@@ -13,6 +13,7 @@ import { RaffleCardProps } from '../../elements';
 import { Alchemy, Network } from "alchemy-sdk";
 import { useAccount } from 'wagmi';
 import axios from 'axios';
+import { Raffle } from '../../../pages/raffles/[raffleId]';
 
 export interface RafflePagesProps {
   pageHeading: string,
@@ -50,12 +51,11 @@ const config = {
 };
 const alchemy = new Alchemy(config);
 
-export const PublicRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
+export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
   const { address } = useAccount();
-  // replace with real data
-  const raffleEndTime = Date.now();
 
   const [filteredRaffles, setFilteredRaffles] = useState<FilteredRaffles>({});
+  const noWinnerYet = '0x0000000000000000000000000000000000000000'
 
   useEffect(() => {
     const fetchCollection = async () => {
@@ -64,8 +64,6 @@ export const PublicRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
         console.log("querySnapshot", querySnapshot);
         const documents = querySnapshot.docs.map(doc => doc.data());
         console.log('documents', documents);
-        const liveRaffles = documents.filter(raffle => !raffle.rafflEnded && raffle.raffleEnded !== 'true');
-
         const formattedRaffles = documents.map((doc: DocumentData) => {
           const { entries, erc20Address, nftCollectionAddress, nftTokenId, owner, prizeClaimed, raffleEndDate, raffleEnded, raffleId, reservePrice, ticketPrice, winner } = doc;
           return {
@@ -78,11 +76,14 @@ export const PublicRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
             raffleId,
             reservePrice,
             pricePerTicket: ticketPrice,
-            edition: 'api',
+            edition: '',
             currency: 'ETH',
             altText: '',
             image: '',
-            nftCollectionAddress
+            nftCollectionAddress,
+            winner,
+            raffleEnded,
+            owner
           }
         });
 
@@ -107,9 +108,14 @@ export const PublicRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
           formattedRaffles[i].edition = title;
           formattedRaffles[i].image = gateway;
           formattedRaffles[i].altText = title;
+
+          const liveRaffles = formattedRaffles.filter(raffle => !raffle.raffleEnded && raffle.winner === noWinnerYet && !raffle.prizeClaimed);
+          console.log('live raffles', liveRaffles)
+          const expiredRaffles = formattedRaffles.filter(raffle => raffle.winner !== noWinnerYet || raffle.raffleEnded || raffle.prizeClaimed)
+          console.log('expiredRaffles', expiredRaffles)
+          setFilteredRaffles({ live: liveRaffles, expired: expiredRaffles });
         }
 
-        setFilteredRaffles({ live: formattedRaffles });
       } catch (err) {
         console.error(err);
       }
