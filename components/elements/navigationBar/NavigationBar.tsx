@@ -31,11 +31,13 @@ interface NavigationBarProps {
 }
 
 const alchemyId = 'VperEHcYqgNn_9j67hC0SlorxAtJr3aL';
+const chains = [mainnet, polygon, optimism, goerli];
 
 const client = createClient(
     getDefaultClient({
-        appName: "ROFL",
+        appName: "rofl new",
         alchemyId,
+        chains
     }),
 )
 
