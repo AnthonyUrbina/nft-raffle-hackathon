@@ -34,7 +34,7 @@ export interface FirebaseRaffle {
   winner: string;
 }
 
-interface AlmostThere extends RaffleCardProps {
+export interface AlmostThere extends RaffleCardProps {
   nftTokenId?: string
   nftCollectionAddress: string
 }
@@ -78,7 +78,7 @@ export const PublicRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
           reservePrice,
           pricePerTicket: ticketPrice,
           edition: 'api',
-          currency: 'ETH/APE',
+          currency: 'ETH',
           altText: '',
           image: '',
           nftCollectionAddress

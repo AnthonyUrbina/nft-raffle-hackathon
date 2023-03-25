@@ -41,7 +41,6 @@ const client = createClient(
 
 export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
     const { address, isDisconnected, isConnected } = useAccount()
-    console.log('user is connected', typeof address)
 
     useEffect(() => {
         if (!address) return
@@ -56,7 +55,6 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
     // }
 
     const router = useRouter()
-    console.log(routes.CREATE_RAFFLE)
     const { CREATE_RAFFLE } = routes
     return (
         <Flex justify="space-between" align="center" borderBottom="1px">

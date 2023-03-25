@@ -20,6 +20,7 @@ import {
     SECONDS_IN_HOUR,
     SECONDS_IN_MINUTE,
 } from '../../../constants'
+import { ethers } from 'ethers'
 
 export interface RaffleCardProps {
     collection: string
@@ -134,6 +135,8 @@ export const RaffleCard = ({
         }
     }
 
+    const pricePerTicketEth = ethers.utils.formatEther(ethers.BigNumber.from(pricePerTicket.toString())); // Convert Wei to ETH
+
     return (
         <Flex basis={['100%', '50%', '25%']} rounded={20} border='1px' mb={[4]} mx={[2]} transition="transform 0.2s ease-in-out"
             data-id={raffleId}
@@ -155,7 +158,7 @@ export const RaffleCard = ({
                 </Flex>
                 <Flex px={[3]} py={[2]} h={['10%', '33%']} justify={['space-between']}>
                     <Text fontSize={['sm']} fontWeight={'500'}>{`Tickets Sold ${ticketsSold}`}</Text>
-                        <Text fontSize={['sm']} fontWeight={'500'}>{`Ticket Price ${pricePerTicket} ${currency}`}</Text>
+                    <Text fontSize={['sm']} fontWeight={'500'}>{`Ticket Price ${pricePerTicketEth} ${currency}`}</Text>
                 </Flex>
                     <Box px={[3]} my={1}>
                     <BuyForm />
