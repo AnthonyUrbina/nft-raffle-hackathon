@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
     console.log('address', address)
     setWalletAddress(address)
   }
-
+  // const UserContext = createContext(walletAddress)
   return (
     <>
       <ChakraProvider>

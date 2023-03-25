@@ -16,6 +16,7 @@ import {
     SECONDS_IN_HOUR,
     SECONDS_IN_MINUTE,
 } from '../../../constants'
+import {useAccount} from 'wagmi'
 
 interface Details extends Omit<RaffleCardProps, 'raffleId'> {
     yourTickets?: number
@@ -41,9 +42,10 @@ export const Details = ({
     youSpent,
     raffler,
     winner,
-    totalRecieved
+    totalRecieved,
+    isWinner
 }: Details) => {
-
+    const { address } = useAccount()
     const pricePerTicketEth = ethers.utils.formatEther(ethers.BigNumber.from(pricePerTicket.toString())); // Convert Wei to ETH
     const expirationDate = dayjs(raffleEndTime)
     let remaining = expirationDate.diff(dayjs(), 's')
@@ -52,6 +54,20 @@ export const Details = ({
     const initHours = Math.floor((remaining % SECONDS_IN_DAY) / SECONDS_IN_HOUR)
     const initMinutes = Math.floor((remaining % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE)
     const initSeconds = remaining % SECONDS_IN_MINUTE
+
+    const renderButton = () => {
+        const timeExpired = hasTimeExpired(raffleEndTime)
+        const _address = address && address.toString()
+        const _winner = winner && winner.toString()
+        console.log('address', address)
+        console.log('winner', winner)
+        if (timeExpired) {
+            if (isWinner) return <Button>Claim</Button>
+
+        } else {
+            return <BuyForm />
+        }
+    }
 
     return (
         <Box border={'1px solid'} rounded={10} p={3}>
@@ -66,7 +82,7 @@ export const Details = ({
             {raffler && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Raffler ${raffler}`}</Text>}
             {winner && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Winner ${winner}`}</Text>}
             <Box my={1}>
-                {!winner || !hasTimeExpired(raffleEndTime) && <> <BuyForm /> </>}
+                {renderButton()}
             </Box>
         </Box>
     )

@@ -4,7 +4,7 @@ import {
   Heading,
   useCallbackRef
 } from '@chakra-ui/react'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, createContext } from 'react'
 import { FilteredViews } from "../../elements"
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../../../firebase"
@@ -14,6 +14,8 @@ import { Alchemy, Network } from "alchemy-sdk";
 import { useAccount } from 'wagmi';
 import axios from 'axios';
 import { Raffle } from '../../../pages/raffles/[raffleId]';
+import { format } from 'path';
+// import { UserContext } from '../../../lib/context';
 
 export interface RafflePagesProps {
   pageHeading: string,
@@ -44,6 +46,15 @@ export interface FilteredRaffles {
   [key: string]: AlmostThere[]
 }
 
+interface UserContextProps {
+  address: string | null | undefined
+}
+
+export const UserContext = createContext<UserContextProps>({
+  address: null,
+});
+
+
 
 const config = {
   apiKey: 'YMYVZZmF7YdOUtdXKVPOoKjlxhWa7nJ',
@@ -54,12 +65,13 @@ const noWinnerYet = '0x0000000000000000000000000000000000000000'
 
 export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
   const { address } = useAccount();
+  const _address = address && address.toString()
   const [filteredRaffles, setFilteredRaffles] = useState<FilteredRaffles>({});
   const showingPublicRaffles = pageHeading === 'Public Raffles'
   const showingMyRaffles = pageHeading === 'My Raffles'
 
   const filterRaffles = useCallback(async (formattedRaffles) => {
-
+    console.log('USE CALLBACK')
     if (showingPublicRaffles) {
       for (let i = 0; i < formattedRaffles.length; i++) {
         const { nftTokenId, nftCollectionAddress } = formattedRaffles[i];
@@ -105,27 +117,39 @@ export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
         };
 
         const res = await axios.request(options);
-        const { title, media } = res.data;
-        const { gateway } = media[0];
+        const { title, media, contractMetadata } = res.data
+        const { gateway } = media[0]
+        const { name } = contractMetadata
 
         formattedRaffles[i].edition = title;
         formattedRaffles[i].image = gateway;
         formattedRaffles[i].altText = title;
+        formattedRaffles[i].collection = name;
 
+
+        if (formattedRaffles[i].winner !== noWinnerYet) {
+          console.log('formattedRaffles[i]', formattedRaffles[i])
+
+          formattedRaffles[i].isWinner = formattedRaffles[i].winner === address
+          console.log('formattedRaffles[i].isWinner', formattedRaffles[i].isWinner)
+        }
         const _address = address && address.toString()
-        console.log('my address', address)
         const liveRaffles = formattedRaffles.filter(raffle => !raffle.raffleEnded && (raffle.entries && raffle.entries.includes(address)) && raffle.winner === noWinnerYet && !raffle.prizeClaimed);
         console.log('my live raffles', liveRaffles)
         const expiredRaffles = formattedRaffles.filter(raffle => (raffle.entries && raffle.entries.includes(address)) && raffle.winner !== noWinnerYet || raffle.raffleEnded || raffle.prizeClaimed)
         console.log('my expiredRaffles', expiredRaffles)
         const createdRaffles = formattedRaffles.filter(raffle => raffle.owner === address)
         console.log('my createdRaffles', createdRaffles)
-        setFilteredRaffles({ live: liveRaffles, expired: expiredRaffles, created: createdRaffles });
+        const unclaimedRaffles = formattedRaffles.filter(raffle => raffle.winner === address && !raffle.prizeClaimed)
+        console.log('my unclaimedRaffles', unclaimedRaffles)
+
+        setFilteredRaffles({ live: liveRaffles, expired: expiredRaffles, created: createdRaffles, unclaimed: unclaimedRaffles });
       }
     }
   }, [showingMyRaffles, showingPublicRaffles, address])
 
   useEffect(() => {
+    console.log('USE EFFECT')
     const fetchCollection = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "raffles"));
@@ -162,9 +186,11 @@ export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
   }, [filterRaffles]);
 
   return (
-    <Box>
-      <Heading py={1}>{pageHeading}</Heading>
-      <FilteredViews filters={filters} filteredRaffles={filteredRaffles} />
-    </Box>
+    <UserContext.Provider value={{address}}>
+      <Box>
+          <Heading py={1}>{pageHeading}</Heading>
+          <FilteredViews filters={filters} filteredRaffles={filteredRaffles}/>
+      </Box>
+    </UserContext.Provider>
   )
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {
     Box,
     Flex,
@@ -21,6 +21,7 @@ import {
     SECONDS_IN_MINUTE,
 } from '../../../constants'
 import { ethers } from 'ethers'
+import { UserContext } from '../../pages/all-raffles'
 
 export interface RaffleCardProps {
     collection: string
@@ -33,6 +34,7 @@ export interface RaffleCardProps {
     reservePrice: number
     pricePerTicket: number
     raffleId: number
+    isWinner: boolean
 }
 
 export const hasTimeExpired = (raffleEndTime: number) => {
@@ -51,9 +53,11 @@ export const RaffleCard = ({
     reservePrice,
     pricePerTicket,
     currency,
-    raffleId
+    raffleId,
+    isWinner
 }: RaffleCardProps) => {
     const expirationDate = dayjs(raffleEndTime)
+    console.log('RaffleCard isWinner', edition, isWinner)
     // total seconds until launch
     let remaining = expirationDate.diff(dayjs(), 's')
 
@@ -67,36 +71,42 @@ export const RaffleCard = ({
     const [minutes, setMinutes] = useState(initMinutes)
     const [seconds, setSeconds] = useState(remaining)
 
-    setTimeout(() => {
-        if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
-            return;
-        }
+    // useEffect(() => {
+    //     const timeoutId = setTimeout(() => {
+    //         if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+    //             return;
+    //         }
 
-        let updatedSeconds = seconds - 1;
-        let updatedMinutes = minutes;
-        let updatedHours = hours;
-        let updatedDays = days;
+    //         let updatedSeconds = seconds - 1;
+    //         let updatedMinutes = minutes;
+    //         let updatedHours = hours;
+    //         let updatedDays = days;
 
-        if (updatedSeconds < 0) {
-            updatedSeconds = 59;
-            updatedMinutes -= 1;
-        }
+    //         if (updatedSeconds < 0) {
+    //             updatedSeconds = 59;
+    //             updatedMinutes -= 1;
+    //         }
 
-        if (updatedMinutes < 0) {
-            updatedMinutes = 59;
-            updatedHours -= 1;
-        }
+    //         if (updatedMinutes < 0) {
+    //             updatedMinutes = 59;
+    //             updatedHours -= 1;
+    //         }
 
-        if (updatedHours < 0) {
-            updatedHours = 23;
-            updatedDays -= 1;
-        }
+    //         if (updatedHours < 0) {
+    //             updatedHours = 23;
+    //             updatedDays -= 1;
+    //         }
 
-        setSeconds(updatedSeconds);
-        setMinutes(updatedMinutes);
-        setHours(updatedHours);
-        setDays(updatedDays);
-    }, 1000)
+    //         setSeconds(updatedSeconds);
+    //         setMinutes(updatedMinutes);
+    //         setHours(updatedHours);
+    //         setDays(updatedDays);
+    //     }, 1000)
+
+    //     return () => {
+    //         clearTimeout(timeoutId)
+    //     }
+    // },[days, hours, minutes, seconds])
 
     let router = useRouter()
 
@@ -140,8 +150,12 @@ export const RaffleCard = ({
 
     const renderButton = () => {
         const timeExpired = hasTimeExpired(raffleEndTime)
-        if (timeExpired) return
-        return <BuyForm />
+        if (timeExpired) {
+            if (isWinner) return <Button>Claim</Button>
+
+        } else {
+            return <BuyForm />
+        }
     }
 
     const pricePerTicketEth = ethers.utils.formatEther(ethers.BigNumber.from(pricePerTicket.toString())); // Convert Wei to ETH

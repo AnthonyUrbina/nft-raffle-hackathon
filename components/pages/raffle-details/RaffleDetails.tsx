@@ -10,11 +10,13 @@ import type { DocumentData } from '@firebase/firestore-types';
 import axios from 'axios';
 import { RaffleDetailsContainerProps } from '../../../pages/raffles/[raffleId]';
 import { Raffle } from '../../../pages/raffles/[raffleId]';
+import { useAccount } from 'wagmi';
 
+const noWinnerYet = '0x0000000000000000000000000000000000000000'
 
 export const RaffleDetails = ({ raffle }: RaffleDetailsContainerProps) => {
   const [raffleFinal, setRaffleFinal] = useState<Raffle>()
-  console.log('raffle', raffle)
+  const { address } = useAccount()
   const { nftTokenId, nftCollectionAddress } = raffle
 
   useEffect(() => {
@@ -33,7 +35,6 @@ export const RaffleDetails = ({ raffle }: RaffleDetailsContainerProps) => {
       const fetchMetaData = async () => {
 
         const res = await axios.request(options)
-        console.log('res', res)
         const { title, media, contractMetadata } = res.data
         const { gateway } = media[0]
         const { name } = contractMetadata
@@ -42,20 +43,24 @@ export const RaffleDetails = ({ raffle }: RaffleDetailsContainerProps) => {
         raffle.image = gateway
         raffle.altText = title
         raffle.collectionName = name
-        console.log('new image', raffle.image)
-        console.log('new raffle', raffle)
+        if (raffle.winner !== noWinnerYet) {
+          console.log('raffle', raffle)
+
+          raffle.isWinner = raffle.winner === address
+          console.log('raffle.isWinner', raffle.isWinner)
+        }
+
         setRaffleFinal(raffle)
       }
       fetchMetaData()
     } catch (err) {
       console.error(err)
     }
-  }, [ raffle, nftCollectionAddress, nftTokenId])
+  }, [ raffle, nftCollectionAddress, nftTokenId, address])
 
 if (!raffleFinal) return
-  const { image, collectionName, raffleEndDate, reservePrice, ticketPrice, edition, altText } = raffleFinal
+  const { image, collectionName, raffleEndDate, reservePrice, ticketPrice, edition, altText, isWinner } = raffleFinal
 
-  console.log('is this raffle getting there', raffle)
   const currency = 'ETH'
   const ticketsSold = (raffle.entries && raffle.entries.length) ?? 0
 
@@ -68,6 +73,7 @@ if (!raffleFinal) return
         </Flex>
         <Flex flexDir={['column']} grow={1} pl={[null, null, 4]}>
           <Details
+            isWinner={isWinner}
             reservePrice={reservePrice}
             image={image}
             collection={collectionName}

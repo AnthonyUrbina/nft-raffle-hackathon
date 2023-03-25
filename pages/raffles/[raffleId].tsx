@@ -46,7 +46,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const querySnapshot = await getDocs(collection(db, "raffles"));
     const documents: Raffle[] = querySnapshot.docs.map((doc) => doc.data() as Raffle);
     const raffle = documents.filter(raffle => { console.log('server filter raffle', raffle); return raffle.raffleId === Number(raffleId) })
-    console.log('serverside raffle end', raffle)
     return {
         props: { raffle: raffle[0] ?? {} }
     }
