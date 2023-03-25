@@ -28,6 +28,7 @@ export const BuyForm = () => {
                 .required()
                 .integer('Must be a whole number')
                 .min(1, 'Must be greater than zero')
+                .max(99, 'Must be less than 100')
         })
 
     const handleClick = (action: string) => {
@@ -53,25 +54,28 @@ export const BuyForm = () => {
             onSubmit={formik.handleSubmit}>
                 <FormControl isInvalid={!!formik.errors.ticketQuantity}>
                     <Flex rounded={10} py={2} justifyContent={['space-between']}>
-                        <Flex basis={['40%']}>
-                            <HStack maxW='170px'>
-                                <Button  background={'transparent'} onClick={() => handleClick('increment')}>+</Button>
+                        <Flex basis={['30%']}>
+                            <HStack>
+                                <Button flexBasis={'20%'} background={'transparent'} onClick={() => handleClick('increment')}>+</Button>
                                 <Input
-                                minW={'3.25rem'}
+                                type='number'
+                                name='ticketQuantity'
+                                minW={'3rem'}
                                 textAlign={'center'}
                                 rounded={20}
                                 onChange={handleChange}
                                 value={ticketQuantity} />
-                                <Button background={'transparent'} onClick={() => handleClick('decrement')}>-</Button>
+                                <Button flexBasis={'20%'} background={'transparent'} onClick={() => handleClick('decrement')}>-</Button>
                             </HStack>
                         </Flex>
-                        <Flex basis={['60%']}>
-                        <Button
-                        w={['100%']}
-                        rounded={20}
-                        type='submit'>
-                            { `Buy ${ticketQuantity} Tickets Now ` }
-                        </Button>
+                        <Flex basis={['70%']}>
+                            <Button
+                            w={['100%']}
+                            maxW={['160px']}
+                            rounded={20}
+                            type='submit'>
+                                { `Buy ${ticketQuantity} Tickets Now` }
+                            </Button>
                         </Flex>
                     </Flex>
                     <FormErrorMessage>{formik.errors.ticketQuantity}</FormErrorMessage>

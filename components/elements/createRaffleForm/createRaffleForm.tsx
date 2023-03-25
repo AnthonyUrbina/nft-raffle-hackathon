@@ -76,7 +76,6 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
         }),
         onSubmit: (values) => {
             if (!selectedNftData) {
-                console.log('no no no')
                 return
             }
             const {reservePrice, ticketPrice, endDate} = values
@@ -86,7 +85,6 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
                 endDate,
                 nft: selectedNftData
             }
-            console.log('createdRaffle', createdRaffle)
         },
     });
 
@@ -97,7 +95,6 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
     }
 
     const handleSelectedNft = (event: React.MouseEvent<HTMLButtonElement>, selectedNft: number) => {
-        const { target } = event
         const { title, tokenId, collectionAddress} = nfts[selectedNft]
         const nftData: NftDataContractReady = {
             title,

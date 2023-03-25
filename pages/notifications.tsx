@@ -1,10 +1,10 @@
 import { memo } from 'react'
-import { AllRaffles } from '../components/pages'
+import { Notifications } from '../components/pages'
 
 const PublicRafflesContainer = () => {
-    return (
-        <AllRaffles filters={['Live', 'Expired', 'Created', 'Unclaimed']} pageHeading='My Raffles'/>
-    )
+  return (
+    <Notifications/>
+  )
 }
 
 PublicRafflesContainer.displayName = 'Create Raffle Container'

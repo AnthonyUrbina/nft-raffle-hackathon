@@ -6,68 +6,85 @@ import {
 import { useEffect, useState } from "react"
 import { Details } from "../../elements/"
 import { RaffleCardProps, ParticipantInfo, Participants, BuyButton } from '../../elements'
+import type { DocumentData } from '@firebase/firestore-types';
+import axios from 'axios';
+import { RaffleDetailsContainerProps } from '../../../pages/raffles/[raffleId]';
+import { Raffle } from '../../../pages/raffles/[raffleId]';
+import { useAccount } from 'wagmi';
 
-interface RaffleDetailsProps {
-  raffleId: string
-}
+const noWinnerYet = '0x0000000000000000000000000000000000000000'
 
-export const RaffleDetails = ({raffleId}: RaffleDetailsProps) => {
-  const [participantsList, setParticipantsList] = useState<ParticipantInfo[]>([])
-  const [raffle, setRaffle] = useState<RaffleCardProps>({
-    image: '',
-    collection: '',
-    ticketsSold: 0,
-    raffleEndTime: 0,
-    pricePerTicket: 0,
-    totalTickets: 0,
-    edition: '',
-    currency: '',
-    altText: ''
-  })
-
+export const RaffleDetails = ({ raffle }: RaffleDetailsContainerProps) => {
+  const [raffleFinal, setRaffleFinal] = useState<Raffle>()
+  const { address } = useAccount()
+  const { nftTokenId, nftCollectionAddress } = raffle
 
   useEffect(() => {
-    const dummyRaffleData = {
-      image: '/static/wow.png',
-      collection: "World of Women",
-      ticketsSold: 0,
-      raffleEndTime: 1679458038,
-      pricePerTicket: .02,
-      totalTickets: 24,
-      edition: 'WoW #8604',
-      currency: 'ETH',
-      altText: "wow"
+    try {
+      const options = {
+        method: 'GET',
+        url: `https://eth-goerli.g.alchemy.com/nft/v2/YMYVZZmF7YdOUtdXKVP-OoKjlxhWa7nJ/getNFTMetadata`,
+        params: {
+          contractAddress: nftCollectionAddress,
+          tokenId: nftTokenId,
+          refreshCache: 'false'
+        },
+        headers: { accept: 'application/json' }
+      };
+
+      const fetchMetaData = async () => {
+
+        const res = await axios.request(options)
+        const { title, media, contractMetadata } = res.data
+        const { gateway } = media[0]
+        const { name } = contractMetadata
+
+        raffle.edition = title
+        raffle.image = gateway
+        raffle.altText = title
+        raffle.collectionName = name
+        if (raffle.winner !== noWinnerYet) {
+          console.log('raffle', raffle)
+
+          raffle.isWinner = raffle.winner === address
+          console.log('raffle.isWinner', raffle.isWinner)
+        }
+
+        setRaffleFinal(raffle)
+      }
+      fetchMetaData()
+    } catch (err) {
+      console.error(err)
     }
-    setParticipantsList([{ address: '0xa0a513689935Be152F97E8e2FF93E79E7A98EF2B', ticketsPurchased: 10 }, { address: '0xa0a513689935Be152F97E8e2FF93E79E7A98EF2B', ticketsPurchased: 10 }])
-    setRaffle(dummyRaffleData)
-  },[])
+  }, [ raffle, nftCollectionAddress, nftTokenId, address])
 
- const renderParticipants = () => {
+if (!raffleFinal) return
+  const { image, collectionName, raffleEndDate, reservePrice, ticketPrice, edition, altText, isWinner } = raffleFinal
 
- }
-
-  const { image, collection, ticketsSold, raffleEndTime, pricePerTicket, totalTickets, edition, currency, altText } = raffle
+  const currency = 'ETH'
+  const ticketsSold = (raffle.entries && raffle.entries.length) ?? 0
 
   return (
     <>
       <Heading my={[1]}>Raffle Details</Heading>
       <Flex flexDir={['column', null, 'row']}>
         <Flex basis={['100%', null, '42.5%']}>
-          <Image w={['100%']} height={['50vh', null, '55vh']} objectFit='cover' alt={'meebit'} src={'/static/meebit-.jpeg'} rounded={10} mb={[4]}/>
+          <Image w={['100%']} height={['50vh', null, '55vh']} objectFit='cover' alt={'meebit'} src={image} rounded={10} mb={[4]} />
         </Flex>
         <Flex flexDir={['column']} grow={1} pl={[null, null, 4]}>
           <Details
+            isWinner={isWinner}
+            reservePrice={reservePrice}
             image={image}
-            collection={collection}
+            collection={collectionName}
             ticketsSold={ticketsSold}
-            raffleEndTime={raffleEndTime}
-            pricePerTicket={pricePerTicket}
-            totalTickets={totalTickets}
+            raffleEndTime={raffleEndDate}
+            pricePerTicket={ticketPrice}
             edition={edition}
             currency={currency}
             altText={altText}
           />
-          <Participants participantsList={participantsList} />
+          {/* <Participants participantsList={participantsList} /> */}
         </Flex>
       </Flex>
     </>
