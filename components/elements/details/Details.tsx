@@ -7,7 +7,7 @@ import {
     Box,
 
 } from '@chakra-ui/react'
-import { RaffleCardProps } from '../raffleCard'
+import { RaffleCardProps, hasTimeExpired } from '../raffleCard'
 import { BuyButton, QuantityButton, BuyForm } from '../../elements'
 import { ethers } from 'ethers'
 import dayjs from 'dayjs'
@@ -66,7 +66,7 @@ export const Details = ({
             {raffler && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Raffler ${raffler}`}</Text>}
             {winner && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Winner ${winner}`}</Text>}
             <Box my={1}>
-                {!winner && <> <BuyForm /> </>}
+                {!winner || !hasTimeExpired(raffleEndTime) && <> <BuyForm /> </>}
             </Box>
         </Box>
     )

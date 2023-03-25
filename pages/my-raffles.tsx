@@ -1,9 +1,9 @@
 import { memo } from 'react'
-import { PublicRaffles } from '../components/pages'
+import { AllRaffles } from '../components/pages'
 
 const PublicRafflesContainer = () => {
     return (
-        <PublicRaffles filters={['Live', 'Expired', 'Created', 'Unclaimed']} pageHeading='My Raffles'/>
+        <AllRaffles filters={['Live', 'Expired', 'Created', 'Unclaimed']} pageHeading='My Raffles'/>
     )
 }
 

@@ -35,6 +35,12 @@ export interface RaffleCardProps {
     raffleId: number
 }
 
+export const hasTimeExpired = (raffleEndTime: number) => {
+    const now = Date.now();
+    return raffleEndTime * 1000 < now;
+}
+
+
 export const RaffleCard = ({
     collection,
     edition,
@@ -106,7 +112,7 @@ export const RaffleCard = ({
     }
 
     const timeCountdown = () => {
-        const timeExpired = hasTimeExpired()
+        const timeExpired = hasTimeExpired(raffleEndTime)
         if (timeExpired) {
             return (
                 <>
@@ -133,14 +139,9 @@ export const RaffleCard = ({
     }
 
     const renderButton = () => {
-        const timeExpired = hasTimeExpired()
+        const timeExpired = hasTimeExpired(raffleEndTime)
         if (timeExpired) return
         return <BuyForm />
-    }
-
-    const hasTimeExpired = () => {
-        const now = Date.now();
-        return raffleEndTime * 1000 < now;
     }
 
     const pricePerTicketEth = ethers.utils.formatEther(ethers.BigNumber.from(pricePerTicket.toString())); // Convert Wei to ETH
@@ -152,7 +153,7 @@ export const RaffleCard = ({
             _hover={{ transform: "scale(1.02)" }}
             onClick={handleClick}
             >
-            <Flex position={'relative'} flexDir={'column'} h={['94%', null, null, '30%']}>
+            <Flex position={'relative'} flexDir={'column'} h={['94%', null, null, '30%']} w={'100%'}>
                 <Flex border='1px' position={'absolute'} w={130} height={'28px'} right={'12px'} top={'12px'} justify='center' rounded={15} px={1.5}>
                     {timeCountdown()}
                 </Flex >
@@ -166,7 +167,7 @@ export const RaffleCard = ({
                 </Flex>
                 <Flex px={[3]} py={[2]} h={['10%', '33%']} justify={['space-between']}>
                     <Text fontSize={['sm']} fontWeight={'500'}>{`Tickets Sold ${ticketsSold}`}</Text>
-                    <Text fontSize={['sm']} fontWeight={'500'}>{`Ticket Price ${pricePerTicketEth} ${currency}`}</Text>
+                    <Text textAlign={'right'} fontSize={['sm']} fontWeight={'500'}>{`Ticket Price ${pricePerTicketEth} ${currency}`}</Text>
                 </Flex>
                 <Box px={[3]} my={1}>
                     {renderButton()}
