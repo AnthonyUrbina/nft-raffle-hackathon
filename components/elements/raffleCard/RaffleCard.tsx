@@ -106,11 +106,8 @@ export const RaffleCard = ({
     }
 
     const timeCountdown = () => {
-        const currentTime = new Date();
-
-        const timestampDate = new Date(raffleEndTime * 1000);
-
-        if (timestampDate <= currentTime) {
+        const timeExpired = hasTimeExpired()
+        if (timeExpired) {
             return (
                 <>
                     <Flex flexBasis={'calc(100%/3)'} justify='center'>
@@ -133,6 +130,17 @@ export const RaffleCard = ({
                 </>
             )
         }
+    }
+
+    const renderButton = () => {
+        const timeExpired = hasTimeExpired()
+        if (timeExpired) return
+        return <BuyForm />
+    }
+
+    const hasTimeExpired = () => {
+        const now = Date.now();
+        return raffleEndTime * 1000 < now;
     }
 
     const pricePerTicketEth = ethers.utils.formatEther(ethers.BigNumber.from(pricePerTicket.toString())); // Convert Wei to ETH
@@ -160,8 +168,8 @@ export const RaffleCard = ({
                     <Text fontSize={['sm']} fontWeight={'500'}>{`Tickets Sold ${ticketsSold}`}</Text>
                     <Text fontSize={['sm']} fontWeight={'500'}>{`Ticket Price ${pricePerTicketEth} ${currency}`}</Text>
                 </Flex>
-                    <Box px={[3]} my={1}>
-                    <BuyForm />
+                <Box px={[3]} my={1}>
+                    {renderButton()}
                 </Box>
             </Flex >
         </Flex>
