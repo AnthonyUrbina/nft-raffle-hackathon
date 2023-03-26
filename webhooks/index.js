@@ -37,14 +37,14 @@ app.post('/CreateRaffle', (req, res) => {
                 "nftCollectionAddress" : '0x' + payload[0]["logs"][1]["data"].substring(130,194).replace(/^0+/, ''),
                 "nftTokenId" : parseInt('0x'+ payload[0]["logs"][1]["data"].substring(194,258).replace(/^0+/, '')),
                 "reservePrice" : parseInt('0x' + payload[0]["logs"][1]["data"].substring(258,322)),
-                "ticketPrice" : parseInt('0x' + payload[0]["logs"][1]["data"].substring(322)),
+                "ticketPrice" : parseInt('0x' + payload[0]["logs"][1]["data"].substring(322, 386)),
+                "raffleEndDate" : parseInt('0x' + payload[0]["logs"][1]["data"].substring(386)),
                 "entries" : [],
                 "prizeClaimed" : false,
                 "raffleEnded" : false,
                 "winner" : "0x0000000000000000000000000000000000000000",
                 // TODO: fix erc20address, raffleEndDate, and isAbortable
                 "erc20Address" : "0x0000000000000000000000000000000000000000",
-                "raffleEndDate" : Date.now() + 1209600,
                 "isAbortable" : false
             }
             console.log("reserve price: ", payload[0]["logs"][1]["data"].substring(258,322))
@@ -111,9 +111,9 @@ app.post('/EndRaffle', (req, res) => {
             const payload = JSON.parse(body);
             console.log(payload)
             const raffleId =  parseInt('0x' + payload[0]["logs"][0]["data"].substring(2,66))
-            const enderAddress = '0x' + payload[0]["logs"][0]["data"].substring(66).replace(/^0+/, '')
+            const winnerAddress = '0x' + payload[0]["logs"][0]["data"].substring(66).replace(/^0+/, '')
             console.log("\n\nEndRaffle:payload:\n\n", payload)
-            await db.collection("raffles").doc(raffleId.toString()).update({raffleEnded : true})
+            await db.collection("raffles").doc(raffleId.toString()).update({raffleEnded : true, winner : winnerAddress})
         }catch(err){
             console.log(err)
             res.status(500).send()
