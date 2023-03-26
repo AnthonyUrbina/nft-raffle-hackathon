@@ -54,10 +54,10 @@ export const RaffleCard = ({
     pricePerTicket,
     currency,
     raffleId,
-    isWinner
+    isWinner,
+    entries
 }: RaffleCardProps) => {
     const expirationDate = dayjs(raffleEndTime)
-    console.log('RaffleCard isWinner', edition, isWinner)
     // total seconds until launch
     let remaining = expirationDate.diff(dayjs(), 's')
 
@@ -167,10 +167,10 @@ export const RaffleCard = ({
             _hover={{ transform: "scale(1.02)" }}
             onClick={handleClick}
             >
-            <Flex position={'relative'} flexDir={'column'} h={['94%', null, null, '30%']} w={'100%'}>
-                <Flex border='1px' position={'absolute'} w={130} height={'28px'} right={'12px'} top={'12px'} justify='center' rounded={15} px={1.5}>
+            <Flex position={'relative'} flexDir={'column'} h={['94%']} w={'100%'}>
+                {/* <Flex border='1px' position={'absolute'} w={130} height={'28px'} right={'12px'} top={'12px'} justify='center' rounded={15} px={1.5}>
                     {timeCountdown()}
-                </Flex >
+                </Flex > */}
                 <Image
                     roundedTop={19}
                     src={image}

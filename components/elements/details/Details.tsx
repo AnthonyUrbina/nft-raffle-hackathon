@@ -50,17 +50,15 @@ export const Details = ({
     const expirationDate = dayjs(raffleEndTime)
     let remaining = expirationDate.diff(dayjs(), 's')
 
-    const initDays = Math.floor(remaining / SECONDS_IN_DAY)
-    const initHours = Math.floor((remaining % SECONDS_IN_DAY) / SECONDS_IN_HOUR)
-    const initMinutes = Math.floor((remaining % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE)
-    const initSeconds = remaining % SECONDS_IN_MINUTE
+    // const initDays = Math.floor(remaining / SECONDS_IN_DAY)
+    // const initHours = Math.floor((remaining % SECONDS_IN_DAY) / SECONDS_IN_HOUR)
+    // const initMinutes = Math.floor((remaining % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE)
+    // const initSeconds = remaining % SECONDS_IN_MINUTE
 
     const renderButton = () => {
         const timeExpired = hasTimeExpired(raffleEndTime)
         const _address = address && address.toString()
         const _winner = winner && winner.toString()
-        console.log('address', address)
-        console.log('winner', winner)
         if (timeExpired) {
             if (isWinner) return <Button>Claim</Button>
 
@@ -68,6 +66,8 @@ export const Details = ({
             return <BuyForm />
         }
     }
+    const date = new Date(raffleEndTime * 1000); // convert timestamp to milliseconds and create Date object
+    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/23 ${date.getHours()} hours ${date.getMinutes()} minutes`; //
 
     return (
         <Box border={'1px solid'} rounded={10} p={3}>
@@ -75,12 +75,12 @@ export const Details = ({
             <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Collection: ${collection}`}</Text>
             <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Tickets Sold: ${ticketsSold}`}</Text>
             <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Ticket Price: ${pricePerTicketEth} ${currency}`}</Text>
-            <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Ends in: ${initDays}`}</Text>
+            <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`End Date: ${formattedDate}`}</Text>
             {totalRecieved && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Total Recieved ${totalRecieved}`}</Text>}
             {yourTickets && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Your Tickets ${yourTickets}`}</Text>}
             {youSpent && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`You Spent ${youSpent}`}</Text>}
-            {raffler && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Raffler ${raffler}`}</Text>}
-            {winner && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Winner ${winner}`}</Text>}
+            {raffler && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Raffler: ${raffler}`}</Text>}
+            {winner && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Winner: ${winner}`}</Text>}
             <Box my={1}>
                 {renderButton()}
             </Box>

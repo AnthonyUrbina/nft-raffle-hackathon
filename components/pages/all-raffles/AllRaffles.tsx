@@ -71,85 +71,80 @@ export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
   const showingMyRaffles = pageHeading === 'My Raffles'
 
   const filterRaffles = useCallback(async (formattedRaffles) => {
-    console.log('USE CALLBACK')
-    if (showingPublicRaffles) {
-      for (let i = 0; i < formattedRaffles.length; i++) {
-        const { nftTokenId, nftCollectionAddress } = formattedRaffles[i];
+    try {
+      if (showingPublicRaffles) {
+        for (let i = 0; i < formattedRaffles.length; i++) {
+          const { nftTokenId, nftCollectionAddress } = formattedRaffles[i];
 
-        const options = {
-          method: 'GET',
-          url: `https://eth-goerli.g.alchemy.com/nft/v2/YMYVZZmF7YdOUtdXKVP-OoKjlxhWa7nJ/getNFTMetadata`,
-          params: {
-            contractAddress: nftCollectionAddress,
-            tokenId: nftTokenId,
-            refreshCache: 'false'
-          },
-          headers: { accept: 'application/json' }
-        };
+          const options = {
+            method: 'GET',
+            url: `https://eth-goerli.g.alchemy.com/nft/v2/YMYVZZmF7YdOUtdXKVP-OoKjlxhWa7nJ/getNFTMetadata`,
+            params: {
+              contractAddress: nftCollectionAddress,
+              tokenId: nftTokenId,
+              refreshCache: 'false'
+            },
+            headers: { accept: 'application/json' }
+          };
 
-        const res = await axios.request(options);
-        const { title, media } = res.data;
-        const { gateway } = media[0];
+          const res = await axios.request(options);
+          const { title, media, contractMetadata } = res.data;
+          const { gateway } = media[0];
+          const { name } = contractMetadata
 
-        formattedRaffles[i].edition = title;
-        formattedRaffles[i].image = gateway;
-        formattedRaffles[i].altText = title;
+          formattedRaffles[i].edition = title;
+          formattedRaffles[i].image = gateway;
+          formattedRaffles[i].altText = title;
+          formattedRaffles[i].collection = name;
 
-        const liveRaffles = formattedRaffles.filter(raffle => !raffle.raffleEnded && raffle.winner === noWinnerYet && !raffle.prizeClaimed);
-        console.log('live raffles', liveRaffles)
-        const expiredRaffles = formattedRaffles.filter(raffle => raffle.winner !== noWinnerYet || raffle.raffleEnded || raffle.prizeClaimed)
-        console.log('expiredRaffles', expiredRaffles)
-        setFilteredRaffles({ live: liveRaffles, expired: expiredRaffles });
-      }
-    } else if (showingMyRaffles) {
-      for (let i = 0; i < formattedRaffles.length; i++) {
-        const { nftTokenId, nftCollectionAddress } = formattedRaffles[i];
-
-        const options = {
-          method: 'GET',
-          url: `https://eth-goerli.g.alchemy.com/nft/v2/YMYVZZmF7YdOUtdXKVP-OoKjlxhWa7nJ/getNFTMetadata`,
-          params: {
-            contractAddress: nftCollectionAddress,
-            tokenId: nftTokenId,
-            refreshCache: 'false'
-          },
-          headers: { accept: 'application/json' }
-        };
-
-        const res = await axios.request(options);
-        const { title, media, contractMetadata } = res.data
-        const { gateway } = media[0]
-        const { name } = contractMetadata
-
-        formattedRaffles[i].edition = title;
-        formattedRaffles[i].image = gateway;
-        formattedRaffles[i].altText = title;
-        formattedRaffles[i].collection = name;
-
-
-        if (formattedRaffles[i].winner !== noWinnerYet) {
-          console.log('formattedRaffles[i]', formattedRaffles[i])
-
-          formattedRaffles[i].isWinner = formattedRaffles[i].winner === address
-          console.log('formattedRaffles[i].isWinner', formattedRaffles[i].isWinner)
+          const liveRaffles = formattedRaffles.filter(raffle => !raffle.raffleEnded && raffle.winner === noWinnerYet && !raffle.prizeClaimed);
+          const expiredRaffles = formattedRaffles.filter(raffle => raffle.winner !== noWinnerYet || raffle.raffleEnded || raffle.prizeClaimed)
+          setFilteredRaffles({ live: liveRaffles, expired: expiredRaffles });
         }
-        const _address = address && address.toString()
-        const liveRaffles = formattedRaffles.filter(raffle => !raffle.raffleEnded && (raffle.entries && raffle.entries.includes(address)) && raffle.winner === noWinnerYet && !raffle.prizeClaimed);
-        console.log('my live raffles', liveRaffles)
-        const expiredRaffles = formattedRaffles.filter(raffle => (raffle.entries && raffle.entries.includes(address)) && raffle.winner !== noWinnerYet || raffle.raffleEnded || raffle.prizeClaimed)
-        console.log('my expiredRaffles', expiredRaffles)
-        const createdRaffles = formattedRaffles.filter(raffle => raffle.owner === address)
-        console.log('my createdRaffles', createdRaffles)
-        const unclaimedRaffles = formattedRaffles.filter(raffle => raffle.winner === address && !raffle.prizeClaimed)
-        console.log('my unclaimedRaffles', unclaimedRaffles)
+      } else if (showingMyRaffles) {
+        for (let i = 0; i < formattedRaffles.length; i++) {
+          const { nftTokenId, nftCollectionAddress } = formattedRaffles[i];
+          const options = {
+            method: 'GET',
+            url: `https://eth-goerli.g.alchemy.com/nft/v2/YMYVZZmF7YdOUtdXKVP-OoKjlxhWa7nJ/getNFTMetadata`,
+            params: {
+              contractAddress: nftCollectionAddress,
+              tokenId: nftTokenId,
+              refreshCache: 'false'
+            },
+            headers: { accept: 'application/json' }
+          };
 
-        setFilteredRaffles({ live: liveRaffles, expired: expiredRaffles, created: createdRaffles, unclaimed: unclaimedRaffles });
+          const res = await axios.request(options);
+          const { title, media, contractMetadata } = res.data
+          const { gateway } = media[0]
+          const { name } = contractMetadata
+
+          formattedRaffles[i].edition = title;
+          formattedRaffles[i].image = gateway;
+          formattedRaffles[i].altText = title;
+          formattedRaffles[i].collection = name;
+
+
+          if (formattedRaffles[i].winner !== noWinnerYet) {
+
+            formattedRaffles[i].isWinner = formattedRaffles[i].winner === address
+          }
+          const _address = address && address.toString()
+          const liveRaffles = formattedRaffles.filter(raffle => !raffle.raffleEnded && (raffle.entries && raffle.entries.includes(_address)) && raffle.winner === noWinnerYet && !raffle.prizeClaimed);
+          const expiredRaffles = formattedRaffles.filter(raffle => (raffle.entries && raffle.entries.includes(_address)) && raffle.winner !== noWinnerYet || raffle.raffleEnded || raffle.prizeClaimed)
+          const createdRaffles = formattedRaffles.filter(raffle => raffle.owner === _address)
+          const unclaimedRaffles = formattedRaffles.filter(raffle => raffle.winner === _address && !raffle.prizeClaimed)
+
+          setFilteredRaffles({ live: liveRaffles, expired: expiredRaffles, created: createdRaffles, unclaimed: unclaimedRaffles });
+        }
       }
+    } catch (err) {
+      console.error(err.message)
     }
   }, [showingMyRaffles, showingPublicRaffles, address])
 
   useEffect(() => {
-    console.log('USE EFFECT')
     const fetchCollection = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "raffles"));
@@ -176,6 +171,7 @@ export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
             owner
           }
         });
+        console.log('formatted raffles', formattedRaffles)
         await filterRaffles(formattedRaffles)
       } catch (err) {
         console.error(err);

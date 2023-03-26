@@ -43,7 +43,6 @@ const noWinnerYet = '0x0000000000000000000000000000000000000000'
 // should be able to remove filters and just loop through the properties of filteredRaffles to get them
 
 export const FilteredViews = ({filteredRaffles, filters}: FilteredViewsProps) => {
-    console.log('filtered raffles with isWinner', filteredRaffles.raffles)
     const tabFactory = () => {
        const tabs = filters.map(filter => {
             return <Tab key={filter}>{filter}</Tab>
@@ -55,7 +54,6 @@ export const FilteredViews = ({filteredRaffles, filters}: FilteredViewsProps) =>
     const tabPanelFactory = () => {
         const panels = filters.map(filter => {
             const _filter = filter.toLocaleLowerCase()
-            console.log('_filter', _filter)
             return (
                 <TabPanel key={`${filter}-panel`} display='flex' flexWrap={['wrap']} justifyContent={['center', 'flex-start']}>
                     {
@@ -72,11 +70,11 @@ export const FilteredViews = ({filteredRaffles, filters}: FilteredViewsProps) =>
     }
 
     const raffleCardFactory = (raffle: RaffleCardProps) => {
-        const { image, collection, raffleId, ticketsSold, raffleEndTime, pricePerTicket, reservePrice, edition, currency, altText, isWinner } = raffle
-
+        const { image, collection, raffleId, ticketsSold, raffleEndTime, pricePerTicket, reservePrice, edition, currency, altText, isWinner, entries } = raffle
+        console.log('raffff', raffle)
         return <RaffleCard
                     isWinner={isWinner}
-                    key={raffleId}
+                    key={`${raffleId}-${edition}`}
                     image={image}
                     collection={collection}
                     ticketsSold={ticketsSold}
@@ -87,6 +85,7 @@ export const FilteredViews = ({filteredRaffles, filters}: FilteredViewsProps) =>
                     currency={currency}
                     altText={altText}
                     raffleId={raffleId}
+                    entries={entries}
                 />
     }
 
