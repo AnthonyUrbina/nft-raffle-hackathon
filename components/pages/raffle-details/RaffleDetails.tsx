@@ -82,14 +82,6 @@ const getParticipantsList = () => {
     return participantsList
   }
 
-  // {address: amount}
-  // loop through array
-  // if address isnt in container
-  // store it w value of 1
-  // if it is in the container
-  // incremement its value by 1
-  // return the object
-
   return (
     <>
       <Heading my={[1]}>Raffle Details</Heading>

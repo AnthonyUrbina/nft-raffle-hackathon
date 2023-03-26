@@ -69,7 +69,7 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
     }, [address, handleConnectWallet])
 
     useEffect(() => {
-        if (address) {
+        if (address && pathname !== '/notifications') {
             const pushSDKSocket = createSocketConnection({
                 user: userCAIP,
                 env: 'staging',
@@ -125,21 +125,12 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                         spam: true,
                         env: 'staging'
                     });
+                    console.log('spams', notificationsSpam)
                     setNotifications(notificationsSpam)
-                }
-                getNotis()
-            } else {
-                const getNotis = async () => {
-                    const notifications = await PushAPI.user.getFeeds({
-                        user: userCAIP,
-                        env: 'staging'
-                    });
-                    setNotifications(notifications)
                 }
                 getNotis()
             }
         }
-
     }, [])
 
 
@@ -170,6 +161,7 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                                 as={IconButton}
                                 aria-label='Options'
                                 icon={<BellIcon />}
+                                href={'/notifications'}
                                 // onClick={() => ()}
                             />
                             <NotiMenu notifications={notifications}/>
