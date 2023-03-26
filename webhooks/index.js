@@ -232,7 +232,7 @@ app.post('/EndRaffle', (req, res) => {
                 // owner: your raffle has ended
                 // loser: you lost the raffle
                 // winner: you won the raffle
-                const { entries, owner, raffleId, winner, nftTokenId, nftCollectionAddress} = raffle
+                const { entries, owner, raffleId, winner, nftTokenId, nftCollectionAddress } = raffle
                 // make opensea call
                 // grab image, token edition, collection name
                 // store in container for later
@@ -255,26 +255,23 @@ app.post('/EndRaffle', (req, res) => {
                 const res = await axios.request(options);
                 const { title, media } = res.data;
                 const { gateway } = media[0];
-                const image = gateway;
+                const img = gateway;
 
                 const losers = entries.filter((entry, index) => entries.indexOf(entry) === index)
                 console.log('losers:', losers)
                 const cta = `/raffles/${raffleId}`
                 const groupNotification = 'subset'
                 const singleNotification = 'target'
-                // losers
                 const loserMessage = 'YOU LOST THE RAFFLE'
                 const winnerMessage = 'YOU WON THE RAFFLE'
                 const ownerMessage = 'YOUR RAFFLE HAS ENDED'
 
-
-                sendPushNotification({ title, loserMessage, cta, image, losers, groupNotification})
+                // losers
+                sendPushNotification({ body: title, title: loserMessage, cta, img, recipient: losers, type: groupNotification })
                 // winners
-                sendPushNotification({title, winnerMessage, cta, image, winner, singleNotification})
+                sendPushNotification({ body: title, title: winnerMessage, cta, img, recipient: winner, type: singleNotification })
                 // owners
-                sendPushNotification({ title, ownerMessage, cta, image, owner, singleNotification })
-
-                console.log('End Raffle data:', raffle);
+                sendPushNotification({ body: title, title: ownerMessage, cta, img, recipient: owner, type: singleNotification })
             } else {
                 console.log("No such document!");
             }
