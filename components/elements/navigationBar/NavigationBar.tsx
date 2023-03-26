@@ -25,7 +25,7 @@ import NextLink from 'next/link';
 import * as routes from '../../../constants/routes';
 import { useAccount } from "wagmi";
 import { useEffect, useState } from 'react';
-import { NotiMenuList } from '../../elements'
+import { NotiMenu } from '../../elements'
 import { ethers } from 'ethers'
 import { createSocketConnection, EVENTS } from '@pushprotocol/socket';
 import * as PushAPI from "@pushprotocol/restapi";
@@ -49,45 +49,18 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
     const { address } = useAccount()
     const [sdkSocket, setSDKSocket] = useState<any>(null)
     const [isConnected, setIsConnected] = useState(sdkSocket?.connected)
+    const [notifications, setNotifications] = useState([])
+    const router = useRouter()
+    const { pathname } = router
+
     const chainId = 5
     const userCAIP = `eip155:${chainId}:${address}`;
     useEffect(() => {
         address && handleConnectWallet(address)
     }, [address, handleConnectWallet])
 
-
-    // const addSocketEvents = () => {
-    //     sdkSocket?.on(EVENTS.CONNECT, () => {
-    //         setIsConnected(true)
-    //     })
-
-    //     sdkSocket?.on(EVENTS.DISCONNECT, () => {
-    //         setIsConnected(false)
-    //     })
-
-    //     sdkSocket?.on(EVENTS.USER_FEEDS, (notification) => {
-    //         console.log('notification',notification)
-    //     })
-    // }
-
-    // const removeSocketEvents = () => {
-    //     sdkSocket?.off(EVENTS.CONNECT);
-    //     sdkSocket?.off(EVENTS.DISCONNECT)
-    // }
-
-    // useEffect(() => {
-    //     if (sdkSocket) {
-    //         addSocketEvents()
-    //         console.log('adding SocketEvents')
-    //     } else {
-    //         removeSocketEvents()
-    //         console.log('removing SocketEvents')
-
-    //     }
-    // }, [sdkSocket])
-
     useEffect(() => {
-        if (address) {
+        if (address && pathname !== '/notifications') {
             const pushSDKSocket = createSocketConnection({
                 user: userCAIP,
                 env: 'staging',
@@ -115,17 +88,6 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
             console.log('created pushSDKSocket', pushSDKSocket)
         }
 
-        // const getNotis = async () => {
-        //     const notifications = await PushAPI.user.getFeeds({
-        //         user: userCAIP, // user address in CAIP
-        //         env: 'staging'
-        //     });
-        //     console.log(notifications)
-        // }
-
-        // getNotis()
-
-
         return () => {
             if (sdkSocket) {
                 sdkSocket.disconnect()
@@ -134,10 +96,19 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
         }
     }, [])
 
-    console.log('sdkSocket', sdkSocket)
+    useEffect(() => {
+            const getNotis = async () => {
+            const notifications = await PushAPI.user.getFeeds({
+                user: userCAIP, // user address in CAIP
+                env: 'staging'
+            });
+            setNotifications(notifications)
+        }
+
+        getNotis()
+    },[])
 
 
-    const router = useRouter()
     const { CREATE_RAFFLE } = routes
     return (
         <Flex justify="space-between" align="center" borderBottom="1px">
@@ -165,7 +136,7 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                                 aria-label='Options'
                                 icon={<BellIcon />}
                             />
-                            <NotiMenuList />
+                            <NotiMenu notifications={notifications}/>
                         </Menu>
                     </Box>
 

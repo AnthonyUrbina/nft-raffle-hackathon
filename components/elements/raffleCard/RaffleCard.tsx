@@ -57,7 +57,6 @@ export const RaffleCard = ({
     isWinner
 }: RaffleCardProps) => {
     const expirationDate = dayjs(raffleEndTime)
-    console.log('RaffleCard isWinner', edition, isWinner)
     // total seconds until launch
     let remaining = expirationDate.diff(dayjs(), 's')
 

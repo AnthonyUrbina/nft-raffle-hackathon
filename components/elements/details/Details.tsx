@@ -59,8 +59,6 @@ export const Details = ({
         const timeExpired = hasTimeExpired(raffleEndTime)
         const _address = address && address.toString()
         const _winner = winner && winner.toString()
-        console.log('address', address)
-        console.log('winner', winner)
         if (timeExpired) {
             if (isWinner) return <Button>Claim</Button>
 
