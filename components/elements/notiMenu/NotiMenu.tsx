@@ -37,7 +37,7 @@ export const NotiMenu = ({ notifications }) => {
                             <Text>{title}</Text>
                             <Text>{message}</Text>
                         </Flex>
-                        <Flex grow={1} basis={'10%'} justify={'flex-start'}>
+                        <Flex basis={'10%'} justify={'flex-start'}>
                             <CloseIcon boxSize={'8px'} />
                         </Flex>
                     </Flex>

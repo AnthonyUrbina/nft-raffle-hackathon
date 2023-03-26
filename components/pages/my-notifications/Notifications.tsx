@@ -5,9 +5,12 @@ import { CreateRaffleForm } from '../../elements'
 import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
 import { useEffect, useState } from 'react'
 import * as PushAPI from "@pushprotocol/restapi";
+import { useAccount } from 'wagmi';
+import { NotiLi } from '../../elements';
 
 
 export const Notifications = () => {
+    const { address } = useAccount()
     const [notifications, setNotifications] = useState([])
     const chainId = 5
     const userCAIP = `eip155:${chainId}:${address}`;
@@ -22,13 +25,14 @@ export const Notifications = () => {
         }
 
         getNotis()
-    }, [userCAIP])
+    }, [])
 
     return (
         <>
-        <Heading fontFamily='Inter' as='h3' fontWeight='semibold'>
-            Notifications
-        </Heading>
+            <Heading py={1} fontFamily='Inter' as='h3' fontWeight='semibold'>
+                Notifications
+            </Heading>
+            <NotiLi notifications={notifications} />
         </>
     )
 }
