@@ -77,8 +77,8 @@ export const Details = ({
             {totalRecieved && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Total Recieved ${totalRecieved}`}</Text>}
             {yourTickets && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Your Tickets ${yourTickets}`}</Text>}
             {youSpent && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`You Spent ${youSpent}`}</Text>}
-            {raffler && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Raffler ${raffler}`}</Text>}
-            {winner && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Winner ${winner}`}</Text>}
+            {raffler && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Raffler: ${raffler}`}</Text>}
+            {winner && <Text fontSize={['lg', null, 'xl']} fontWeight={'medium'}>{`Winner: ${winner}`}</Text>}
             <Box my={1}>
                 {renderButton()}
             </Box>

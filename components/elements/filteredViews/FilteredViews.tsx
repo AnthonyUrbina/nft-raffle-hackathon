@@ -70,11 +70,11 @@ export const FilteredViews = ({filteredRaffles, filters}: FilteredViewsProps) =>
     }
 
     const raffleCardFactory = (raffle: RaffleCardProps) => {
-        const { image, collection, raffleId, ticketsSold, raffleEndTime, pricePerTicket, reservePrice, edition, currency, altText, isWinner } = raffle
-
+        const { image, collection, raffleId, ticketsSold, raffleEndTime, pricePerTicket, reservePrice, edition, currency, altText, isWinner, entries } = raffle
+        console.log('raffff', raffle)
         return <RaffleCard
                     isWinner={isWinner}
-                    key={raffleId}
+                    key={`${raffleId}-${edition}`}
                     image={image}
                     collection={collection}
                     ticketsSold={ticketsSold}
@@ -85,6 +85,7 @@ export const FilteredViews = ({filteredRaffles, filters}: FilteredViewsProps) =>
                     currency={currency}
                     altText={altText}
                     raffleId={raffleId}
+                    entries={entries}
                 />
     }
 

@@ -54,7 +54,8 @@ export const RaffleCard = ({
     pricePerTicket,
     currency,
     raffleId,
-    isWinner
+    isWinner,
+    entries
 }: RaffleCardProps) => {
     const expirationDate = dayjs(raffleEndTime)
     // total seconds until launch
