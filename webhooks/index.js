@@ -22,6 +22,7 @@ const sendPushNotification = async ({ body, title, cta, img, recipient, type}) =
     // subset = 4
     // target = 3
     const isTarget = type === 'target'
+    type = type === 'target' ? 3 : 4
     let recipients;
     if (target) {
         recipients = `eip155:5:${recipient}`
@@ -244,21 +245,24 @@ app.post('/EndRaffle', (req, res) => {
                 const res = await axios.request(options);
                 const { title, media } = res.data;
                 const { gateway } = media[0];
-
-                raffle.edition = title;
                 const image = gateway;
-                raffle.altText = title;
 
                 const losers = entries.filter((entry, index) => entries.indexOf(entry) === index)
                 console.log('losers:', losers)
                 const cta = `/raffle/${raffleId}`
+                const groupNotification = 'subset'
+                const singleNotification = 'target'
                 // losers
                 const loserMessage = 'YOU LOST THE RAFFLE'
-                sendPushNotification({ title, loserMessage, cta, image, losers, raffleId})
+                const winnerMessage = 'YOU WON THE RAFFLE'
+                const ownerMessage = 'YOUR RAFFLE HAS ENDED'
+
+
+                sendPushNotification({ title, loserMessage, cta, image, losers, groupNotification})
                 // winners
-                sendPushNotification
+                sendPushNotification({title, winnerMessage, cta, image, winner, singleNotification})
                 // owners
-                sendPushNotification({})
+                sendPushNotification({ title, ownerMessage, cta, image, owner, singleNotification })
 
                 console.log('End Raffle data:', raffle);
             } else {
