@@ -24,10 +24,11 @@ const sendPushNotification = async ({ body, title, cta, img, recipient, type}) =
     const isTarget = type === 'target'
     type = type === 'target' ? 3 : 4
     let recipients;
-    if (target) {
+    if (isTarget) {
         recipients = `eip155:5:${recipient}`
     } else {
         recipients = []
+        console.log('recipient', recipient)
         for (let i = 0; i < recipient.length; i++) {
             const CAIPformat = `eip155:5:${recipient[i]}`
             recipients.push(CAIPformat)
@@ -39,8 +40,8 @@ const sendPushNotification = async ({ body, title, cta, img, recipient, type}) =
             type, // target
             identityType: 2, // direct payload
             notification: {
-                title: ``,
-                body: ``
+                title,
+                body
             },
             payload: {
                 title,
@@ -91,14 +92,23 @@ const pulldata = async () => {
         const res = await axios.request(options);
         const { title, media } = res.data;
         const { gateway } = media[0];
-
-        raffle.edition = title;
-        raffle.image = gateway;
-        raffle.altText = title;
+        const img = gateway;
 
         const losers = entries.filter((entry, index) => entries.indexOf(entry) === index)
         console.log('losers:', losers)
-        console.log('End Raffle data:', raffle);
+        const cta = `/raffles/${raffleId}`
+        const groupNotification = 'subset'
+        const singleNotification = 'target'
+        const loserMessage = 'YOU LOST THE RAFFLE'
+        const winnerMessage = 'YOU WON THE RAFFLE'
+        const ownerMessage = 'YOUR RAFFLE HAS ENDED'
+
+        // losers
+        sendPushNotification({ body: title, title: loserMessage, cta, img, recipient: losers, type: groupNotification })
+        // winners
+        sendPushNotification({ body: title, title: winnerMessage, cta, img, recipient: winner, type: singleNotification })
+        // owners
+        sendPushNotification({ body: title, title: ownerMessage, cta, img, recipient: owner, type: singleNotification })
     } else {
         console.log("No such document!");
     }
@@ -249,7 +259,7 @@ app.post('/EndRaffle', (req, res) => {
 
                 const losers = entries.filter((entry, index) => entries.indexOf(entry) === index)
                 console.log('losers:', losers)
-                const cta = `/raffle/${raffleId}`
+                const cta = `/raffles/${raffleId}`
                 const groupNotification = 'subset'
                 const singleNotification = 'target'
                 // losers
