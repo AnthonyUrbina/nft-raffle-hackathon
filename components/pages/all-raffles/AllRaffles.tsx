@@ -70,6 +70,8 @@ export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
   const showingPublicRaffles = pageHeading === 'Public Raffles'
   const showingMyRaffles = pageHeading === 'My Raffles'
 
+  console.log("filterRaffles:", filteredRaffles)
+
   const filterRaffles = useCallback(async (formattedRaffles) => {
     console.log("filterRaffles:", formattedRaffles)
     if (showingPublicRaffles) {
@@ -97,6 +99,8 @@ export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
 
         const liveRaffles = formattedRaffles.filter(raffle => !raffle.raffleEnded && raffle.winner === noWinnerYet && !raffle.prizeClaimed);
         const expiredRaffles = formattedRaffles.filter(raffle => raffle.winner !== noWinnerYet || raffle.raffleEnded || raffle.prizeClaimed)
+        console.log("liveRaffles", liveRaffles)
+        console.log("expired raffles", expiredRaffles)
         setFilteredRaffles({ live: liveRaffles, expired: expiredRaffles });
       }
     } else if (showingMyRaffles) {
@@ -129,12 +133,22 @@ export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
 
           formattedRaffles[i].isWinner = formattedRaffles[i].winner === address
         }
+        console.log("formattedrafflesbeforefilter", formattedRaffles)
         const _address = address && address.toString()
-        const liveRaffles = formattedRaffles.filter(raffle => !raffle.raffleEnded && (raffle.entries && raffle.entries.includes(address)) && raffle.winner === noWinnerYet && !raffle.prizeClaimed);
-        const expiredRaffles = formattedRaffles.filter(raffle => (raffle.entries && raffle.entries.includes(address)) && raffle.winner !== noWinnerYet || raffle.raffleEnded || raffle.prizeClaimed)
-        const createdRaffles = formattedRaffles.filter(raffle => raffle.owner === address)
-        const unclaimedRaffles = formattedRaffles.filter(raffle => raffle.winner === address && !raffle.prizeClaimed)
 
+        console.log("address", _address)
+        console.log("typeof address", typeof _address)
+
+
+        const liveRaffles = formattedRaffles.filter(raffle => !raffle.raffleEnded && raffle.winner === noWinnerYet && !raffle.prizeClaimed);
+        // const liveRaffles = formattedRaffles.filter(raffle => !raffle.raffleEnded && (raffle.entries && raffle.entries.includes(_address)) && raffle.winner === noWinnerYet && !raffle.prizeClaimed);
+        const expiredRaffles = formattedRaffles.filter(raffle => (raffle.entries && raffle.entries.includes(_address)) && raffle.winner !== noWinnerYet || raffle.raffleEnded || raffle.prizeClaimed)
+        const createdRaffles = formattedRaffles.filter(raffle => {return(raffle.owner.toLowerCase() == _address.toLowerCase())})
+        const unclaimedRaffles = formattedRaffles.filter(raffle => raffle.winner.toLowerCase() === _address.toLowerCase() && !raffle.prizeClaimed)
+        console.log("liveraffles", liveRaffles)
+        console.log("expiredraffles", expiredRaffles)
+        console.log("createdRaffles", createdRaffles)
+        console.log("unclaimedRaffles", unclaimedRaffles)
         setFilteredRaffles({ live: liveRaffles, expired: expiredRaffles, created: createdRaffles, unclaimed: unclaimedRaffles });
       }
     }
