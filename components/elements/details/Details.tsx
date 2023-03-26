@@ -21,8 +21,8 @@ import {useAccount} from 'wagmi'
 interface Details extends Omit<RaffleCardProps, 'raffleId'> {
     yourTickets?: number
     youSpent?: number
-    raffler?: `Ox${string}`
-    winner?: `Ox${string}` | null
+    raffler?: string
+    winner?: string | null
     totalRecieved?: number | null
 }
 // figure out if you can pull all data in RaffleCard component
