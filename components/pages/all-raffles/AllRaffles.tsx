@@ -71,6 +71,7 @@ export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
   const showingMyRaffles = pageHeading === 'My Raffles'
 
   const filterRaffles = useCallback(async (formattedRaffles) => {
+    console.log("filterRaffles:", formattedRaffles)
     console.log('USE CALLBACK')
     if (showingPublicRaffles) {
       for (let i = 0; i < formattedRaffles.length; i++) {

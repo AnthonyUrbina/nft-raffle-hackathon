@@ -2,7 +2,7 @@ import {
     Heading
 } from '@chakra-ui/react'
 import { CreateRaffleForm } from '../../elements'
-import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
+import { CreateRaffleContainerProps } from '../../../pages/create/[user]'
 
 export const Notifications = () => {
     return (

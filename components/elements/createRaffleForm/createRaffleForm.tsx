@@ -21,10 +21,13 @@ import { AddIcon} from '@chakra-ui/icons'
 import { useDisclosure } from '@chakra-ui/react'
 import { useFormik } from "formik";
 import * as yup from "yup"
-import { ReactNode, useState } from 'react'
+import { ReactNode, useState, useEffect } from 'react'
 import { SelectNftCard } from '../selectNftCard';
 import { CreateRaffleProps } from '../../pages';
-import { NftData } from '../../../pages/create-raffle';
+import { NftData } from '../../../pages/create/[user]';
+import { useAccount, useContract, erc721ABI, useContractWrite, usePrepareContractWrite } from 'wagmi'
+import { ethers } from 'ethers';
+import raffleAbi from '../../../nftRaffleAbi.json'
 
 interface NftDataContractReady extends Omit<NftData, 'image'> {}
 interface CreatedRaffle {
@@ -37,6 +40,17 @@ interface CreatedRaffle {
 export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [selectedNftData, setSelectedNftData] = useState<NftDataContractReady | null>(null);
+    const {address} = useAccount()
+
+    // const nftContract = useContract({
+    //     address: '0x55BfeD48a2236d892831f11b8E0D48CAF3275B70',
+    //     abi: erc721ABI,
+    //   })
+
+    
+
+
+    useEffect(() => {}, [selectedNftData]);
 
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const currentDate = new Date().toLocaleString('en-US', { timeZone: userTimeZone });
@@ -95,6 +109,7 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
     }
 
     const handleSelectedNft = (event: React.MouseEvent<HTMLButtonElement>, selectedNft: number) => {
+        console.log("handleSelectedNFT:selectedNFT:", selectedNft)
         const { title, tokenId, collectionAddress} = nfts[selectedNft]
         const nftData: NftDataContractReady = {
             title,
@@ -106,6 +121,50 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
     }
 
     const { getFieldProps, handleSubmit, errors } = formik
+
+    const createRaffle = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        console.log("data:", formData)
+        console.log("selectedNFTDATA:", selectedNftData)
+
+        const contractAddress = selectedNftData?.collectionAddress; // replace with the contract address
+        
+        
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        
+        const nftContract = new ethers.Contract(selectedNftData?.collectionAddress, erc721ABI, signer);
+        const approveTx = await nftContract.setApprovalForAll("0x55BfeD48a2236d892831f11b8E0D48CAF3275B70", true);
+
+        console.log('Transaction hash:', approveTx.hash);
+        console.log('Waiting for transaction to be mined...');
+
+        await approveTx.wait();
+
+        console.log('Transaction mined!');
+
+        const raffleContract = new ethers.Contract("0x55BfeD48a2236d892831f11b8E0D48CAF3275B70", raffleAbi, signer);
+        const createRaffleTx = await raffleContract.createRaffle(
+            selectedNftData?.collectionAddress, 
+            selectedNftData?.tokenId,
+            parseInt(formData.get("reservePrice")) * 1000000000000000000,
+            parseInt(formData.get("ticketPrice")) * 1000000000000000000,
+            1682525633
+            );
+
+        console.log('Transaction hash:', createRaffleTx.hash);
+        console.log('Waiting for transaction to be mined...');
+
+        await createRaffleTx.wait();
+
+        console.log('Transaction mined!');
+
+      
+    }
+
+
+    console.log("createraffleform:selectedNFTDATA:", selectedNftData)
 
     return (
         <>
@@ -131,7 +190,7 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
                     </ModalBody>
                 </ModalContent>
             </Modal>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={createRaffle}>
                 <FormControl w={['353px', null, null, '175px']} m={['0 auto', null, null, 'initial']} ml={[null, null, null, 10]} mt={['.75rem', null, null, '0']}>
                     <Flex p='1rem' justify='space-between' rounded='1rem' border='1px' mb={['.75rem', null, null, '.75rem']} flexDir='column' w={['353px', null, null, '175px']}>
                         <Flex flexDir={['row', null, null, 'column']} justify='space-between'>
@@ -142,11 +201,12 @@ export const CreateRaffleForm = ({ nfts }: CreateRaffleProps) => {
                                     <Select
                                         id='currency'
                                         name='currency'
-                                        placeholder='ETH'
+                                       
                                         w='150px' h='25px'
                                         textAlign='center'
                                         rounded='1rem'>
-                                        <option value="APE">APE</option>
+                                        <option value="0x0000000000000000000000000000000000000000">ETH</option>
+                                        <option value="0x328507DC29C95c170B56a1b3A758eB7a9E73455c">APE</option>
                                     </Select>
                                 </FormControl>
                             </Flex>

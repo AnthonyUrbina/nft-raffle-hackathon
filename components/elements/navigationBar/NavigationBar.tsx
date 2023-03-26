@@ -19,11 +19,10 @@ import {
 import { AddIcon, HamburgerIcon, ExternalLinkIcon, BellIcon } from '@chakra-ui/icons'
 import { mainnet, goerli, optimism, polygon, polygonMumbai } from "wagmi/chains";
 import { useRouter } from 'next/router';
-import { WagmiConfig, createClient } from "wagmi";
+import { WagmiConfig, useAccount, createClient } from "wagmi";
 import { ConnectKitProvider, ConnectKitButton, getDefaultClient } from "connectkit";
 import NextLink from 'next/link';
 import * as routes from '../../../constants/routes';
-import { useAccount } from "wagmi";
 import { useEffect, useState } from 'react';
 import { NotiMenuList } from '../../elements'
 import { ethers } from 'ethers'
@@ -35,7 +34,7 @@ interface NavigationBarProps {
 }
 
 const alchemyId = 'VperEHcYqgNn_9j67hC0SlorxAtJr3aL';
-const chains = [mainnet, polygon, optimism, goerli];
+const chains = [goerli];
 
 const client = createClient(
     getDefaultClient({
@@ -47,6 +46,7 @@ const client = createClient(
 
 export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
     const { address } = useAccount()
+    console.log("NavigationBAr:address:", address)
     const [sdkSocket, setSDKSocket] = useState<any>(null)
     const [isConnected, setIsConnected] = useState(sdkSocket?.connected)
     const chainId = 5
@@ -165,31 +165,25 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                                 aria-label='Options'
                                 icon={<BellIcon />}
                             />
-                            <NotiMenuList />
+                            {/* <NotiMenuList /> */}
                         </Menu>
                     </Box>
 
-                    <Link as={NextLink} href={CREATE_RAFFLE}>
+                    <Link as={NextLink} href={`/create/${address}`}>
                         <Button rounded='.75rem' aria-label='create raffle' p='.75rem' m='.5rem' leftIcon={<AddIcon />} boxShadow="inset 0 0 0 2px #DFE4EC,0 2px 0 0 #DFE4EC,0px 2px 4px rgba(0,0,0,0.02);">
                             Create Raffle
                         </Button>
                     </Link>
                     <Box pr={['.5rem', null, '1.5rem']} paddingY='.5rem'>
-                        <WagmiConfig client={client}>
-                            <ConnectKitProvider theme='rounded' mode='dark'>
-                                <ConnectKitButton />
-                            </ConnectKitProvider>
-                        </WagmiConfig>
+                        <ConnectKitButton />
                     </Box>
                 </Hide>
                 <Show below='md'>
                     <Flex align='center' pr={['.5rem', null, '1.5rem']} paddingY='.5rem'>
                         <Box pr={2}>
-                            <WagmiConfig client={client}>
-                                <ConnectKitProvider >
-                                    <ConnectKitButton theme='rounded' mode='dark' />
-                                </ConnectKitProvider>
-                            </WagmiConfig>
+                            
+                            <ConnectKitButton theme='rounded' mode='dark' />
+                               
                         </Box>
                         <Menu>
                             <MenuButton
