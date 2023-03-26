@@ -17,42 +17,125 @@ import {
     Hide
 } from '@chakra-ui/react'
 import { AddIcon, HamburgerIcon, ExternalLinkIcon, BellIcon } from '@chakra-ui/icons'
-
+import { mainnet, goerli, optimism, polygon, polygonMumbai } from "wagmi/chains";
 import { useRouter } from 'next/router';
 import { WagmiConfig, createClient } from "wagmi";
 import { ConnectKitProvider, ConnectKitButton, getDefaultClient } from "connectkit";
 import NextLink from 'next/link';
 import * as routes from '../../../constants/routes';
 import { useAccount } from "wagmi";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { NotiMenuList } from '../../elements'
+import { ethers } from 'ethers'
+import { createSocketConnection, EVENTS } from '@pushprotocol/socket';
+import * as PushAPI from "@pushprotocol/restapi";
 
 interface NavigationBarProps {
     handleConnectWallet: (address: `0x${string}`) => void
 }
 
-const alchemyId = 'EoOTjHvOIujYqlStV6ppG71Y7Cf94wRj';
+const alchemyId = 'VperEHcYqgNn_9j67hC0SlorxAtJr3aL';
+const chains = [mainnet, polygon, optimism, goerli];
 
 const client = createClient(
     getDefaultClient({
-        appName: "ROFL",
+        appName: "rofl new",
         alchemyId,
+        chains
     }),
 )
 
 export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
-    const { address, isDisconnected, isConnected } = useAccount()
+    const { address } = useAccount()
+    const [sdkSocket, setSDKSocket] = useState<any>(null)
+    const [isConnected, setIsConnected] = useState(sdkSocket?.connected)
+    const chainId = 5
+    const userCAIP = `eip155:${chainId}:${address}`;
+    useEffect(() => {
+        address && handleConnectWallet(address)
+    }, [address, handleConnectWallet])
+
+
+    // const addSocketEvents = () => {
+    //     sdkSocket?.on(EVENTS.CONNECT, () => {
+    //         setIsConnected(true)
+    //     })
+
+    //     sdkSocket?.on(EVENTS.DISCONNECT, () => {
+    //         setIsConnected(false)
+    //     })
+
+    //     sdkSocket?.on(EVENTS.USER_FEEDS, (notification) => {
+    //         console.log('notification',notification)
+    //     })
+    // }
+
+    // const removeSocketEvents = () => {
+    //     sdkSocket?.off(EVENTS.CONNECT);
+    //     sdkSocket?.off(EVENTS.DISCONNECT)
+    // }
+
+    // useEffect(() => {
+    //     if (sdkSocket) {
+    //         addSocketEvents()
+    //         console.log('adding SocketEvents')
+    //     } else {
+    //         removeSocketEvents()
+    //         console.log('removing SocketEvents')
+
+    //     }
+    // }, [sdkSocket])
 
     useEffect(() => {
-        if (!address) return
-        handleConnectWallet(address)
-    },[address, handleConnectWallet])
+        if (address) {
+            const pushSDKSocket = createSocketConnection({
+                user: userCAIP,
+                env: 'staging',
+                socketOptions: { autoConnect: false, reconnectionAttempts: 3 }
+            });
 
-    // const passHref = () => {
-    //     if (address) {
-    //         const _address = address.toString()
-    //         const href = {{ pathname: '/home', query: address }}
-    //     }
-    // }
+            pushSDKSocket?.on(EVENTS.CONNECT, () => {
+                console.log('socket connected')
+                setIsConnected(true)
+            })
+
+            pushSDKSocket?.on(EVENTS.DISCONNECT, () => {
+                console.log('socket disconnected')
+                setIsConnected(false)
+            })
+
+            pushSDKSocket?.on(EVENTS.USER_FEEDS, notification => {
+                console.log('notification', notification)
+            })
+
+            pushSDKSocket?.connect();
+
+
+            setSDKSocket(pushSDKSocket);
+            console.log('created pushSDKSocket', pushSDKSocket)
+        }
+
+        // const getNotis = async () => {
+        //     const notifications = await PushAPI.user.getFeeds({
+        //         user: userCAIP, // user address in CAIP
+        //         env: 'staging'
+        //     });
+        //     console.log(notifications)
+        // }
+
+        // getNotis()
+
+
+        return () => {
+            if (sdkSocket) {
+                sdkSocket.disconnect()
+                console.log('socket disconnected')
+            }
+        }
+    }, [])
+
+    console.log('sdkSocket', sdkSocket)
+
 
     const router = useRouter()
     const { CREATE_RAFFLE } = routes
@@ -82,11 +165,7 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                                 aria-label='Options'
                                 icon={<BellIcon />}
                             />
-                            <MenuList>
-                                <MenuItem>
-                                    You have no new notifications at this moment!
-                                </MenuItem>
-                            </MenuList>
+                            <NotiMenuList />
                         </Menu>
                     </Box>
 
@@ -98,7 +177,7 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                     <Box pr={['.5rem', null, '1.5rem']} paddingY='.5rem'>
                         <WagmiConfig client={client}>
                             <ConnectKitProvider theme='rounded' mode='dark'>
-                                <ConnectKitButton/>
+                                <ConnectKitButton />
                             </ConnectKitProvider>
                         </WagmiConfig>
                     </Box>
@@ -106,21 +185,21 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                 <Show below='md'>
                     <Flex align='center' pr={['.5rem', null, '1.5rem']} paddingY='.5rem'>
                         <Box pr={2}>
-                        <WagmiConfig client={client}>
-                            <ConnectKitProvider >
-                                <ConnectKitButton theme='rounded' mode='dark' />
-                            </ConnectKitProvider>
-                        </WagmiConfig>
-                    </Box>
-                    <Menu>
-                        <MenuButton
+                            <WagmiConfig client={client}>
+                                <ConnectKitProvider >
+                                    <ConnectKitButton theme='rounded' mode='dark' />
+                                </ConnectKitProvider>
+                            </WagmiConfig>
+                        </Box>
+                        <Menu>
+                            <MenuButton
                                 mr={['.5rem', null, '1.5rem']}
-                            as={IconButton}
-                            aria-label='Options'
-                            icon={<HamburgerIcon />}
-                            variant='outline'
-                        />
-                        <MenuList>
+                                as={IconButton}
+                                aria-label='Options'
+                                icon={<HamburgerIcon />}
+                                variant='outline'
+                            />
+                            <MenuList>
                                 <Link href='/create-raffle'>
                                     <MenuItem icon={<AddIcon />}>
                                         Create Raffle
@@ -136,8 +215,8 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                                         Notifications
                                     </MenuItem>
                                 </Link>
-                        </MenuList>
-                    </Menu>
+                            </MenuList>
+                        </Menu>
                     </Flex>
                 </Show>
             </Flex>

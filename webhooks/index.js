@@ -1,3 +1,4 @@
+require('dotenv/config');
 const express = require('express')
 var admin = require("firebase-admin");
 var serviceAccount = require("./serviceAccountKey.json");
@@ -8,7 +9,40 @@ const arrayUnion = admin.firestore.FieldValue.arrayUnion;
 
 const db = admin.firestore();
 
+// push protocol backend sdk initializing
+const ethers = require('ethers')
+const PushAPI = require("@pushprotocol/restapi");
+console.log('SECRET SHHHH', process.env.PUSH_CHANNEL_SECRET)
+const PK = `0x${process.env.PUSH_CHANNEL_SECRET}`
+const _signer = new ethers.Wallet(PK);
 
+
+const apiResponse = async () => {
+    try {
+        await PushAPI.payloads.sendNotification({
+            signer: _signer,
+            type: 3, // target
+            identityType: 2, // direct payload
+            notification: {
+                title: `[SDK-TEST] notification TITLE: swag`,
+                body: `[sdk-test] notification BODY: too much swag`
+            },
+            payload: {
+                title: `[sdk-test] payload title: tittle`,
+                body: `sample msg body: body`,
+                cta: '',
+                img: '/static/supduck'
+            },
+            recipients: 'eip155:5:0xa9f27C5E85Dfb8C0e31AE6cC998EF92aB77bd3E2', // recipient address
+            channel: 'eip155:5:0x07c233C36ac7103bDDD8fdebE9935fE871BF5474', // your channel address
+            env: 'staging'
+        });
+    } catch (err) {
+        console.error(err.message)
+    }
+}
+
+console.log('apiResponse', apiResponse())
 const app = express()
 const port = 7000
 
@@ -114,6 +148,7 @@ app.post('/EndRaffle', (req, res) => {
             const winnerAddress = '0x' + payload[0]["logs"][0]["data"].substring(66).replace(/^0+/, '')
             console.log("\n\nEndRaffle:payload:\n\n", payload)
             await db.collection("raffles").doc(raffleId.toString()).update({raffleEnded : true, winner : winnerAddress})
+            console.log('result', result)
         }catch(err){
             console.log(err)
             res.status(500).send()

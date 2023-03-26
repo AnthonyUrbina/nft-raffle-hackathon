@@ -13,6 +13,8 @@
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@pushprotocol/restapi": "^0.9.0",
+    "@pushprotocol/socket": "^0.4.2",
     "@types/node": "18.15.2",
     "@types/react": "18.0.28",
     "@types/react-datepicker": "^4.10.0",
