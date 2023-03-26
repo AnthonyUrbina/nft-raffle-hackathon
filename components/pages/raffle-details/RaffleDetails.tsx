@@ -1,7 +1,8 @@
 import {
   Image,
   Flex,
-  Heading
+  Heading,
+  list
 } from '@chakra-ui/react'
 import { useEffect, useState } from "react"
 import { Details } from "../../elements/"
@@ -59,10 +60,27 @@ export const RaffleDetails = ({ raffle }: RaffleDetailsContainerProps) => {
   }, [ raffle, nftCollectionAddress, nftTokenId, address])
 
 if (!raffleFinal) return
-  const { image, collectionName, raffleEndDate, reservePrice, ticketPrice, edition, altText, isWinner } = raffleFinal
-
+  const { image, collectionName, raffleEndDate, reservePrice, ticketPrice, edition, altText, isWinner, owner, winner, entries } = raffleFinal
   const currency = 'ETH'
   const ticketsSold = (raffle.entries && raffle.entries.length) ?? 0
+
+const getParticipantsList = () => {
+  let participantsList = []
+  for (let i = 0; i < entries.length; i++) {
+    const list = []
+    const container = {}
+    if (container.hasOwnProperty(entries[i])) {
+      container[entries[i]]++
+      } else {
+        container[entries[i]] = 1
+      }
+      for (const key in container) {
+        list.push({address: key, ticketsPurchased: container[key]})
+      }
+      participantsList = list
+    }
+    return participantsList
+  }
 
   return (
     <>
@@ -73,6 +91,8 @@ if (!raffleFinal) return
         </Flex>
         <Flex flexDir={['column']} grow={1} pl={[null, null, 4]}>
           <Details
+            raffler={owner}
+            winner={winner}
             isWinner={isWinner}
             reservePrice={reservePrice}
             image={image}
@@ -84,7 +104,7 @@ if (!raffleFinal) return
             currency={currency}
             altText={altText}
           />
-          {/* <Participants participantsList={participantsList} /> */}
+          <Participants participantsList={getParticipantsList()} />
         </Flex>
       </Flex>
     </>

@@ -31,10 +31,9 @@ export const NotiLi = ({ notifications }) => {
                                 <Image rounded={6} alt={image} src={image}></Image>
                             </Flex>
                             <Flex flexDir={'column'} basis={'65%'}>
-                                <Text fontSize={'md'}>{title}</Text>
-                                <Text fontSize={'md'}>{message}</Text>
+                                <Text fontSize={['md', 'lg', 'xl']}>{title}</Text>
+                                <Text fontSize={['md', 'lg', 'xl']}>{message}</Text>
                             </Flex>
-
                         </Flex>
                     </Link>
                 </ListItem>
