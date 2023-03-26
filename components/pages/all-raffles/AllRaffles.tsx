@@ -72,7 +72,6 @@ export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
 
   const filterRaffles = useCallback(async (formattedRaffles) => {
     console.log("filterRaffles:", formattedRaffles)
-    console.log('USE CALLBACK')
     if (showingPublicRaffles) {
       for (let i = 0; i < formattedRaffles.length; i++) {
         const { nftTokenId, nftCollectionAddress } = formattedRaffles[i];
@@ -97,9 +96,7 @@ export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
         formattedRaffles[i].altText = title;
 
         const liveRaffles = formattedRaffles.filter(raffle => !raffle.raffleEnded && raffle.winner === noWinnerYet && !raffle.prizeClaimed);
-        console.log('live raffles', liveRaffles)
         const expiredRaffles = formattedRaffles.filter(raffle => raffle.winner !== noWinnerYet || raffle.raffleEnded || raffle.prizeClaimed)
-        console.log('expiredRaffles', expiredRaffles)
         setFilteredRaffles({ live: liveRaffles, expired: expiredRaffles });
       }
     } else if (showingMyRaffles) {
@@ -129,20 +126,14 @@ export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
 
 
         if (formattedRaffles[i].winner !== noWinnerYet) {
-          console.log('formattedRaffles[i]', formattedRaffles[i])
 
           formattedRaffles[i].isWinner = formattedRaffles[i].winner === address
-          console.log('formattedRaffles[i].isWinner', formattedRaffles[i].isWinner)
         }
         const _address = address && address.toString()
         const liveRaffles = formattedRaffles.filter(raffle => !raffle.raffleEnded && (raffle.entries && raffle.entries.includes(address)) && raffle.winner === noWinnerYet && !raffle.prizeClaimed);
-        console.log('my live raffles', liveRaffles)
         const expiredRaffles = formattedRaffles.filter(raffle => (raffle.entries && raffle.entries.includes(address)) && raffle.winner !== noWinnerYet || raffle.raffleEnded || raffle.prizeClaimed)
-        console.log('my expiredRaffles', expiredRaffles)
         const createdRaffles = formattedRaffles.filter(raffle => raffle.owner === address)
-        console.log('my createdRaffles', createdRaffles)
         const unclaimedRaffles = formattedRaffles.filter(raffle => raffle.winner === address && !raffle.prizeClaimed)
-        console.log('my unclaimedRaffles', unclaimedRaffles)
 
         setFilteredRaffles({ live: liveRaffles, expired: expiredRaffles, created: createdRaffles, unclaimed: unclaimedRaffles });
       }
@@ -150,7 +141,6 @@ export const AllRaffles = ({ pageHeading, filters }: RafflePagesProps) => {
   }, [showingMyRaffles, showingPublicRaffles, address])
 
   useEffect(() => {
-    console.log('USE EFFECT')
     const fetchCollection = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "raffles"));

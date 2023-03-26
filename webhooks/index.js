@@ -1,5 +1,6 @@
 require('dotenv/config');
 const express = require('express')
+const axios = require('axios')
 var admin = require("firebase-admin");
 var serviceAccount = require("./serviceAccountKey.json");
 admin.initializeApp({
@@ -17,23 +18,38 @@ const PK = `0x${process.env.PUSH_CHANNEL_SECRET}`
 const _signer = new ethers.Wallet(PK);
 
 
-const apiResponse = async () => {
+const sendPushNotification = async ({ body, title, cta, img, recipient, type}) => {
+    // subset = 4
+    // target = 3
+    const isTarget = type === 'target'
+    type = type === 'target' ? 3 : 4
+    let recipients;
+    if (isTarget) {
+        recipients = `eip155:5:${recipient}`
+    } else {
+        recipients = []
+        console.log('recipient', recipient)
+        for (let i = 0; i < recipient.length; i++) {
+            const CAIPformat = `eip155:5:${recipient[i]}`
+            recipients.push(CAIPformat)
+        }
+    }
     try {
         await PushAPI.payloads.sendNotification({
             signer: _signer,
-            type: 3, // target
+            type, // target
             identityType: 2, // direct payload
             notification: {
-                title: `[SDK-TEST] notification TITLE: swag`,
-                body: `[sdk-test] notification BODY: too much swag`
+                title,
+                body
             },
             payload: {
-                title: `[sdk-test] payload title: tittle`,
-                body: `sample msg body: body`,
-                cta: '',
-                img: '/static/supduck'
+                title,
+                body,
+                cta,
+                img,
             },
-            recipients: 'eip155:5:0xa9f27C5E85Dfb8C0e31AE6cC998EF92aB77bd3E2', // recipient address
+            recipients, // recipient address
             channel: 'eip155:5:0x07c233C36ac7103bDDD8fdebE9935fE871BF5474', // your channel address
             env: 'staging'
         });
@@ -42,7 +58,65 @@ const apiResponse = async () => {
     }
 }
 
-console.log('apiResponse', apiResponse())
+// for push notis
+const pulldata = async () => {
+    const docRef = db.collection("raffles").doc('33');
+    const doc = await docRef.get();
+
+    if (doc.exists) {
+        // The document exists, do something with it
+        const raffle = doc.data();
+        // owner: your raffle has ended
+        // loser: you lost the raffle
+        // winner: you won the raffle
+        const { entries, owner, raffleId, winner, nftTokenId, nftCollectionAddress } = raffle
+        // make opensea call
+        // grab image, token edition, collection name
+        // store in container for later
+        // next,
+        // store winner
+        // store owner
+        // for losers, create copy of entries and remove duplicates
+        // send off the notifications
+        const options = {
+            method: 'GET',
+            url: `https://eth-goerli.g.alchemy.com/nft/v2/YMYVZZmF7YdOUtdXKVP-OoKjlxhWa7nJ/getNFTMetadata`,
+            params: {
+                contractAddress: nftCollectionAddress,
+                tokenId: nftTokenId,
+                refreshCache: 'false'
+            },
+            headers: { accept: 'application/json' }
+        };
+
+        const res = await axios.request(options);
+        const { title, media } = res.data;
+        const { gateway } = media[0];
+        const img = gateway;
+
+        const losers = entries.filter((entry, index) => entries.indexOf(entry) === index)
+        console.log('losers:', losers)
+        const cta = `/raffles/${raffleId}`
+        const groupNotification = 'subset'
+        const singleNotification = 'target'
+        const loserMessage = 'YOU LOST THE RAFFLE'
+        const winnerMessage = 'YOU WON THE RAFFLE'
+        const ownerMessage = 'YOUR RAFFLE HAS ENDED'
+
+        // losers
+        sendPushNotification({ body: title, title: loserMessage, cta, img, recipient: losers, type: groupNotification })
+        // winners
+        sendPushNotification({ body: title, title: winnerMessage, cta, img, recipient: winner, type: singleNotification })
+        // owners
+        sendPushNotification({ body: title, title: ownerMessage, cta, img, recipient: owner, type: singleNotification })
+    } else {
+        console.log("No such document!");
+    }
+}
+
+console.log('pulldata', pulldata())
+
+// console.log('apiResponse', sendPushNotification())
 const app = express()
 const port = 7000
 
@@ -148,13 +222,65 @@ app.post('/EndRaffle', (req, res) => {
             const winnerAddress = '0x' + payload[0]["logs"][0]["data"].substring(66).replace(/^0+/, '')
             console.log("\n\nEndRaffle:payload:\n\n", payload)
             await db.collection("raffles").doc(raffleId.toString()).update({raffleEnded : true, winner : winnerAddress})
+            // for push notis
+            const docRef = db.collection("raffles").doc(raffleId.toString());
+            const doc = await docRef.get();
+
+            if (doc.exists) {
+                // The document exists, do something with it
+                const raffle = doc.data();
+                // owner: your raffle has ended
+                // loser: you lost the raffle
+                // winner: you won the raffle
+                const { entries, owner, raffleId, winner, nftTokenId, nftCollectionAddress } = raffle
+                // make opensea call
+                // grab image, token edition, collection name
+                // store in container for later
+                // next,
+                // store winner
+                // store owner
+                // for losers, create copy of entries and remove duplicates
+                // send off the notifications
+                const options = {
+                    method: 'GET',
+                    url: `https://eth-goerli.g.alchemy.com/nft/v2/YMYVZZmF7YdOUtdXKVP-OoKjlxhWa7nJ/getNFTMetadata`,
+                    params: {
+                        contractAddress: nftCollectionAddress,
+                        tokenId: nftTokenId,
+                        refreshCache: 'false'
+                    },
+                    headers: { accept: 'application/json' }
+                };
+
+                const res = await axios.request(options);
+                const { title, media } = res.data;
+                const { gateway } = media[0];
+                const img = gateway;
+
+                const losers = entries.filter((entry, index) => entries.indexOf(entry) === index)
+                console.log('losers:', losers)
+                const cta = `/raffles/${raffleId}`
+                const groupNotification = 'subset'
+                const singleNotification = 'target'
+                const loserMessage = 'YOU LOST THE RAFFLE'
+                const winnerMessage = 'YOU WON THE RAFFLE'
+                const ownerMessage = 'YOUR RAFFLE HAS ENDED'
+
+                // losers
+                sendPushNotification({ body: title, title: loserMessage, cta, img, recipient: losers, type: groupNotification })
+                // winners
+                sendPushNotification({ body: title, title: winnerMessage, cta, img, recipient: winner, type: singleNotification })
+                // owners
+                sendPushNotification({ body: title, title: ownerMessage, cta, img, recipient: owner, type: singleNotification })
+            } else {
+                console.log("No such document!");
+            }
             console.log('result', result)
-        }catch(err){
+        } catch(err){
             console.log(err)
             res.status(500).send()
         }
     });
-
 
     res.status(200).send()
 })
