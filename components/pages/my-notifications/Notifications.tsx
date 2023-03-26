@@ -5,7 +5,8 @@ import {
     Switch
 } from '@chakra-ui/react'
 import { CreateRaffleForm } from '../../elements'
-import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
+
+import { CreateRaffleContainerProps } from '../../../pages/create/[user]'
 import { useEffect, useState } from 'react'
 import * as PushAPI from "@pushprotocol/restapi";
 import { useAccount, useSigner } from 'wagmi';

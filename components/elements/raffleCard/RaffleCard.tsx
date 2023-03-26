@@ -154,7 +154,7 @@ export const RaffleCard = ({
             if (isWinner) return <Button>Claim</Button>
 
         } else {
-            return <BuyForm />
+            return <BuyForm ticketPrice={pricePerTicket} raffleId={raffleId}/>
         }
     }
 

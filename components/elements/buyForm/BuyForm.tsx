@@ -13,12 +13,15 @@ import {
 import { Form, Formik } from 'formik'
 import * as yup from "yup"
 import { ChangeEvent, useState } from 'react'
+import {ethers} from 'ethers'
+import raffleAbi from '../../../nftRaffleAbi.json'
+
 
 type FormValidationErrors = {
     ticketQuantity: number
 }
 
-export const BuyForm = () => {
+export const BuyForm = ({ticketPrice, raffleId}) => {
     const [ticketQuantity, setTicketQuantity] = useState(3)
 
 
@@ -41,6 +44,29 @@ export const BuyForm = () => {
         setTicketQuantity(value)
     }
 
+    const buyTickets = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const ethPrice = (ticketPrice / 1000000000000000000) * parseInt(formData.get("ticketQuantity"))
+        const costInWei = ethers.utils.parseEther(ethPrice.toString())
+
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        
+        console.log("ethPRice", ethPrice)
+        console.log("costinWei", costInWei)
+
+        const raffleContract = new ethers.Contract("0x55BfeD48a2236d892831f11b8E0D48CAF3275B70", raffleAbi, signer);
+        const buyRaffleTx = await raffleContract.buyRaffleTickets(raffleId, formData.get("ticketQuantity"), { value: costInWei });
+
+        console.log('Transaction hash:', buyRaffleTx.hash);
+        console.log('Waiting for transaction to be mined...');
+
+        await buyRaffleTx.wait();
+
+        console.log('Transaction mined!');
+    }
+
     return (
         <Formik
         initialValues={{ticketQuantity: 3}}
@@ -51,7 +77,7 @@ export const BuyForm = () => {
         >
             {formik => (
             <Form
-            onSubmit={formik.handleSubmit}>
+            onSubmit={buyTickets}>
                 <FormControl isInvalid={!!formik.errors.ticketQuantity}>
                     <Flex rounded={10} py={2} justifyContent={['space-between']}>
                         <Flex basis={['30%']}>
