@@ -3,8 +3,27 @@ import {
 } from '@chakra-ui/react'
 import { CreateRaffleForm } from '../../elements'
 import { CreateRaffleContainerProps } from '../../../pages/create-raffle'
+import { useEffect, useState } from 'react'
+import * as PushAPI from "@pushprotocol/restapi";
+
 
 export const Notifications = () => {
+    const [notifications, setNotifications] = useState([])
+    const chainId = 5
+    const userCAIP = `eip155:${chainId}:${address}`;
+
+    useEffect(() => {
+        const getNotis = async () => {
+            const notifications = await PushAPI.user.getFeeds({
+                user: userCAIP, // user address in CAIP
+                env: 'staging'
+            });
+            setNotifications(notifications)
+        }
+
+        getNotis()
+    }, [userCAIP])
+
     return (
         <>
         <Heading fontFamily='Inter' as='h3' fontWeight='semibold'>

@@ -24,7 +24,7 @@ console.log(process.env.ALCHEMY_GOERLI_API_KEY)
 export async function getServerSideProps(){
     const config = {
         apiKey: process.env.ALCHEMY_GOERLI_API_KEY,
-        network: Network.ETH_MAINNET,
+        network: Network.ETH_MAINNET
     };
     const alchemy = new Alchemy(config);
 

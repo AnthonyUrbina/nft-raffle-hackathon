@@ -24,14 +24,14 @@ const apiResponse = async () => {
             type: 3, // target
             identityType: 2, // direct payload
             notification: {
-                title: `[SDK-TEST] notification TITLE: swag`,
-                body: `[sdk-test] notification BODY: too much swag`
+                title: ``,
+                body: ``
             },
             payload: {
-                title: `[sdk-test] payload title: tittle`,
-                body: `sample msg body: body`,
-                cta: '',
-                img: '/static/supduck'
+                title: `YOU WON THE RAFFLE 2`,
+                body: `SupDuck 7292`,
+                cta: '/raffles/33',
+                img: '/static/supduck.png'
             },
             recipients: 'eip155:5:0xa9f27C5E85Dfb8C0e31AE6cC998EF92aB77bd3E2', // recipient address
             channel: 'eip155:5:0x07c233C36ac7103bDDD8fdebE9935fE871BF5474', // your channel address

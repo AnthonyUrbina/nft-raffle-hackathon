@@ -45,6 +45,15 @@ const client = createClient(
     }),
 )
 
+interface Notification {
+    title: string
+    body: string
+    image: string
+    url: string
+    cta: string
+    sid: string
+}
+
 export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
     const { address } = useAccount()
     const [sdkSocket, setSDKSocket] = useState<any>(null)
@@ -78,7 +87,14 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
             })
 
             pushSDKSocket?.on(EVENTS.USER_FEEDS, notification => {
-                console.log('notification', notification)
+
+                setNotifications(notifications => {
+                    console.log('preNoti', notifications)
+                    const _notifications = [...notifications]
+                    _notifications.push(notification)
+                    console.log('post noti', _notifications)
+                    return _notifications
+                })
             })
 
             pushSDKSocket?.connect();
@@ -106,7 +122,8 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
         }
 
         getNotis()
-    },[])
+    },[userCAIP])
+
 
 
     const { CREATE_RAFFLE } = routes
@@ -135,6 +152,7 @@ export const NavigationBar = ({ handleConnectWallet }: NavigationBarProps) => {
                                 as={IconButton}
                                 aria-label='Options'
                                 icon={<BellIcon />}
+                                // onClick={() => ()}
                             />
                             <NotiMenu notifications={notifications}/>
                         </Menu>
