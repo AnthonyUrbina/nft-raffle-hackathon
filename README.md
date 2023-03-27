@@ -20,7 +20,7 @@ After being a part of one of the most extensive bull markets in world-history, m
 
 ## Live Demo
 
-Try the application live at [https://nft-raffle-hackathon-vercel.app]([https://warcardgame.xyz](https://nft-raffle-hackathon.vercel.app/))
+Try the application live at [https://nft-raffle-hackathon-vercel.app](https://nft-raffle-hackathon.vercel.app/) (ran into TypeScript errors at build time) 
 
 ## Features
 
