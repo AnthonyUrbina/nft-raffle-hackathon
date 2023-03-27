@@ -36,7 +36,7 @@ Try the application live at [https://nft-raffle-hackathon-vercel.app](https://nf
 ## Stretch Features
 
 - User can 'watch' raffle listings
-- User can view other users on-platform activity in real time.
+- User can view other users on-platform activity in real time
 
 ## Preview
 
