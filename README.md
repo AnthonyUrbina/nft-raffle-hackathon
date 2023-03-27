@@ -24,12 +24,12 @@ Try the application live at [https://nft-raffle-hackathon-vercel.app](https://nf
 
 ## Features
 
-- User can view 'public raffles'.
-- User can view 'my raffles'.
-- User can create a raffle.
-- User can purchase a raffle ticket.
+- User can view 'public raffles'
+- User can view 'my raffles'
+- User can create a raffle
+- User can purchase a raffle ticket
 
-- User can win a raffle.
+- User can win a raffle
 - User can claim raffle prize
 - User can access real-time notification feed
 
