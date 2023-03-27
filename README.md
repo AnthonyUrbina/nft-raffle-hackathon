@@ -1,11 +1,11 @@
 # ROFL
 
-A full stack web3 (d)application built for anyone who wants to raffle off their beloved jpegs.
+A full stack web3 application built for anyone who wants to raffle off their beloved jpegs.
 
 
 ## Why we Built This
 
-After being a part of one of the most extensive bull markets in world-history, my buddies and I were amazed by how these marketplace wars have played out. Now don't get us wrong, we love our airdrops, but isn't there a way to make this all a little more... fun? *enters ROFL*
+After being a part of one of the most extensive bull markets in world-history, my buddies and I were amazed by how these marketplace wars have played out. Now don't get us wrong, we love our airdrops, but we just feel like there's a way tpo make this all a little more... fun. ROFL is the first public good, P2P raffle platform on the Ethereum Network.
 
 ## Technologies Used
 
@@ -28,6 +28,7 @@ Try the application live at [https://nft-raffle-hackathon-vercel.app]([https://w
 - User can view 'my raffles'.
 - User can create a raffle.
 - User can purchase a raffle ticket.
+
 - User can win a raffle.
 - User can claim raffle prize
 - User can access real-time notification feed
@@ -39,54 +40,8 @@ Try the application live at [https://nft-raffle-hackathon-vercel.app]([https://w
 
 ## Preview
 
-![faceoff-mobile](server/assets/faceoff-mobile.gif)
-![enter-match-mobile](server/assets/enter-match-mobile.gif)
+![ezgif com-resize (1)](https://user-images.githubusercontent.com/109625982/227998424-b3e3a974-f6c9-415b-8465-70aba7ce0098.gif)
 
-## Development
 
-### System Requirements
 
-- Node.js 18 or higher
-- Socket.io 4.5.4 or higher
-- NPM 18 or higher
-- PostgreSQL 14.3 or higher
 
-### Getting Started
-
-1. Clone the repository.
-
-    ```shell
-    git clone https://github.com/AnthonyUrbina/War
-    cd War
-    ```
-
-1. Install all dependencies with NPM.
-
-    ```shell
-    npm install
-    ```
-
-1. Import the example database to PostgreSQL.
-
-    ```shell
-    npm run db:import
-    ```
-
-1. Make a copy of the .env.example file. Name your copy `.env`.
-
-    ```shell
-    cp .env.example .env
-    ```
-
-1. Set up your environmental variables in `.env`. Replace `changeMe` with your own credentials.
-
-    ```shell
-    TOKEN_SECRET=changeMe
-    DATABASE_URL=postgres://dev:dev@localhost/changeMe?sslmode=disable
-    ```
-
-1. Start the project. Once started you can view the application by opening http://localhost:3000 in your browser.
-
-    ```shell
-    npm run dev
-    ```
