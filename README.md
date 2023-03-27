@@ -1,4 +1,4 @@
-# ROFL
+# ROFL 🎟
 
 A full stack web3 application built for anyone who wants to raffle off their beloved jpegs.
 
